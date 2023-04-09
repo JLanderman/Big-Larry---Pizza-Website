@@ -1,0 +1,42 @@
+[{
+  "_id": {
+    "$oid": "643092c6d64f48f272223db1"
+  },
+  "name": "Cheese Burger",
+  "price": 425,
+  "category": "entree",
+  "photo": "https://picsum.photos/200"
+},{
+  "_id": {
+    "$oid": "6430b9d7d64f48f272223db2"
+  },
+  "name": "Large Pizza",
+  "price": 799,
+  "category": "pizza",
+  "photo": "https://picsum.photos/200"
+},{
+  "_id": {
+    "$oid": "6430ba00d64f48f272223db3"
+  },
+  "name": "Onion Ring (sm)",
+  "price": 225,
+  "category": "side",
+  "photo": "https://picsum.photos/200"
+},{
+  "_id": {
+    "$oid": "6430ba1bd64f48f272223db4"
+  },
+  "name": "Ranch Dressing 2 oz Cup",
+  "price": 225,
+  "category": "other",
+  "photo": "https://picsum.photos/200"
+},{
+  "_id": {
+    "$oid": "6430bb03d64f48f272223db5"
+  },
+  "name": "Cold Drinks (sm)",
+  "price": 195,
+  "category": "drink",
+  "note": "we should not have sizes as seperate items; this is temporary",
+  "photo": "https://picsum.photos/200"
+}]
