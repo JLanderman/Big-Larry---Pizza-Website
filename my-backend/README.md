@@ -7,3 +7,5 @@ To run server:
 3) Use ctrl + c to stop server
 
 Note: this has nodemon installed, meaning that the server will automatically restart itself for you when you are changing the code
+
+For viewing when server is running, type "localhost:5000/pizza/items" to view database values

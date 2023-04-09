@@ -1,4 +1,6 @@
-const express = require('express')
+import express from 'express'
+import itemController from '../controller/item.controller.js'
+
 const router = express.Router()
 
 router.get("/", (req, res) => {
@@ -9,4 +11,9 @@ router.get("/cheese", (req, res) => {
     res.send("Hello Cheese Pizza World")
 })
 
-module.exports = router
+/*
+*   when route/items is called, items in database will be outputted
+*/
+router.route("/items").get(itemController.apiGetItem)
+
+export default router
