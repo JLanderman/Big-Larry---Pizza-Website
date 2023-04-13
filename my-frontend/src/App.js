@@ -3,7 +3,8 @@ import './App.css';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Home, About, Login, Menu, Cart } from './pages';
+import About from './pages/about';
+import { Home, Login, Menu, Cart } from './pages';
 
 
 function App() {
