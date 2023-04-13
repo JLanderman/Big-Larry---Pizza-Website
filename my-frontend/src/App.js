@@ -6,20 +6,32 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import About from './pages/about';
 import { Home, Login, Menu, Cart } from './pages';
 
+const styles = {
+	appContainer : {
+		position: 'relative',
+		minHeight: '100vh'
+	},
+	contentWrap : {
+		paddingBottom: 'calc(40px + 0.2rem)' // Space for footer
+	}
+};
 
 function App() {
 return (
 	<Router>
-	<Navbar />
-	<Footer />
-
-	<Routes>
-		<Route path='/' element={<Home/>} />
-		<Route path='/about' element={<About/>} />
-		<Route path='/login' element={<Login/>} />
-		<Route path='/menu' element={<Menu/>} />
-		<Route path='/cart' element={<Cart/>} />
-	</Routes>
+	<div id="app-container" style={styles.appContainer}>
+		<div id="content-wrap" style={styles.contentWrap}>
+				<Navbar />
+				<Routes>
+					<Route path='/' element={<Home/>} />
+					<Route path='/about' element={<About/>} />
+					<Route path='/login' element={<Login/>} />
+					<Route path='/menu' element={<Menu/>} />
+					<Route path='/cart' element={<Cart/>} />
+				</Routes>
+		</div>
+		<Footer />
+	</div>
 	</Router>
 );
 }

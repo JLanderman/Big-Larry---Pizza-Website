@@ -6,7 +6,6 @@ position: absolute;
 left: 0;
 right: 0;
 bottom: 0;
-margin: 8px;
 background: #D9D9D9;
 height: 40px;
 display: flex;

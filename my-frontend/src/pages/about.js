@@ -28,7 +28,7 @@ const sampleText2 =`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 					
 const About = () => {
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
+    <div style={{ display: 'flex'}}>
       <div style={{ flex: .8, padding: '5rem' }}>
 	  	<u><h1 style={{ color: 'blue' }}>Sample information about Sam's Pizza:</h1></u>
         <h2>{sampleText}</h2>
