@@ -12,7 +12,7 @@ const styles = {
 		minHeight: '100vh'
 	},
 	contentWrap : {
-		paddingBottom: 'calc(40px + 0.2rem)' // Space for footer
+		paddingBottom: 'calc(40px + 0.4rem)' // Space for footer
 	}
 };
 
