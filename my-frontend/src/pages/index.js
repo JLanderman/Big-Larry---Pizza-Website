@@ -12,19 +12,6 @@ return (
 	</div>
 );
 };
-	
-const Login = () => {
-return (
-	<div>
-		<h2>
-			Hello World!
-		</h2>
-		<h1>
-			Welcome Login Page
-		</h1>
-	</div>
-);
-};
 
 const Menu = () => {
 return (
@@ -52,4 +39,4 @@ return (
 );
 };
 
-export { Home, Login, Menu, Cart };
+export { Home, Menu, Cart };
