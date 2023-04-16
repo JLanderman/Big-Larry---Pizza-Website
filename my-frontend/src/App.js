@@ -4,7 +4,8 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import About from './pages/about';
-import { Home, Login, Menu, Cart } from './pages';
+import { Home, Login, Cart } from './pages';
+import Menu from './pages/menu'
 
 const styles = {
 	appContainer : {

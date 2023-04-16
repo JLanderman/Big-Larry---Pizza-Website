@@ -26,18 +26,18 @@ return (
 );
 };
 
-const Menu = () => {
-return (
-	<div>
-		<h2>
-			Hello World!
-		</h2>
-		<h1>
-			Welcome Menu Page
-		</h1>
-	</div>
-);
-};
+// const Menu = () => {
+// return (
+// 	<div>
+// 		<h2>
+// 			Hello World!
+// 		</h2>
+// 		<h1>
+// 			Welcome Menu Page
+// 		</h1>
+// 	</div>
+// );
+// };
 
 const Cart = () => {
 return (
@@ -52,4 +52,4 @@ return (
 );
 };
 
-export { Home, Login, Menu, Cart };
+export { Home, Login, Cart };
