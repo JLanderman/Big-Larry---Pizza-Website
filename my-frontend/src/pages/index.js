@@ -1,15 +1,19 @@
 import React from 'react';
 
+const imgMyimageexample = require('https://shorturl.at/lJLNX');
+const divStyle = {
+  width: '100%',
+  height: '800px',
+  backgroundImage: `url(${'https://shorturl.at/lJLNX'})`,
+  backgroundSize: 'cover'   //<---- This is important
+};
+
 const Home = () => {
 return (
-	<div>
-		<h2>
-			Hello World!
-		</h2>
-		<h1>
-			Welcome Home Page
-		</h1>
-	</div>
+	<div className="cComponent" style={divStyle} >
+        <h1 style={{ color: 'white' }}>Thank you for visiting Sam's Pizza & More! </h1>
+      </div>
+
 );
 };
 
