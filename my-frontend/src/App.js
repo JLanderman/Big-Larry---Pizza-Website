@@ -7,6 +7,7 @@ import About from './pages/about';
 import { Home, Cart } from './pages';
 import Login from './pages/login';
 import Menu from './pages/menu'
+import Payment from './pages/payment';
 
 
 const styles = {
@@ -31,6 +32,7 @@ return (
 				<Route path='/login' element={<Login/>} />
 				<Route path='/menu' element={<Menu/>} />
 				<Route path='/cart' element={<Cart/>} />
+				<Route path='/payment' element={<Payment/>} />
 			</Routes>
 		</div>
 		<Footer />
