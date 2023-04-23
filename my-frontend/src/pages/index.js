@@ -17,17 +17,4 @@ return (
 );
 };
 
-const Cart = () => {
-return (
-	<div>
-		<h2>
-			Hello World!
-		</h2>
-		<h1>
-			Welcome Cart Page
-		</h1>
-	</div>
-);
-};
-
-export { Home, Cart };
+export { Home};

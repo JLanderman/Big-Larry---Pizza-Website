@@ -15,5 +15,6 @@ router.get("/cheese", (req, res) => {
 *   when route/items is called, items in database will be outputted
 */
 router.route("/items").get(itemController.apiGetItem)
+router.route("/cartItems").get(itemController.apiGetCart)
 
 export default router
