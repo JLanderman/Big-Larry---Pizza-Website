@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import styles from "./details.css";
 
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -30,9 +31,49 @@ const Details = () => {
   return (
     <div>
 
-      <div> Sam's Pizza and more (Food detailed)</div>
-      <div>{menuItem ? <p>{menuItem.name}</p> : <p>Loading Name</p>}</div>
-      <div>{menuItem ? <p>{menuItem.info}</p> : <p>Loading Photo Url</p>}</div>
+
+      <div className = "myContainer">
+      
+        <div className = "picture"
+        >
+          <div>{menuItem ? 
+
+          <img 
+          className = "itemPicture" src ={menuItem.photo}></img> : 
+        <p>Loading Name</p>}</div>
+
+        </div>
+
+        <div className = "description">
+        <div>
+          
+        <div>{menuItem ? <h1>{menuItem.name}</h1> : <p>Loading Name</p>}</div>
+        <div>{menuItem ? <p>{menuItem.info}</p> : <p> Loading information</p>}</div>
+        </div>
+        <div className = "buttonContainer">
+        <select name = "menu" id = "menu-select">
+          <option value= "1">1</option>
+          <option value= "2">2</option>
+          <option value= "3">3</option>
+        </select>
+        < button className="myButton">
+           Add to card
+        </button>
+        </div>
+        </div>
+       
+      
+      </div>
+
+     
+
+     
+
+
+
+
+
+
     </div>
   );
 };
