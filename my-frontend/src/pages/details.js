@@ -21,15 +21,18 @@ const Details = () => {
       .then((data) => {
         setMenuItem(data[0]);
       })
-      .catch((e) => {
+      .catch((e) => 
+      {
         console.log(e);
       });
   };
 
   return (
     <div>
+
+      <div> Sam's Pizza and more (Food detailed)</div>
       <div>{menuItem ? <p>{menuItem.name}</p> : <p>Loading Name</p>}</div>
-      <div>{menuItem ? <p>{menuItem.photo}</p> : <p>Loading Photo Url</p>}</div>
+      <div>{menuItem ? <p>{menuItem.info}</p> : <p>Loading Photo Url</p>}</div>
     </div>
   );
 };
