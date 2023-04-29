@@ -40,7 +40,7 @@ const About = () => {
 		<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 			{/*Sample images taken from client's facebook, and a screen shot of the location on google maps*/}
 			{/*Sam's Pizza - Client's logo image has an annoying grey bar at the top*/}
-			<img src="https://scontent.fmcc1-1.fna.fbcdn.net/v/t39.30808-6/221732769_318974389921029_6655959976331066938_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=19026a&_nc_ohc=ywZy4aMpUh8AX8GkPlJ&_nc_ht=scontent.fmcc1-1.fna&oh=00_AfCAz1BFjfSTFI38PWIO-YwjgdjVpsv5deOq6NXmDDxFVg&oe=643CE2D9" 
+			<img src="https://scontent.fmcc1-1.fna.fbcdn.net/v/t39.30808-6/221732769_318974389921029_6655959976331066938_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=19026a&_nc_ohc=zg_6vm9NhdAAX_TBNUV&_nc_ht=scontent.fmcc1-1.fna&oh=00_AfD8VD23Q0HWogjUeQ-CB9FyQ_cpKJ3M5KVR1wzr60nODg&oe=6442D199" 
 			alt="name" style={{ width: '400px', height: 'auto' }} />
 			{/*Pizza Image*/}
 			<img src="https://scontent.fmcc1-1.fna.fbcdn.net/v/t1.6435-9/116248562_3644038608969118_5945244553328221733_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=T8BfE6OS0fQAX8H95lO&_nc_ht=scontent.fmcc1-1.fna&oh=00_AfD5rKW4BTwwKfRII0RZ6hivUVhI0LyNzHUBAU4KX97MkA&oe=645ED1E0" 
