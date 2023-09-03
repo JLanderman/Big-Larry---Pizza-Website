@@ -25,7 +25,9 @@ export default class ItemDao {
     try {
       cursor = await item.find(query);
     } catch (e) {
-      console.error(`Unable to issue find command in itemDAO.js, ${e}`);
+      console.error(
+        `Unable to issue the getItem() find command in itemDAO.js, ${e}`
+      );
       return { itemList: [], totalNumItem: 0 };
     }
 
@@ -44,7 +46,9 @@ export default class ItemDao {
     try {
       cursor = await cart.find(query);
     } catch (e) {
-      console.error(`Unable to issue find command in cartDAO.js, ${e}`);
+      console.error(
+        `Unable to issue the getCart find command in cartDAO.js, ${e}`
+      );
       return { cartList: [], totalNumItem: 0 };
     }
 
@@ -63,7 +67,9 @@ export default class ItemDao {
     try {
       cursor = await item.find(DesiredObjectId);
     } catch (e) {
-      console.error(`Unable to issue find command in itemDAO.js, ${e}`);
+      console.error(
+        `Unable to issue the getItem(id) find command in itemDAO.js, ${e}`
+      );
       return { itemList: [], totalNumItem: 0 };
     }
 
@@ -81,7 +87,9 @@ export default class ItemDao {
     try {
       cursor = await cart.find(DesiredObjectId);
     } catch (e) {
-      console.error(`Unable to issue find command in cartDAO.js, ${e}`);
+      console.error(
+        `Unable to issue the getCart find command in cartDAO.js, ${e}`
+      );
       return { cartList: [], totalNumItem: 0 };
     }
 

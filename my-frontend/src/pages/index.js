@@ -9,12 +9,13 @@ const divStyle = {
 };
 
 const Home = () => {
-return (
-	<div className="cComponent" style={divStyle} >
-        <h1 style={{ color: 'white' }}>Thank you for visiting Sam's Pizza & More! </h1>
-      </div>
-
-);
+  return (
+    <div className="cComponent" style={divStyle}>
+      <h1 style={{ color: "white" }}>
+        Thank you for visiting Sam's Pizza & More!
+      </h1>
+    </div>
+  );
 };
 
 export { Home};

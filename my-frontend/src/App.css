@@ -1,5 +1,25 @@
-.App {
-  text-align: center;
+:root {
+  --clr-bg: #94dfdf;
+  --clr-accent: #d4d4d4;
+  --clr-menu: #d4d4d4;
+  --clr-menu-light: #ffffff;
+  --clr-menu-dark: dimgray;
+  --clr-txt: #222222;
+  --clr-txt-light: #808080;
+  --clr-txt-highlight: #c01111;
+  --clr-link: blue;
+  
+  /* Pink theme example, uncomment below lines to override theme colors */
+  /* hint: select lines, hold Ctrl(PC) or Cmd(Mac), and press backslash (/) to mass comment/uncomment */
+  /* --clr-bg: #ffa9f1;
+  --clr-accent: #eb4949;
+  --clr-menu: #e473c2;
+  --clr-menu-light: #ffdfff;
+  --clr-menu-dark: rgb(190, 9, 115);
+  --clr-txt: #630840;
+  --clr-txt-light: #fff8e6;
+  --clr-txt-highlight: rgb(135, 237, 255);
+  --clr-link: white; */
 }
 
 .App-logo {

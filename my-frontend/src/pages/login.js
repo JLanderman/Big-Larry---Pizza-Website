@@ -1,9 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const styles = {
   container: {
-    backgroundColor: '#D9D9D9',
+    backgroundColor: "var(--clr-menu)",
     margin: '10vh 15vw',
     padding: '50px',
     height: '60vh',
@@ -38,14 +38,14 @@ const styles = {
     width: '100%',
     minHeight: '40px',
     height: '40%',
-    backgroundColor: 'dimgray',
+    backgroundColor: "var(--clr-menu-dark)",
     border: 'none',
     cursor: 'pointer'
   }
 }
 
 const Link = styled.a`
-color: blue;
+color: var(--clr-link);
 alignItems: center;
 cursor: pointer;
 &:hover {
@@ -66,7 +66,7 @@ const Login = () => {
         <input type="password" name="password" style={styles.input}></input>
       </div>
       <div style={styles.innerContainer}>
-        <button name='login' style={styles.button}><text style={{color: 'white'}}>Log in</text></button>
+        <button name='login' style={styles.button}><text style={{color: "var(--clr-menu-light)" }}>Log in</text></button>
       </div>
       <div style={styles.linkContainer}>
         <Link>Forgot Password?</Link>

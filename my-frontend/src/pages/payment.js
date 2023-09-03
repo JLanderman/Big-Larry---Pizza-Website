@@ -2,7 +2,7 @@ import React from 'react';
 
 const styles = {
   container: {
-    backgroundColor: '#D9D9D9',
+    backgroundColor: "var(--clr-menu)",
     margin: '10vh 15vw',
     padding: '50px',
     border: '2px solid black',
@@ -26,7 +26,7 @@ const styles = {
     width: '100%',
     minHeight: '40px',
     height: '30%',
-    backgroundColor: 'dimgray',
+    backgroundColor: "var(--clr-menu-dark)",
     border: 'none',
     cursor: 'pointer'
   }
@@ -38,7 +38,7 @@ const Payment = () => {
       <div style={styles.innerContainer}>
         <text style={styles.baseText}> {'Money Processing Details'}<br/><br/><br/><br/></text>
         
-        <button name='Finish' style={styles.button}><text style={{color: 'white'}}>Finish</text></button>
+        <button name='Finish' style={styles.button}><text style={{color: "var(--clr-menu-light)"}}>Finish</text></button>
       </div>
     </form>
   );

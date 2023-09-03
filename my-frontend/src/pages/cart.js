@@ -8,10 +8,10 @@ import {NavLink,} from '../components/Navbar/NavbarElements';
 const styles={
 	button:{
 		boxSizing:'border-box', 
-		backgroundColor:'dimgray',
+		backgroundColor: "var(--clr-menu-dark)",
 		paddingTop:'10px', 
 		paddingBottom:'10px',
-		color:"white",
+		color: "var(--clr-menu-light)",
 		justifyContent:'center',
 		border:'2px solid black'
 	}

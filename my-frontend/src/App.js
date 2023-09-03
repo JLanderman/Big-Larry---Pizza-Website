@@ -15,6 +15,9 @@ const styles = {
   appContainer: {
     position: "relative",
     minHeight: "100vh",
+    backgroundColor: "var(--clr-bg)",
+    color: "var(--clr-txt)",
+    fontWeight: "bold",
   },
   contentWrap: {
     paddingBottom: "calc(40px + 0.4rem)", // Space for footer

@@ -6,7 +6,7 @@ position: absolute;
 left: 0;
 right: 0;
 bottom: 0;
-background: #D9D9D9;
+background: var(--clr-menu);
 height: 40px;
 display: flex;
 justify-content: space-between;

@@ -30,7 +30,11 @@ const About = () => {
   return (
     <div style={{ display: 'flex'}}>
       <div style={{ flex: .8, padding: '5rem' }}>
-	  	<u><h1 style={{ color: 'blue' }}>Sample information about Sam's Pizza:</h1></u>
+        <u>
+          <h1 style={{ color: "var(--clr-txt-highlight)" }}>
+            Sample information about Sam's Pizza:
+          </h1>
+        </u>
         <h2>{sampleText}</h2>
 		<em><h2>{sampleText2}</h2></em>
 		<em><h2>{sampleText2}</h2></em>
