@@ -1,5 +1,6 @@
 import express from 'express'
 import itemController from '../controller/item.controller.js'
+import userController from '../controller/user.controller.js'
 
 const router = express.Router()
 
@@ -16,5 +17,6 @@ router.get("/cheese", (req, res) => {
 */
 router.route("/items").get(itemController.apiGetItem)
 router.route("/cartItems").get(itemController.apiGetCart)
+router.route("/user/login").post(userController.login)
 
 export default router

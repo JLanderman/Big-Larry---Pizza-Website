@@ -1,5 +1,9 @@
-import React from "react";
+import {React, useState} from "react";
+import {useNavigate} from "react-router";
 import styled from "styled-components";
+import UserService from "../services/UserData";
+import {decodeJwt} from 'jose';
+import Cookies from "js-cookie";
 
 const styles = {
   container: {
@@ -41,7 +45,10 @@ const styles = {
     backgroundColor: "var(--clr-menu-dark)",
     border: 'none',
     cursor: 'pointer'
-  }
+  },
+  centerText: {
+    textAlign: 'center',
+  },
 }
 
 const Link = styled.a`
@@ -55,18 +62,69 @@ cursor: pointer;
 `;
 
 const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [badLogin, setBadLogin] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = async event => {
+      event.preventDefault();
+      try{
+        const res = await UserService.login(username, password); // await login result
+        if (res.status == 200) {
+          setBadLogin(false);
+          const token = res.data.token;
+          const claims = decodeJwt(token);
+          const expiration = new Date(claims.exp);
+          
+          Cookies.set('x-auth-token', token, {
+            expires: expiration,
+          });
+
+          if (claims.user.isAdmin) navigate('/admin');
+          else navigate('/');
+        }
+      } catch (e){
+        
+      };
+      setBadLogin(true);
+  };
+
   return (
-    <form style={styles.container}>
+    <form onSubmit={handleSubmit} style={styles.container}>
       <div style={styles.innerContainer}>
-        <label htmlFor="email" style={styles.text}>Email</label><br/>
-        <input type="email" name="email" style={styles.input}></input>
+        <label htmlFor="username" style={styles.text}>Username</label><br/>
+        <input 
+          type="text" 
+          id="username" 
+          autoComplete="off" 
+          onChange={(e) => setUsername(e.target.value)}
+          style={styles.input}>
+        </input>
       </div>
       <div style={styles.innerContainer}>
         <label htmlFor="password">Password</label><br/>
-        <input type="password" name="password" style={styles.input}></input>
+        <input 
+          type="password" 
+          id="password" 
+          autoComplete="off" 
+          onChange={(e) => setPassword(e.target.value)}
+          style={styles.input}>
+          </input>
       </div>
       <div style={styles.innerContainer}>
-        <button name='login' style={styles.button}><text style={{color: "var(--clr-menu-light)" }}>Log in</text></button>
+        <button name='login' 
+          style={styles.button}>
+          <span style={{color: "var(--clr-menu-light)" }}>Log in</span>
+        </button>
+        { badLogin
+          ? <div 
+              class="text-danger" 
+              style={styles.centerText}>
+              That combination of user and password was not found.
+            </div>
+          : null
+        }
       </div>
       <div style={styles.linkContainer}>
         <Link>Forgot Password?</Link>

@@ -8,19 +8,19 @@ const Navbar = () => {
         <Bars />
 
         <NavMenu>
-          <NavLink to="/" activeStyle>
+          <NavLink to="/">
             Sam's Pizza & More
           </NavLink>
-          <NavLink to="/about" activeStyle>
+          <NavLink to="/about">
             About
           </NavLink>
-          <NavLink to="/login" activeStyle>
+          <NavLink to="/login">
             Login
           </NavLink>
-          <NavLink to="/menu" activeStyle>
+          <NavLink to="/menu">
             Menu
           </NavLink>
-          <NavLink to="/cart" activeStyle>
+          <NavLink to="/cart">
             Cart
           </NavLink>
         </NavMenu>

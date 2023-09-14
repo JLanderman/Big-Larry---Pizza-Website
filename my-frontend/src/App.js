@@ -4,12 +4,13 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import About from "./pages/about";
-import { Home} from "./pages";
+import Admin from './pages/admin';
+import { Home } from "./pages";
 import Login from "./pages/login";
 import Menu from "./pages/menu";
 import Details from "./pages/details";
 import Cart from './pages/cart';
-import Payment from './pages/payment'
+import Payment from './pages/payment';
 
 const styles = {
   appContainer: {
@@ -33,11 +34,12 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/admin" element={<Admin />} />
             <Route path="/login" element={<Login />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/details/:id" element={<Details />} />
-            <Route path="/payment" element={<Payment/>}/>
+            <Route path="/payment" element={<Payment />} />
           </Routes>
         </div>
         <Footer />
