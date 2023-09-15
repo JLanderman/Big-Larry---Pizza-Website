@@ -1,0 +1,122 @@
+:root {
+  --Round_Button_Size: 85px;
+}
+
+.myContainerCustom
+{
+  width: auto;
+  height: 80vh;
+  display:flex;
+  margin:2rem;
+
+}
+
+.pictureCustom
+{
+  width: 60%;
+  height: 80%;
+}
+
+.itemPictureCustom
+{
+  width: 100%; 
+  height: 100%;
+  object-fit:cover;
+  border-radius: 20px;
+
+ 
+}
+
+.descriptionCustom
+{
+  width : 80%;
+  height: 80%;
+  margin-right: 20%;
+  margin-top: 8%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+}
+
+.myButtonCustom
+{
+  width :30%;
+  height: 120%;
+  font-size:x-large;
+  border-radius: 20px;
+
+}
+.buttonContainerCustom
+{
+  display: flex;
+}
+
+.sizeButtonsCustom 
+{
+  display: flex;
+  justify-content: flex-start; /* Adjust as needed */
+  align-items: center; /* Adjust as needed */
+}
+
+.pizzaSizeButtonCustom 
+{
+  width: var(--Round_Button_Size); /* Adjust the width as needed */
+  height: var(--Round_Button_Size); /* Adjust the height as needed */
+  border-radius: 50%; /* Makes the button round */
+  margin: 30px; /* Adds some spacing between buttons */
+  font-size: 30px; /* Adjust the font size as needed */
+  position: relative; /* Use relative positioning */
+  left: 260px; /* Adjust this value to control the space to the left */
+  
+}
+
+.pizzaSizeButtonCustom.selected 
+{
+  background-color: var(--clr-menu-dark); /* Change background color when selected */ 
+  color: #fff; /* Change text color when selected */
+  border: 2px solid #000000; /* Add a border to maintain button outline */
+}
+
+.toppingButtonsCustom 
+{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Adjust the gap as needed */
+  max-width: 100%; /* Ensure it doesn't exceed the container width */
+}
+
+.pizzaToppingButtonCustom 
+{
+  width: calc(16.666% - 10px); /* 16.666% represents 1/6 of the container width */
+  height: auto; /* Let the height adjust based on content */
+  border: none; /* Remove border */
+  background-color: transparent; /* Remove background color */
+  flex-grow: 1; /* Allow buttons to grow within the available space */
+  font-size: 20px; /* Adjust the font size as needed */
+  position: relative; /* Use relative positioning */
+}
+.toppingButtonRowCustom 
+{
+  flex-basis: calc(16.666% - 10px); /* 16.666% represents 1/6 of the available width */
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Adjust the gap between buttons in a row as needed */
+}
+.pizzaToppingButtonCustom.selected 
+{
+  background-color: var(--clr-menu-dark); /* Change background color when selected */ 
+  color: #fff; /* Change text color when selected */
+}
+
+.titleCustom
+{
+  width : 80%;
+  height: 80%;
+  margin-left: 15%;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+}

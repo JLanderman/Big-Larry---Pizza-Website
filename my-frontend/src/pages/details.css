@@ -1,3 +1,6 @@
+:root {
+    --Round_Button_Size: 85px;
+}
 
 .myContainer
 {
@@ -5,6 +8,8 @@
     height: 80vh;
     display:flex;
     margin:2rem;
+    align-items: center; /* Vertically center the content */
+
 
 }
 
@@ -19,6 +24,8 @@
     width: 100%; 
     height: 100%;
     object-fit:cover;
+    border-radius: 20px;
+
    
 }
 
@@ -38,4 +45,48 @@
     width :30%;
     height: 120%;
     font-size:x-large;
+    border-radius: 20px;
+
+}
+
+.buttonContainer
+{
+    margin-left: 44%;
+    margin-top: 5%;
+}
+
+.sizeButtons {
+    display: flex;
+    justify-content: flex-start; /* Adjust as needed */
+    align-items: center; /* Adjust as needed */
+    margin-top: -30%;
+    margin-left: 44%;
+  }
+
+.pizzaSizeButton {
+    width: var(--Round_Button_Size); /* Adjust the width as needed */
+    height: var(--Round_Button_Size); /* Adjust the height as needed */
+    border-radius: 50%; /* Makes the button round */
+    margin: 30px; /* Adds some spacing between buttons */
+    font-size: 30px; /* Adjust the font size as needed */
+    
+
+  }
+
+  .pizzaSizeButton.selected {
+    background-color: var(--clr-menu-dark); /* Change background color when selected */ 
+    color: #fff; /* Change text color when selected */
+    border: 2px solid #000000; /* Add a border to maintain button outline */
+  }
+
+  .title
+{
+    width : 80%;
+    height: 80%;
+    margin-left: 15%;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+ 
 }

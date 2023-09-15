@@ -12,6 +12,8 @@ import Menu from "./pages/menu";
 import Details from "./pages/details";
 import Cart from './pages/cart';
 import Payment from './pages/payment';
+import Pizza_customize from './pages/pizza_customize'
+
 
 const styles = {
   appContainer: {
@@ -41,6 +43,7 @@ function App() {
             <Route path="/menu" element={<Menu />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/details/:id" element={<Details />} />
+            <Route path="/pizza_customize" element={<Pizza_customize />} />
             <Route path="/payment" element={<Payment />} />
           </Routes>
         </div>

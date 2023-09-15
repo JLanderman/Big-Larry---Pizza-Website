@@ -9,6 +9,16 @@ const Details = () => {
   let [menuItem, setMenuItem] = useState();
   let params = useParams();
 
+  const sizeList = [
+    "P", "S", "M", "L", "XL"
+  ];
+
+  const [selectedSize, setSelectedSize] = useState(null);
+
+  const handleSizeClick = (index) => {
+    setSelectedSize(index);
+  };
+
   useEffect(() => {
     retrieveMenuItem();
   }, []);
@@ -30,50 +40,54 @@ const Details = () => {
 
   return (
     <div>
-
+      <div className = "title">
+        <div>
+          <div><h1>Choose your size</h1> </div>
+        </div>
+      </div>
 
       <div className = "myContainer">
-      
-        <div className = "picture"
-        >
+        <div className = "picture">
           <div>{menuItem ? 
-
-          <img 
-          className = "itemPicture" src ={menuItem.photo}></img> : 
-        <p>Loading Name</p>}</div>
-
+            <img 
+            className = "itemPicture" src ={menuItem.photo}></img> : 
+            <p>Loading Name</p>}
+          </div>
         </div>
 
         <div className = "description">
-        <div>
+          <div>
+            <div>{menuItem ? <h1>{menuItem.name}</h1> : <p>Loading Name</p>}</div>
+            <div>{menuItem ? <p>{menuItem.info}</p> : <p> Loading information</p>}</div>
+          </div>
+
           
-        <div>{menuItem ? <h1>{menuItem.name}</h1> : <p>Loading Name</p>}</div>
-        <div>{menuItem ? <p>{menuItem.info}</p> : <p> Loading information</p>}</div>
         </div>
-        <div className = "buttonContainer">
-        <select name = "menu" id = "menu-select">
-          <option value= "1">1</option>
-          <option value= "2">2</option>
-          <option value= "3">3</option>
-        </select>
-        < button className="myButton">
-           Add to card
-        </button>
-        </div>
-        </div>
-       
-      
       </div>
+      <div className="sizeButtons">
+            {sizeList.map((size, index) => (
+              <button
+                key={index}
+                className={`pizzaSizeButton ${
+                  selectedSize === index ? "selected" : ""
+                }`}
+                onClick={() => handleSizeClick(index)}
+              >
+                {size}
+              </button>
+            ))}
+          </div>
 
-     
-
-     
-
-
-
-
-
-
+          <div className = "buttonContainer">
+            <select name = "menu" id = "menu-select">
+              <option value= "1">1</option>
+              <option value= "2">2</option>
+              <option value= "3">3</option>
+            </select>
+            < button className="myButton">
+               Add to cart
+            </button>
+          </div>
     </div>
   );
 };
