@@ -7,6 +7,7 @@ import About from "./pages/about";
 import Admin from './pages/admin';
 import { Home } from "./pages";
 import Login from "./pages/login";
+import MainMenu from './pages/mainmenu';
 import Menu from "./pages/menu";
 import Details from "./pages/details";
 import Cart from './pages/cart';
@@ -36,6 +37,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/mainmenu" element={<MainMenu />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/details/:id" element={<Details />} />
