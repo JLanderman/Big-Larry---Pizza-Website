@@ -56,3 +56,51 @@
     transform: rotate(360deg);
   }
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway:100,200,300,400,700&display=swap');
+
+.homeHeader {
+  font-family: 'Raleway', sans-serif;
+  font-size: 72px;
+  font-weight: 700;
+}
+.subHeader {
+  font-family: 'Raleway', sans-serif;
+  font-size: 40px;
+  font-weight: 400;
+}
+
+.addressStyle {
+  font-family: 'Raleway', sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: red;
+  position: absolute;
+  top: 3%;
+  right: 3%;
+  z-index: 2;
+  text-align: center;
+}
+
+.aboutHeader {
+  font-family: 'Raleway', sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  z-index: 2;
+}
+
+.aboutText {
+  font-family: 'Raleway', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  position: absolute;
+  top:75%;
+  left: 40%; 
+  transform: translate(-30%, -60%);
+  z-index: 2;
+  text-align: left;
+}
