@@ -51,8 +51,8 @@ const MainMenu = () => {
       <div style={styles.submenuGrid}>
         <SubmenuLink onClick={() => navigate('/')}>PIZZA SPECIALTIES</SubmenuLink>
         <SubmenuLink onClick={() => navigate('/')}>COMBO SPECIALTIES</SubmenuLink>
-        <SubmenuLink onClick={() => navigate('/')}>LUNCH & DINNER</SubmenuLink>
-        <SubmenuLink onClick={() => navigate('/')}>DRINK SPECIALTIES</SubmenuLink>
+        <SubmenuLink onClick={() => navigate('/lunchMenu')}>LUNCH & DINNER</SubmenuLink>
+        <SubmenuLink onClick={() => navigate('/drink')}>DRINK SPECIALTIES</SubmenuLink>
         <SubmenuLink onClick={() => navigate('/')}>SPECIAL DEALS</SubmenuLink>
       </div>
     </div>

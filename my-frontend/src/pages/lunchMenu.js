@@ -29,7 +29,7 @@ const lunch= (props) => {
                   return (
                    
                         <div >
-                          <h5 className="food-title">{currentItem.name}</h5>
+                          <h3 className="food-title">{currentItem.name}</h3>
                         </div>
                   );
                 })
