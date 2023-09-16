@@ -1,6 +1,6 @@
 import React from "react";
 import { Nav, NavLink, Bars, NavMenu } from "./NavbarElements";
-
+/* currently listOrderManager linked here, will change as is integrated with admin login */
 const Navbar = () => {
   return (
     <>
@@ -22,6 +22,9 @@ const Navbar = () => {
           </NavLink>
           <NavLink to="/cart">
             Cart
+          </NavLink>
+          <NavLink to="/listOrderManager"> 
+            List Order Manager
           </NavLink>
         </NavMenu>
       </Nav>
