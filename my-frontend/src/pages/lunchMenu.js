@@ -4,7 +4,7 @@ import DataService from "../services/itemData";
 import {Link} from "react-router-dom";
 import { useState } from "react";
 
-const lunch= (props) => {
+const Lunch= (props) => {
     const [items, setItems] = useState([]);
   
 
@@ -40,7 +40,7 @@ const lunch= (props) => {
       );
     };
 
-    export default lunch;
+    export default Lunch;
 
 
 
