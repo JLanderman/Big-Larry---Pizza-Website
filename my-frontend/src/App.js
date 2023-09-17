@@ -17,6 +17,7 @@ import Lunch  from './pages/lunchMenu';
 import ComboSp from './pages/comboSpecial';
 import PizzaSp from './pages/pizzaSpecial';
 import SpDeals from './pages/specialDeals';
+import ListOrderManager from './pages/listOrderManager';
 
 const styles = {
   appContainer: {
@@ -52,6 +53,7 @@ function App() {
             <Route path="/pizza_customize" element={<Pizza_customize />} />
             <Route path="/payment" element={<Payment />} />
             <Route path="/lunchMenu" element={<Lunch />} />
+            <Route path="/listOrderManager" element={<ListOrderManager />} />
           </Routes>
         </div>
         <Footer />

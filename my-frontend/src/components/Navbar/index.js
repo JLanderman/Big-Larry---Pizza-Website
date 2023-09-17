@@ -7,7 +7,7 @@ const SearchStyle = {
   height: 'auto', /* Maintain the aspect ratio */
   zIndex: 0,
   }
-
+/* currently listOrderManager linked here, will change as is integrated with admin login */
 const Navbar = () => {
   return (
     <>
@@ -30,10 +30,12 @@ const Navbar = () => {
           <NavLink to="/login">
             SIGN IN
           </NavLink>
-          <NavLink to="/login">
+          <NavLink to="/listOrderManager"> 
+            List Order Manager
+          </NavLink>
+          <NavLink to="/">
             <img src={searchSvg} alt='Search' style={SearchStyle}/>
           </NavLink>
-          
         </NavMenu>
       </Nav>
     </>
