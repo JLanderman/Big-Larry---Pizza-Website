@@ -6,6 +6,7 @@ import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {NavLink,} from '../components/Navbar/NavbarElements';
 import { Button } from "react-bootstrap";
+import trashCan from '../images/Other/trash.jpg'
 
 const styles={
 	button:{
@@ -60,16 +61,20 @@ const Cart = (props) => {
 									<strong style={{paddingTop:'', color: 'var(--clr-menu-dark)'}}>${currentItem.price / 100}</strong>
 								</p>
 
-								<div className="me-auto"></div>
+								<div className="mw-auto" style={{paddingRight: '0%'}}></div>
 
-								<div className="ml-auto" style={{}}>
+								<div className="ms-auto" style={{ maxWidth: '1.6%'}}>
 									{quantity === 1 ? (
-										<Button >Trash Can</Button>
+										<Button style={{padding: '0%', overflow: 'hidden'}}>
+											<img src={trashCan} style={{maxWidth: '100%'}}/>
+										</Button>
 									) : <Button >-</Button>}
 								</div>
+
 								<div className="ml-auto" style={{paddingLeft:'1%',paddingRight:'1%'}}>
 									<div>{quantity}</div>
 								</div>
+
 								<div className="ml-auto" style={{paddingRight:'40%'}}>
 									<Button>+</Button>
 								</div>

@@ -19,8 +19,8 @@ const styles = {
   smallImage: {
     
     resizeMode: 'contain',
-    height: 'auto',
-    width: '110%',
+    height: '100%',
+    width: 'auto',
   },
   wideImage: {
     
@@ -30,8 +30,7 @@ const styles = {
   },
   smallButton: {
     boxSizing: 'border-box',
-    maxWidth: '10%',
-    maxHeight: '10%',
+    padding: '0%',
     backgroundColor: "transparent",
     border: 'none',
     cursor: 'pointer',
@@ -61,6 +60,7 @@ const Payment = () => {
     <Button style={styles.smallButton}>
         <img src={debit} style={styles.smallImage}/>
     </Button>
+
       <div style={{padding: '5%'}}></div>
       <Button style={styles.smallButton}>
       <img src={ceditCard} style={styles.smallImage}/>
