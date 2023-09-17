@@ -1,46 +1,89 @@
 import React from 'react';
+import { Button } from "react-bootstrap";
+import debit from '../images/Other/debit card.jpg';
+import masterCard from '../images/Other/MasterCard_Logo.svg.png';
+import payPal from '../images/Other/paypal.jpg';
+import visa from '../images/Other/VISA-logo.png';
+import ceditCard from '../images/Other/credit-cardlogo.jpg';
 
 const styles = {
   container: {
-    backgroundColor: "var(--clr-menu)",
+    backgroundColor: "transparent",
     margin: '10vh 15vw',
-    padding: '50px',
-    border: '2px solid black',
+    paddingRight: '10%',
+    border: '0px solid black',
     display: 'flex',
-    flexDirection: 'column',
-    minWidth: '250px',
-    textAlign: 'center',
+    flexDirection: 'row',
+    maxHeight:'150px',
   },
-  innerContainer: {
-    paddingTop: '20px',
-    width: '100%',
-    minHeight: '40px',
-    height: '100%'
+  smallImage: {
+    
+    resizeMode: 'contain',
+    height: 'auto',
+    width: '110%',
   },
-  baseText: {
-    fontSize: 30,
-    fontWeight: 'bold',
+  wideImage: {
+    
+    resizeMode: 'contain',
+    height: 'auto',
+    width: '20%',
   },
-  button: {
+  smallButton: {
     boxSizing: 'border-box',
-    width: '100%',
+    maxWidth: '10%',
+    maxHeight: '10%',
+    backgroundColor: "transparent",
+    border: 'none',
+    cursor: 'pointer',
+    overflow: 'hidden'
+  },
+  wideButton: {
+    boxSizing: 'border-box',
+    backgroundColor: "white",
+    padding: '1%',
+    paddingLeft: '2%',
+    paddingRight: '2%',
     minHeight: '40px',
     height: '30%',
-    backgroundColor: "var(--clr-menu-dark)",
+    backgroundColor: "white",
+    color: 'black',
     border: 'none',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    display: 'flex',
+    flexDirection: 'column',
   }
 }
 
 const Payment = () => {
   return (
-    <form style={styles.container}>
-      <div style={styles.innerContainer}>
-        <text style={styles.baseText}> {'Money Processing Details'}<br/><br/><br/><br/></text>
-        
-        <button name='Finish' style={styles.button}><text style={{color: "var(--clr-menu-light)"}}>Finish</text></button>
-      </div>
-    </form>
+    <div>
+    <div style={styles.container}>
+    <Button style={styles.smallButton}>
+        <img src={debit} style={styles.smallImage}/>
+    </Button>
+      <div style={{padding: '5%'}}></div>
+      <Button style={styles.smallButton}>
+      <img src={ceditCard} style={styles.smallImage}/>
+      </Button>
+      <div style={{padding: '5%'}}></div>
+      <Button style={styles.smallButton}>
+      <img src={payPal} style={styles.smallImage}/>
+      </Button>
+    </div>
+    <div style={{paddingLeft: '15%',paddingRight: '65%', display:'flex', flexDirection:'column'}}>
+      <Button style={styles.wideButton}>+Add New Card</Button>
+      <div style={{padding: '5%'}}></div>
+      <Button style={styles.wideButton}>
+        <div>Mastercard</div>
+        <img src={masterCard} style={styles.wideImage}/>
+        </Button>
+      <div style={{padding: '5%'}}></div>
+      <Button style={styles.wideButton}>
+        <div>Visa</div>
+        <img src={visa} style={styles.wideImage}/>
+        </Button>
+    </div>
+    </div>
   );
 };
   
