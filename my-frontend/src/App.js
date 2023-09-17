@@ -13,7 +13,11 @@ import Details from "./pages/details";
 import Cart from './pages/cart';
 import Payment from './pages/payment';
 import Pizza_customize from './pages/pizza_customize'
-
+import Lunch  from './pages/lunchMenu';
+import ComboSp from './pages/comboSpecial';
+import PizzaSp from './pages/pizzaSpecial';
+import SpDeals from './pages/specialDeals';
+import ListOrderManager from './pages/listOrderManager';
 
 const styles = {
   appContainer: {
@@ -24,7 +28,7 @@ const styles = {
     fontWeight: "bold",
   },
   contentWrap: {
-    paddingBottom: "calc(40px + 0.4rem)", // Space for footer
+    paddingBottom: "40px", // Space for footer
   },
 };
 
@@ -42,9 +46,14 @@ function App() {
             <Route path="/mainmenu" element={<MainMenu />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/comboSpecial" element={<ComboSp />}/>
+            <Route path="/pizzaSpecial" element={<PizzaSp />}/>
+            <Route path="/specialDeals" element={<SpDeals />}/>
             <Route path="/details/:id" element={<Details />} />
             <Route path="/pizza_customize" element={<Pizza_customize />} />
             <Route path="/payment" element={<Payment />} />
+            <Route path="/lunchMenu" element={<Lunch />} />
+            <Route path="/listOrderManager" element={<ListOrderManager />} />
           </Routes>
         </div>
         <Footer />

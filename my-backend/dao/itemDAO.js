@@ -1,5 +1,6 @@
 let item;
 let cart;
+let allItems;
 
 export default class ItemDao {
   /*
@@ -15,6 +16,11 @@ export default class ItemDao {
       return;
     }
     cart = await conn.db(process.env.ITEM_NS).collection("cartItems");
+
+    if (allItems) {
+      return;
+    }
+    allItems = await conn.db(process.env.ITEM_NS).collection("allMenuItems");
   }
 
   static async getItem() {
@@ -98,5 +104,68 @@ export default class ItemDao {
     const totalNumItem = await cart.countDocuments(query);
 
     return { cartList, totalNumItem };
+  }
+
+  static async getPizzaSpecial() {
+    let query;
+    query = {itemCategory: {$eq: 'pizzaSpecial'}}
+    let cursor;
+
+    try {
+      cursor = await allItems.find(query);
+    } catch (e) {
+      console.error(
+        `Unable to issue the getItem() find command in itemDAO.js, ${e}`
+      );
+      return { itemList: [], totalNumItem: 0 };
+    }
+
+    const displayCursor = cursor.limit(100).skip(0);
+    const itemList = await displayCursor.toArray();
+    const totalNumItem = await item.countDocuments(query);
+
+    return { itemList, totalNumItem };
+  }
+
+  static async getComboSpecial() {
+    let query;
+    query = {itemCategory: {$eq: 'comboSpecial'}}
+    let cursor;
+
+    try {
+      cursor = await allItems.find(query);
+    } catch (e) {
+      console.error(
+        `Unable to issue the getItem() find command in itemDAO.js, ${e}`
+      );
+      return { itemList: [], totalNumItem: 0 };
+    }
+
+    const displayCursor = cursor.limit(100).skip(0);
+    const itemList = await displayCursor.toArray();
+    const totalNumItem = await item.countDocuments(query);
+
+    return { itemList, totalNumItem };
+  }
+
+  static async getSpecialDeals() {
+    let query;
+    query = {itemCategory: {$eq: 'specialDeal'}}
+    let cursor;
+
+    try {
+      cursor = await allItems.find(query);
+    } catch (e) {
+      console.error(
+        `Unable to issue the getItem() find command in itemDAO.js, ${e}`
+      );
+      return { itemList: [], totalNumItem: 0 };
+    }
+
+    const displayCursor = cursor.limit(100).skip(0);
+    const itemList = await displayCursor.toArray();
+    const totalNumItem = await item.countDocuments(query);
+
+    return { itemList, totalNumItem };
   }
 }
