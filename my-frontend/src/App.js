@@ -27,7 +27,7 @@ const styles = {
     fontWeight: "bold",
   },
   contentWrap: {
-    paddingBottom: "calc(40px + 0.4rem)", // Space for footer
+    paddingBottom: "40px", // Space for footer
   },
 };
 

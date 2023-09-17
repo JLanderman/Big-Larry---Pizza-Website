@@ -1,28 +1,39 @@
 import React from "react";
-import { Nav, NavLink, Bars, NavMenu } from "./NavbarElements";
+import { Nav, NavLink, Bars, NavMenu, SamsAndMore } from "./NavbarElements";
+import searchSvg from '../../images/Other/searchIcon.svg';
+
+const SearchStyle = {
+  width: '2.5rem',
+  height: 'auto', /* Maintain the aspect ratio */
+  zIndex: 0,
+  }
 
 const Navbar = () => {
   return (
     <>
       <Nav>
+        <NavLink to="/">
+          SAM'S PIZZA & MORE
+        </NavLink>
         <Bars />
 
         <NavMenu>
-          <NavLink to="/">
-            Sam's Pizza & More
-          </NavLink>
           <NavLink to="/about">
-            About
-          </NavLink>
-          <NavLink to="/login">
-            Login
+            ABOUT
           </NavLink>
           <NavLink to="/mainmenu">
-            Menu
+            MENU
           </NavLink>
           <NavLink to="/cart">
-            Cart
+            CART
           </NavLink>
+          <NavLink to="/login">
+            SIGN IN
+          </NavLink>
+          <NavLink to="/login">
+            <img src={searchSvg} alt='Search' style={SearchStyle}/>
+          </NavLink>
+          
         </NavMenu>
       </Nav>
     </>
