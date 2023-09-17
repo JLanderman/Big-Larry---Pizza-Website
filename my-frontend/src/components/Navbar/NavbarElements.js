@@ -4,21 +4,22 @@ import styled from 'styled-components';
 
 export const Nav = styled.nav`
 background: var(--clr-menu);
-height: 40px;
+height: 4rem;
 display: flex;
 justify-content: space-between;
-padding: 0.2rem calc((100vw - 1000px) / 2);
+padding: 0.2rem clamp(2rem, 2vw, 5rem);
 z-index: 12;
 /* Third Nav */
 /* justify-content: flex-start; */
 `;
 
 export const NavLink = styled(Link)`
+font-size: 1.25rem;
 color: var(--clr-txt-light);
 display: flex;
 align-items: center;
 text-decoration: none;
-padding: 0 1rem;
+padding: 0 clamp(1rem, 2vw, 2.5rem);
 height: 100%;
 cursor: pointer;
 &.active {
@@ -46,7 +47,7 @@ color: var(--clr-txt-light);
 export const NavMenu = styled.div`
 display: flex;
 align-items: center;
-margin-right: -24px;
+margin-right: clamp(0rem, 1vw, 3rem);
 /* Second Nav */
 /* margin-right: 24px; */
 /* Third Nav */

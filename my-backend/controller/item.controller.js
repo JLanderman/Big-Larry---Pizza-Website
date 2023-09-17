@@ -59,6 +59,7 @@ export default class ItemController {
   }
 
 
+
   static async apiGetLunch(req, res, next)
   {
     if(req.query._id != null)
@@ -81,6 +82,35 @@ export default class ItemController {
     let response= {
       item : lunchList,
       total_results : totalNumItem,
+    };
+    res.json(response);
+  }
+
+
+  static async apiGetPizzaSpecial(req, res, next) {
+    const { itemList, totalNumItem } = await itemDAO.getPizzaSpecial();
+    let response = {
+      item: itemList,
+      total_results: totalNumItem,
+    };
+    res.json(response);
+  }
+
+  static async apiGetComboSpecial(req, res, next) {
+    const { itemList, totalNumItem } = await itemDAO.getComboSpecial();
+    let response = {
+      item: itemList,
+      total_results: totalNumItem,
+    };
+    res.json(response);
+  }
+
+  static async apiGetSpecialDeals(req, res, next) {
+    const { itemList, totalNumItem } = await itemDAO.getSpecialDeals();
+    let response = {
+      item: itemList,
+      total_results: totalNumItem,
+
     };
     res.json(response);
   }

@@ -19,7 +19,9 @@ router.get("/cheese", (req, res) => {
 router.route("/lunchItems").get(itemController.apiGetLunch)
 router.route("/items").get(itemController.apiGetItem)
 router.route("/cartItems").get(itemController.apiGetCart)
-
+router.route("/pizzaSpecial").get(itemController.apiGetPizzaSpecial)
+router.route("/comboSpecial").get(itemController.apiGetComboSpecial)
+router.route("/specialDeals").get(itemController.apiGetSpecialDeals)
 router.route("/user/login").post(userController.login)
 
 export default router
