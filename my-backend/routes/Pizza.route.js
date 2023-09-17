@@ -15,8 +15,11 @@ router.get("/cheese", (req, res) => {
 /*
 *   when route/items is called, items in database will be outputted
 */
+
+router.route("/lunchItems").get(itemController.apiGetLunch)
 router.route("/items").get(itemController.apiGetItem)
 router.route("/cartItems").get(itemController.apiGetCart)
+
 router.route("/user/login").post(userController.login)
 
 export default router

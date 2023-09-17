@@ -1,5 +1,7 @@
 let item;
 let cart;
+let lunch;
+
 
 export default class ItemDao {
   /*
@@ -15,6 +17,14 @@ export default class ItemDao {
       return;
     }
     cart = await conn.db(process.env.ITEM_NS).collection("cartItems");
+
+ 
+    if(lunch)
+    {
+      return;
+    }
+    lunch = await conn.db(process.env.ITEM_NS).collection("lunchItems");
+
   }
 
   static async getItem() {
@@ -59,6 +69,36 @@ export default class ItemDao {
     return { cartList, totalNumItem };
   }
 
+
+  static async getLunch()
+  {
+    let query;
+    
+    let cursor;
+
+    try
+    {
+      cursor = await lunch.find(query);
+    }catch (e)
+    {
+      console.error(
+        `Unable to issue the getLunchItem find command in lunchDAO.js, ${e}`
+      );
+      return {lunchList: [], totalNumItem: 0 }; 
+    }
+
+    const displayCursor = cursor.limit(100).skip(0);
+    const luchList = await displayCursor.toArray();
+    const totalNumItem = await lunch.countDocuments(query);
+
+    return {luchList, totalNumItem};
+
+  }
+
+
+
+
+
   //overloading this function with a variation for getting specific MongoDB "_id"s
   static async getItem(DesiredObjectId) {
     let query;
@@ -99,4 +139,31 @@ export default class ItemDao {
 
     return { cartList, totalNumItem };
   }
+
+
+  static async getLunch(DesiredObjectId)
+  {
+    let query;
+    let cursor;
+
+    try{
+      cursor = await lunch.find(DesiredObjectId);
+      console.log('check2',lunch)
+    }catch(e)
+    {
+      console.error(
+        `Unable to issue the getLunchItem find command in lunchDAO.js, ${e}`
+      );
+      return {lunchList: [] , totalNumItem: 0}
+    }
+    console.log('check1',lunch)
+    const displayCursor = cursor.limit(100).skip(0);
+    const lunchList = await displayCursor.toArray();
+    const totalNumItem = await lunch.countDocuments(query);
+    console.log('check3',lunchList)
+    console.log('check4',totalNumItem)
+    return { lunchList, totalNumItem};
+  }
+
+  
 }

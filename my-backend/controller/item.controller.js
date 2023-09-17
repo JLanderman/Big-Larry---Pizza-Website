@@ -57,4 +57,31 @@ export default class ItemController {
     };
     res.json(response);
   }
+
+
+  static async apiGetLunch(req, res, next)
+  {
+    if(req.query._id != null)
+    {
+      if(!req.query._id.match(/^[0-9a-fA-F]{24}$/))
+      {
+        console.error(
+          " 'GET by objectID' request does not contain valid ObjectID"
+        );
+        return;
+      }
+      let objectID = new ObjectId(req.query._id);
+
+      const { lunchList } = await itemDAO.getLunch(objectID);
+      let response = lunchList;
+      res.json(response);
+      return;
+    }
+    const { lunchList, totalNumItem} = await itemDAO.getLunch();
+    let response= {
+      item : lunchList,
+      total_results : totalNumItem,
+    };
+    res.json(response);
+  }
 }

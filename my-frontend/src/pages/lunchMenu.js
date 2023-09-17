@@ -1,10 +1,10 @@
-
 import React, { useEffect } from "react";
 import DataService from "../services/itemData";
-import {Link} from "react-router-dom";
 import { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const lunch= (props) => {
+
+const Lunch= (props) => {
     const [items, setItems] = useState([]);
   
 
@@ -13,7 +13,7 @@ const lunch= (props) => {
     }, []);
   
     const retrieveItems = () => {
-      DataService.getAll()
+      DataService.getAllLunch()
         .then((response) => {
           setItems(response.data); 
         })
@@ -23,24 +23,29 @@ const lunch= (props) => {
     };
     return (
         <div>
-          <div className="row">
+          <div className="d-flex justify-content-center">
+            <h1 className="pb-5 pt-5">SAM'S LUNCH && DINNER </h1>
+          </div>
+        
+          <div className="row pt-5">
             {!Array.isArray(items)
               ? items.item.map((currentItem) => {
-                  return (
-                   
-                        <div >
-                          <h3 className="food-title">{currentItem.name}</h3>
+                  return (                  
+                        <div className="col-lg-4 pb-3 px-5">
+                           <h3 className="food-title">{currentItem.name}</h3>
                         </div>
                   );
                 })
               : retrieveItems}
           </div>
-        </div>
-       
+          <div className="d-flex justify-content-end pe-5 pt-5">
+            <button className="border px-5 py-3 fs-2 rounded-4">Add To Cart</button>
+          </div>
+        </div>     
       );
     };
 
-    export default lunch;
+    export default Lunch;
 
 
 
