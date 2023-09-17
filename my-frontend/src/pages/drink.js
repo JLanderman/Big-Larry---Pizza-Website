@@ -1,7 +1,6 @@
 
 import React from "react";
 import { useState, useEffect } from "react";
-import styles from "./drink.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 
