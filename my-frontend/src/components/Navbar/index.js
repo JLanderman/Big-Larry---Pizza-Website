@@ -28,6 +28,10 @@ const Navbar = () => {
         <Bars />
 
         <NavMenu>
+          {auth
+            ? <NavLink to="/admin">ADMIN</NavLink>
+            : null
+          }
           <NavLink to="/about">
             ABOUT
           </NavLink>
