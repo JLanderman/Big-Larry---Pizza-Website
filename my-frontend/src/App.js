@@ -7,7 +7,7 @@ import About from "./pages/about";
 import Admin from './pages/admin';
 import { Home } from "./pages";
 import Login from "./pages/login";
-import MainMenu from './pages/mainMenu';
+import MainMenu from './pages/mainmenu';
 import Menu from "./pages/menu";
 import Details from "./pages/details";
 import Cart from './pages/cart';
