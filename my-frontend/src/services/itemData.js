@@ -15,7 +15,6 @@ class DataService {
     {
         return http.get(`/lunchItems`);
     }
-    
 
     getPizzaSpecial(){
         return http.get('/pizzaSpecial');
