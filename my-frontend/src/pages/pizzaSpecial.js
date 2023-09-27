@@ -17,7 +17,7 @@ const styles={
 	}
 }
 
-const Cart = (props) => {
+const PizzaSp = (props) => {
 	// react hook, keeps track of items
 	const [items, setItems] = useState([]);
   
@@ -72,4 +72,4 @@ const Cart = (props) => {
 	);
   };
   
-  export default Cart;
+  export default PizzaSp;

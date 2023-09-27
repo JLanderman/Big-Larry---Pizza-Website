@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const Cart = (props) => {
+const SpDeals = (props) => {
 	// react hook, keeps track of items
 	const [items, setItems] = useState([]);
   
@@ -56,4 +56,4 @@ const Cart = (props) => {
 	);
   };
   
-  export default Cart;
+  export default SpDeals;
