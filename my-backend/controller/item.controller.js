@@ -1,5 +1,10 @@
 import { ObjectId } from "mongodb";
 import itemDAO from "../dao/itemDAO.js";
+import AWS from "aws-sdk";
+import fs from "fs";
+AWS.config.update({region: 'us-west-1'})
+
+const s3 = new AWS.S3();
 
 export default class ItemController {
   /*
@@ -113,5 +118,25 @@ export default class ItemController {
 
     };
     res.json(response);
+  }
+
+  static async apiPutItem(req, res, next){
+    const name = req.body.name;
+    const itemCategory = req.body.itemCategory;
+    const photo = req.body.photo;
+
+    if (!name) return res.status(400);
+    if (!itemCategory) return res.status(400);
+    if (!photo) return res.status(400);
+
+    //const fileData = fs.readFileSync(photo);
+
+    const params = {
+      Bucket: 'testingschoolproject',
+      //Key: photo,
+      //Body: fileData
+    };
+    //await s3.putObject(params).promise();
+      await itemDAO.putItem(name, itemCategory, photo);
   }
 }

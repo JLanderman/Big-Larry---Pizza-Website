@@ -38,7 +38,7 @@ export default class ItemDao {
     let cursor;
 
     try {
-      cursor = await item.find(query);
+      cursor = await allItems.find(query);
     } catch (e) {
       console.error(
         `Unable to issue the getItem() find command in itemDAO.js, ${e}`
@@ -110,7 +110,7 @@ export default class ItemDao {
     let cursor;
 
     try {
-      cursor = await item.find(DesiredObjectId);
+      cursor = await allItems.find(DesiredObjectId);
     } catch (e) {
       console.error(
         `Unable to issue the getItem(id) find command in itemDAO.js, ${e}`
@@ -185,7 +185,7 @@ export default class ItemDao {
 
     const displayCursor = cursor.limit(100).skip(0);
     const itemList = await displayCursor.toArray();
-    const totalNumItem = await item.countDocuments(query);
+    const totalNumItem = await allItems.countDocuments(query);
 
     return { itemList, totalNumItem };
   }
@@ -206,7 +206,7 @@ export default class ItemDao {
 
     const displayCursor = cursor.limit(100).skip(0);
     const itemList = await displayCursor.toArray();
-    const totalNumItem = await item.countDocuments(query);
+    const totalNumItem = await allItems.countDocuments(query);
 
     return { itemList, totalNumItem };
   }
@@ -227,8 +227,19 @@ export default class ItemDao {
 
     const displayCursor = cursor.limit(100).skip(0);
     const itemList = await displayCursor.toArray();
-    const totalNumItem = await item.countDocuments(query);
+    const totalNumItem = await allItems.countDocuments(query);
 
     return { itemList, totalNumItem };
+  }
+
+  static async putItem(name, itemCategory, photo){
+    let query;
+    query = {name: name, itemCategory: itemCategory, photo: photo};
+    let cursor;
+    try{
+      cursor = await allItems.insertOne(query);
+    } catch(e){
+      console.error('Unable to put item');
+    }
   }
 }
