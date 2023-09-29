@@ -37,11 +37,11 @@ const styles = {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <div id="app-container" style={styles.appContainer}>
-          <Navbar />
-          <div id="content-wrap" style={styles.contentWrap}>
+    <div id="app-container" data-testid="app" style={styles.appContainer}>
+      <div id="content-wrap" data-testid="content-wrap" style={styles.contentWrap}>
+        <AuthProvider>
+          <Router>
+            <Navbar />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
@@ -60,11 +60,11 @@ function App() {
               <Route path="/drink" element={<Drink_specialties />} />
               <Route path="/listOrderManager" element={<ListOrderManager />} />
             </Routes>
-          </div>
-          <Footer />
-        </div>
-      </Router>
-    </AuthProvider>
+            <Footer />
+          </Router>
+        </AuthProvider>
+      </div>
+    </div>
   );
 }
 

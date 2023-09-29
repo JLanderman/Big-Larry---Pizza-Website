@@ -3,7 +3,7 @@ import { Container, Div } from "./FooterElements";
 import { NavLink } from "../Navbar/NavbarElements";
 const Footer = () => {
   return (
-    <Container>
+    <Container data-testid="footer">
       <Div>
         <span>(209) 463-0210</span>
         <br />
