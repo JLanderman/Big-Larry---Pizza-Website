@@ -23,5 +23,6 @@ router.route("/pizzaSpecial").get(itemController.apiGetPizzaSpecial)
 router.route("/comboSpecial").get(itemController.apiGetComboSpecial)
 router.route("/specialDeals").get(itemController.apiGetSpecialDeals)
 router.route("/user/login").post(userController.login)
+router.route("/allItems").post(itemController.apiPutItem)
 
 export default router

@@ -31,7 +31,7 @@ const styles = {
     fontWeight: "bold",
   },
   contentWrap: {
-    paddingBottom: "40px", // Space for footer
+    paddingBottom: "4rem", // Space for footer
   },
 };
 

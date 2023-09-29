@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const Cart = (props) => {
+const url = 'https://testingschoolproject.s3.us-west-1.amazonaws.com/'
+
+const SpDeals = (props) => {
 	// react hook, keeps track of items
 	const [items, setItems] = useState([]);
   
@@ -25,28 +27,22 @@ const Cart = (props) => {
   
 	  return (
 		  <div>
-			<h1 className="card" style={{paddingLeft:'40%', paddingTop:'1%', paddingBottom:'1%', borderBottom:'1px solid black', background: 'transparent', borderColor: 'transparent'}}>Sam's Special Deals</h1>
+			<h1 className="card" style={{paddingLeft:'40%', paddingTop:'1%', paddingBottom:'1%', borderBottom:'1px solid black', background: 'transparent', borderColor: 'transparent'}}>Special Deals</h1>
 			<div className="row">
 			  {!Array.isArray(items)
 				? items.item.map((currentItem) => {
 					return (
-						<div className="col-lg-2 pb-1" style={{paddingTop:'10px'}}>
-								<div className ="card" style={{ maxWidth: 300, maxHeight: 225,  background: 'transparent', borderColor: 'transparent'}}>
-									<div className = "card-body" style={{maxWidth:500, maxHeight:500}}>
-										<div style={{display:'flex', flexDirection:'column', textAlign: 'center', paddingTop:'1%', paddingBottom:'2%'}}>
-											<Link to={`/details/${currentItem._id}`}>
-											<img
-												style={{width: 150, height: 150, border:'1px solid gray', borderRadius: '20%', background: 'white', objectfit: 'contain', textAlign: 'center'}}
-												src={currentItem.photo}
-												alt={"Photo of " + currentItem.name}
-											/>
-											</Link>
-											<p style = {{paddingTop: '5%', textAlign: 'center'}}>
-												{currentItem.name}
-											</p>
-										</div>
-									</div>
-								</div>
+						<div className="col-lg-3 pb-5" style={{display:'flex', flexDirection:'column', textAlign: 'center', paddingTop:'10px', paddingBottom:'2%'}}>
+							<Link to={`/details/${currentItem._id}`} style={{color: 'black', textDecoration: 'none'}}>
+								<img
+									style={{width: 'auto', height: 225, borderRadius: '5%', objectfit: 'cover'}}
+									src={url + currentItem.photo}
+									alt={"Photo of " + currentItem.name}
+								/>
+								<p style = {{paddingTop: '5%', textAlign: 'center', fontSize: 25}}>
+									{currentItem.name}
+								</p>
+							</Link>
 						</div>
 				);
 			  })
@@ -56,4 +52,4 @@ const Cart = (props) => {
 	);
   };
   
-  export default Cart;
+  export default SpDeals;
