@@ -5,50 +5,75 @@ import UserService from "../services/UserData";
 import { decodeJwt } from 'jose';
 import Cookies from "js-cookie";
 import { useAuth } from "../contexts/authContext";
+import pizzaSlicePNG from "../images/Other/PizzaSliceClipArt.png";
+import pizzaSlice from "../images/Other/PizzaSliceClipArt.webp"
 
 const styles = {
   container: {
-    backgroundColor: "var(--clr-menu)",
-    margin: '10vh 15vw',
-    padding: '50px',
-    height: '60vh',
-    border: '2px solid black',
+    backgroundColor: "transparent",
+    margin: '',
+    padding: '3%',
+    height: '',
+    border: '0px solid black',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     minWidth: '250px'
   },
   innerContainer: {
-    paddingTop: '20px',
-    width: '100%',
-    minHeight: '40px',
-    height: '100%'
-  },
-  linkContainer: {
-    width: '100%',
-    height: '40%',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    paddingTop: '1%',
+    paddingBottom: '1%',
+    width: '80%',
+    minHeight: '',
+    height: '25%',
+    paddingLeft:'40%',
+    paddingRight:'',
+    justifyContent: 'center',
+    fontSize:'120%'
   },
   input: {
     boxSizing: 'border-box',
-    width: '100%',
-    minHeight: '40px',
-    height: '40%'
-  },
-  button: {
-    boxSizing: 'border-box',
-    width: '100%',
+    width: '50%',
+    minWidth: '200px',
+    maxWidth: '350px',
     minHeight: '40px',
     height: '40%',
-    backgroundColor: "var(--clr-menu-dark)",
-    border: 'none',
-    cursor: 'pointer'
+    border: '0px solid black',    
+    backgroundColor: 'rgb(210, 210, 210)',
+    paddingLeft:'5%',
+    paddingRight: '4%'
   },
+  button:{
+		boxSizing:'border-box', 
+		backgroundColor: "rgba(52, 52, 52, 0.16)",
+		paddingTop:'10px', 
+		paddingBottom:'10px',
+    paddingRight:'10%',
+    paddingLeft:'10%',
+		color: "black",
+		justifyContent:'center',
+		border:'0px solid black'
+	},
   centerText: {
-    textAlign: 'center',
+    paddingLeft:'0%',
+    textAlign: 'left',
+  },
+  pictureGrid: {
+    display: 'grid',
+    width: '100%',
+    gridTemplateColumns: '1fr 1fr 1fr',
+    gap: '10%',
+    alignItems: 'left',
+    alignText: 'left',
+    marginTop: '-10%',
+		border:'0px solid black'
+  }, 
+  picture: {
+    display: 'flex',
+    justifyContent: 'left',
+    alignItems: 'left',
+    height: '100%',
+    width: '100%',
   },
 }
 
@@ -105,46 +130,60 @@ const Login = () => {
   };
 
   return (
+    <div>
     <form onSubmit={(e) => handleSubmit(e)} style={styles.container}>
+      <div style={{justifyContent: 'center', paddingLeft:'40%', paddingTop:'2%', paddingBottom:'3%'}}>
+        <strong style={{fontSize:'150%'}}>Welcome to Sam's Side</strong> 
+        <br></br>
+        <span style={{paddingLeft:'5%', fontSize:'120%'}}> This page is for managers only.</span>
+      </div>
       <div style={styles.innerContainer}>
         <label htmlFor="username" style={styles.text}>Username</label><br />
         <input
           type="text"
+          className="square rounded-pill"
           id="username"
           autoComplete="off"
           onChange={(e) => setUsername(e.target.value)}
           style={styles.input}>
         </input>
       </div>
+
       <div style={styles.innerContainer}>
         <label htmlFor="password">Password</label><br />
         <input
           type="password"
+          className="square rounded-pill"
           id="password"
           autoComplete="off"
           onChange={(e) => setPassword(e.target.value)}
           style={styles.input}>
         </input>
       </div>
+
       <div style={styles.innerContainer}>
-        <button name='login'
+        <button name='login' className="square rounded-pill"
           style={styles.button}>
-          <span style={{ color: "var(--clr-menu-light)" }}>Log in</span>
+          <b>Sign-In</b>
         </button>
         {badLogin
           ? <div
             className="text-danger"
             style={styles.centerText}>
-            That combination of user and password was not found.
+            The user name or password are incorrect.
           </div>
           : null
         }
       </div>
-      <div style={styles.linkContainer}>
-        <Link>Forgot Password?</Link>
-        <Link>Sign up</Link>
-      </div>
     </form>
+    <div style={styles.pictureGrid}>
+        <picture>
+          <source type="image/webp" srcSet={pizzaSlice} /*pictures are chosen in order*/ />
+          <source type="image/png" srcSet={pizzaSlicePNG} />
+          <img src={pizzaSlice} style={styles.picture} alt='pizzaSlice-image' />
+        </picture>
+      </div>
+    </div>
   );
 };
 
