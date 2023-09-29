@@ -47,7 +47,7 @@ const Lunch= (props) => {
                               ?                              
                               <div >
                                 <div>   
-                                  <button>Remove</button> 
+                                  <button>Removes</button> 
                                   <h>  </h>
                                   <button>Edit button</button> 
                                 </div>
