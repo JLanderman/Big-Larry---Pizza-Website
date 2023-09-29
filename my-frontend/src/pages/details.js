@@ -5,6 +5,8 @@ import styles from "./details.css";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
+const picUrl = 'https://testingschoolproject.s3.us-west-1.amazonaws.com/'
+
 const Details = () => {
   let [menuItem, setMenuItem] = useState();
   let params = useParams();
@@ -50,7 +52,7 @@ const Details = () => {
         <div className = "picture">
           <div>{menuItem ? 
             <img 
-            className = "itemPicture" src ={menuItem.photo}></img> : 
+            className = "itemPicture" src ={picUrl + menuItem.photo}></img> : 
             <p>Loading Name</p>}
           </div>
         </div>

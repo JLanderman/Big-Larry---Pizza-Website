@@ -5,8 +5,8 @@ import '../App.css';
 
 const Home = () => {
   const containerStyle = {
-  position: 'relative',
-  minHeight: '100vh',
+    position: 'relative',
+    minHeight: '100vh',
   }
 
   const textContainer = {
@@ -32,22 +32,22 @@ const Home = () => {
         <img src={homePizza} alt='pizza' style={homePizzaStyle} />
       </div>
       <div style={textContainer}>
-        <h1  className="homeHeader">
+        <h1 className="homeHeader">
           Sam's Pizza && More
         </h1>
-        <p className='subHeader'>
-        <div style={{ paddingLeft: '50px' }}>BEST PRICE ! REAL TASTE !</div>
-        <div style={{ paddingLeft: '100px'}}>
-          <img src={contactSign} alt='telephone:' style={{ width: '80px', height: '60px', paddingRight: '20px'  }} />
-          (209) 460-0210
+        <div className='subHeader'>
+          <div style={{ paddingLeft: '50px' }}>BEST PRICE ! REAL TASTE !</div>
+          <div style={{ paddingLeft: '100px' }}>
+            <img src={contactSign} alt='telephone:' style={{ width: '80px', height: '60px', paddingRight: '20px' }} />
+            (209) 460-0210
           </div>
-        <div style={{ paddingLeft: '250px' }}>OPEN MON TO SUN</div>
-        <div style={{ paddingLeft: '250px' }}>(11:00 AM - 9:00 PM)</div>
-        </p>
+          <div style={{ paddingLeft: '250px' }}>OPEN MON TO SUN</div>
+          <div style={{ paddingLeft: '250px' }}>(11:00 AM - 9:00 PM)</div>
+        </div>
       </div>
     </div>
   );
 };
 
-export { Home};
+export { Home };
 

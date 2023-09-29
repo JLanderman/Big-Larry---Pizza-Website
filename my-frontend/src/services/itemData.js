@@ -11,6 +11,10 @@ class DataService {
         return http.get(`/cartItems`);
     }
 
+    getAllLunch()
+    {
+        return http.get(`/lunchItems`);
+    }
     getPizzaSpecial(){
         return http.get('/pizzaSpecial');
     }
@@ -21,7 +25,8 @@ class DataService {
 
     getSpecialDeals(){
         return http.get('/specialDeals');
+
     }
-}
+};
 
 export default new DataService();

@@ -1,14 +1,24 @@
 import React from "react";
 import { Nav, NavLink, Bars, NavMenu, SamsAndMore } from "./NavbarElements";
 import searchSvg from '../../images/Other/searchIcon.svg';
+import { useAuth } from '../../contexts/authContext';
+import Cookies from 'js-cookie';
 
 const SearchStyle = {
   width: '2.5rem',
   height: 'auto', /* Maintain the aspect ratio */
   zIndex: 0,
-  }
+}
 /* currently listOrderManager linked here, will change as is integrated with admin login */
 const Navbar = () => {
+  const { auth, setAuth, loggedIn, setLoggedIn } = useAuth();
+
+  const logout = () => {
+    Cookies.remove('x-auth-token');
+    setAuth(false);
+    setLoggedIn(false);
+  };
+
   return (
     <>
       <Nav>
@@ -18,6 +28,10 @@ const Navbar = () => {
         <Bars />
 
         <NavMenu>
+          {auth
+            ? <NavLink to="/admin">ADMIN</NavLink>
+            : null
+          }
           <NavLink to="/about">
             ABOUT
           </NavLink>
@@ -27,14 +41,15 @@ const Navbar = () => {
           <NavLink to="/cart">
             CART
           </NavLink>
-          <NavLink to="/login">
-            SIGN IN
-          </NavLink>
-          <NavLink to="/listOrderManager"> 
+          {loggedIn
+            ? <NavLink to="/" onClick={() => { logout() }}>LOG OUT</NavLink>
+            : <NavLink to="/login">SIGN IN</NavLink>
+          }
+          <NavLink to="/listOrderManager">
             List Order Manager
           </NavLink>
           <NavLink to="/">
-            <img src={searchSvg} alt='Search' style={SearchStyle}/>
+            <img src={searchSvg} alt='Search' style={SearchStyle} />
           </NavLink>
         </NavMenu>
       </Nav>

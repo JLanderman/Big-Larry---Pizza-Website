@@ -1,31 +1,21 @@
 import React from "react";
-import styled from "styled-components";
-import styles from "./details.css";
-import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
-import { decodeJwt } from "jose";
+import { useNavigate } from "react-router";
+import { useAuth } from '../contexts/authContext';
 
 import { HexColorPicker, HexColorInput } from "react-colorful";
 import { useState } from "react";
 import "./admin.css"
 
 const Admin = () => {
-    const token = Cookies.get('x-auth-token');
+    const { auth } = useAuth();
     const navigate = useNavigate();
 
-    React.useEffect(() => { // check user authorization before rendering page
-        async function checkAuthorization() {
-            try{ 
-                const claims = decodeJwt(token);
-                // if (!claims.user.isAdmin) navigate('/'); // user not authorized
-            } catch (e){
-                console.error(`Failed to check user authorization in admin.js, ${e}`);
-            };
-        };
+    React.useEffect(() => {
+      if (!auth) navigate('/');
+  });
 
-        // if (!token) navigate('/'); // invalid token
-        checkAuthorization();
-    })
+  const token = Cookies.get('x-auth-token');
     
     const PalettePreviewer = () => {
       return (
