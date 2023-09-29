@@ -3,12 +3,17 @@ import DataService from "../services/itemData";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useAuth } from "../contexts/authContext";
+import Cookies from 'js-cookie';
+
 
 const url = 'https://testingschoolproject.s3.us-west-1.amazonaws.com/'
 
 const PizzaSp = (props) => {
 	// react hook, keeps track of items
 	const [items, setItems] = useState([]);
+
+	const {auth} = useAuth();
   
 	// tells react hooks that it needs to do something after render.
 	useEffect(() => {
@@ -51,13 +56,26 @@ const PizzaSp = (props) => {
 									{currentItem.name}
 								</p>
 							</Link>
+							{
+								auth ?
+								<div>
+									<button>Remove</button>
+									<h> </h>
+									<button>Edit</button>
+								</div> : null
+							}
 						</div>
 					);
 				  })
 				: retrieveItems}
+
+			
 		</div>
 	  </div>
+
 	);
+
+	
   };
   
   export default PizzaSp;
