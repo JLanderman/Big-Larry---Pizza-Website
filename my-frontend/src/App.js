@@ -20,6 +20,10 @@ import PizzaSp from './pages/pizzaSpecial';
 import SpDeals from './pages/specialDeals';
 import ListOrderManager from './pages/listOrderManager';
 import AuthProvider from './contexts/authContext';
+import UploadTemplate from './pages/uploadTemplate';
+import UploadTextTemplate from './pages/uploadTextTemplate';
+
+
 
 
 const styles = {
@@ -31,7 +35,7 @@ const styles = {
     fontWeight: "bold",
   },
   contentWrap: {
-    paddingBottom: "40px", // Space for footer
+    paddingBottom: "4rem", // Space for footer
   },
 };
 
@@ -59,6 +63,9 @@ function App() {
               <Route path="/lunchMenu" element={<Lunch />} />
               <Route path="/drink" element={<Drink_specialties />} />
               <Route path="/listOrderManager" element={<ListOrderManager />} />
+              <Route path="/ItemFormLarge" element={<UploadTemplate />} />
+              <Route path="/TextForm" element={<UploadTextTemplate />} />
+
             </Routes>
             <Footer />
           </Router>
