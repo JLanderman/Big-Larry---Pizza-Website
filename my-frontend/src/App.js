@@ -10,8 +10,6 @@ import Login from "./pages/login";
 import MainMenu from './pages/mainmenu';
 import Menu from "./pages/menu";
 import Details from "./pages/details";
-import Cart from './pages/cart';
-import Payment from './pages/payment';
 import Pizza_customize from './pages/pizza_customize'
 import Lunch from './pages/lunchMenu';
 import Drink_specialties from "./pages/drink";
@@ -53,13 +51,11 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/mainmenu" element={<MainMenu />} />
               <Route path="/menu" element={<Menu />} />
-              <Route path="/cart" element={<Cart />} />
               <Route path="/comboSpecial" element={<ComboSp />} />
               <Route path="/pizzaSpecial" element={<PizzaSp />} />
               <Route path="/specialDeals" element={<SpDeals />} />
               <Route path="/details/:id" element={<Details />} />
               <Route path="/pizza_customize" element={<Pizza_customize />} />
-              <Route path="/payment" element={<Payment />} />
               <Route path="/lunchMenu" element={<Lunch />} />
               <Route path="/drink" element={<Drink_specialties />} />
               <Route path="/listOrderManager" element={<ListOrderManager />} />
