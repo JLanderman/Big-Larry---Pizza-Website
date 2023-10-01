@@ -28,7 +28,6 @@ const Admin = () => {
             <div className="preview-header-navbar">
               <div className="navlink">ABOUT</div>
               <div className="navlink">MENU</div>
-              <div className="navlink">CART</div>
               <div className="navlink">SIGN IN</div>
             </div>
           </div>
