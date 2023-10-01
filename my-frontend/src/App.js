@@ -20,6 +20,10 @@ import PizzaSp from './pages/pizzaSpecial';
 import SpDeals from './pages/specialDeals';
 import ListOrderManager from './pages/listOrderManager';
 import AuthProvider from './contexts/authContext';
+import UploadTemplate from './pages/uploadTemplate';
+import UploadTextTemplate from './pages/uploadTextTemplate';
+
+
 
 
 const styles = {
@@ -31,17 +35,17 @@ const styles = {
     fontWeight: "bold",
   },
   contentWrap: {
-    paddingBottom: "40px", // Space for footer
+    paddingBottom: "4rem", // Space for footer
   },
 };
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <div id="app-container" style={styles.appContainer}>
-          <Navbar />
-          <div id="content-wrap" style={styles.contentWrap}>
+    <div id="app-container" data-testid="app" style={styles.appContainer}>
+      <div id="content-wrap" data-testid="content-wrap" style={styles.contentWrap}>
+        <AuthProvider>
+          <Router>
+            <Navbar />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
@@ -59,12 +63,15 @@ function App() {
               <Route path="/lunchMenu" element={<Lunch />} />
               <Route path="/drink" element={<Drink_specialties />} />
               <Route path="/listOrderManager" element={<ListOrderManager />} />
+              <Route path="/ItemFormLarge" element={<UploadTemplate />} />
+              <Route path="/TextForm" element={<UploadTextTemplate />} />
+
             </Routes>
-          </div>
-          <Footer />
-        </div>
-      </Router>
-    </AuthProvider>
+            <Footer />
+          </Router>
+        </AuthProvider>
+      </div>
+    </div>
   );
 }
 
