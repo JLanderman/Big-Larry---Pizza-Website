@@ -1,13 +1,15 @@
 import React from "react";
 import { Container, Div } from "./FooterElements";
 import { NavLink } from "../Navbar/NavbarElements";
+import { phoneNum, address } from "../../data/global";
+
 const Footer = () => {
   return (
     <Container data-testid="footer">
       <Div>
-        <span>(209) 463-0210</span>
+        <span>{phoneNum}</span>
         <br />
-        <span>1852 Country Club Blvd, Stockton, CA</span>
+        <span>{address}</span>
       </Div>
       <Div>
         <NavLink to="https://www.facebook.com/bestfoodcountryclub/">

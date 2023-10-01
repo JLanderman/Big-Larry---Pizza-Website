@@ -3,6 +3,7 @@ import delivery from '../images/Other/delivery.png';
 import pickUp from '../images/Other/pickUp.png';
 import grayElipse from '../images/Other/grayElipseAbout.svg';
 import '../App.css';
+import { addressNoComma, zipCode } from '../data/global';
 
 
 					
@@ -27,7 +28,7 @@ const About = () => {
 				</p>
 			</div>
 			<div className='aboutColumnAddress'>
-				<p className="addressStyle">1852 Country Club Blvd<br />Stockton CA 95212</p>
+				<p className="addressStyle">{addressNoComma} {zipCode}</p>
 			</div>
 		</div>
 		<div className='grayElipseContainer'>
