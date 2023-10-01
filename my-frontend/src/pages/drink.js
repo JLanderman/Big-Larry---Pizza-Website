@@ -2,6 +2,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useAuth } from "../contexts/authContext";
+import Cookies from 'js-cookie';
 
 
 
@@ -72,6 +74,8 @@ const Drink_specialties = () =>{
     const [smoothie_drink, set_smoothies] = useState([null]);
     const [other_drink, set_other] = useState([null]); 
 
+    const {auth} = useAuth();
+
 
     const selectedButton1 = (clicked) =>{set_coldDrink(clicked)};
     const selectedButton2 = (clicked) =>{set_litterDrink(clicked)};
@@ -90,6 +94,17 @@ const Drink_specialties = () =>{
             {coldDrink.map((item, index) => (
                 <div className="col" >
                   <h3 key={index}>{item}</h3>
+
+                  {
+                    auth ?
+                    <div> 
+                      <button>Remove</button>
+                      <h> </h>
+                      <button>Edit</button>
+                    </div>
+
+                    : null
+                  }
                 </div>
               ))}
               <div className="col"></div>
@@ -104,6 +119,15 @@ const Drink_specialties = () =>{
             {litterDrink.map((item, index) => (
                 <div className="col" >
                   <h3 key={index}>{item}</h3>
+                  {
+                    auth ?
+                    <div>
+                       <button>Remove</button>
+                       <h> </h>
+                       <button>Edit</button>
+                    </div>
+                    : null
+                  }
                 </div>
               ))}
               <div className="col"></div>
@@ -118,6 +142,15 @@ const Drink_specialties = () =>{
             {shavedIce.map((item, index) => (
                 <div className="col" >
                   <h3 key={index}>{item}</h3>
+                  {
+                    auth?
+                    <div>
+                      <button>Remove</button>
+                      <h> </h>
+                      <button>Edit</button>
+                    </div>:
+                    null
+                  }
                 </div>
               ))}
               <div className="col"></div>
@@ -130,6 +163,16 @@ const Drink_specialties = () =>{
             {milkShakes.map((item, index) => (
                 <div className="col" >
                   <h3 key={index}>{item}</h3>
+
+                  {
+                    auth ?
+                    <div>
+                      <button>Remove</button>
+                      <h> </h>
+                      <button>Edit</button>
+                    </div>:
+                    null
+                  }
                 </div>
               ))}
             
@@ -140,6 +183,14 @@ const Drink_specialties = () =>{
             {smoothies.map((item, index) => (
                 <div className="col" >
                   <h3 key={index}>{item}</h3>
+                  {
+                    auth ? 
+                    <div>
+                      <button>Remove</button>
+                      <h> </h>
+                      <button>Edit</button>
+                    </div>: null
+                  }
                 </div>
               ))}
               <div className="col"></div>
@@ -155,6 +206,14 @@ const Drink_specialties = () =>{
             {otherDrink.map((item, index) => (
                 <div className="col" >
                   <h3 key={index}>{item}</h3>
+                  {
+                    auth ?
+                    <div>
+                      <button>Remove</button>
+                      <h> </h>
+                      <button>Edit</button>
+                    </div>: null
+                  }
                 </div>
               ))}
               <div className="col"></div>
@@ -166,7 +225,15 @@ const Drink_specialties = () =>{
 
 
           <div className="d-flex justify-content-end pe-5 pt-5">
-            <button className="border px-5 py-3 fs-2 rounded-4">Add To Cart</button>
+
+
+
+            {
+              auth ? 
+              <div>
+              <button className="border px-5 py-3 fs-2 rounded-4">Add New Item </button>
+              </div> : null
+            }
           </div>
 
         </div>  

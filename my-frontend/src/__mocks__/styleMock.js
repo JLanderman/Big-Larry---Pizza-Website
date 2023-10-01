@@ -1,0 +1,1 @@
+module.exports = {}; // Used by jest, empty stylesheet

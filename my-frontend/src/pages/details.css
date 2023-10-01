@@ -9,8 +9,6 @@
     display:flex;
     margin:2rem;
     align-items: center; /* Vertically center the content */
-
-
 }
 
 .picture
@@ -46,7 +44,6 @@
     height: 120%;
     font-size:x-large;
     border-radius: 20px;
-
 }
 
 .buttonContainer
@@ -69,8 +66,6 @@
     border-radius: 50%; /* Makes the button round */
     margin: 30px; /* Adds some spacing between buttons */
     font-size: 30px; /* Adjust the font size as needed */
-    
-
   }
 
   .pizzaSizeButton.selected {
@@ -89,4 +84,63 @@
     flex-direction: column;
     justify-content: space-between;
  
+}
+
+@media (max-width: 1000px){
+    .title {
+        padding-left: 20%;
+        margin-left:0;
+        margin-top: 1em;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+    h1{
+        font-size: 6vw;
+    }
+    .picture {
+        width: 60%;
+        height: 80%;
+    }
+    .myButton /*This is the add to cart button*/
+    {
+        width: auto;
+        font-size:4vw;
+        border-radius: 2vw;
+    }
+        
+    .sizeButtons {
+        align-items: flex-start;
+        justify-content:space-between; /* Center the size buttons horizontally */
+        margin-top: 1rem; /* Adjust spacing as needed */
+        flex-wrap: wrap;
+    }
+    
+    .pizzaSizeButton {
+        width: 3vh;
+        border: #000000;
+        /* padding: 3vh; Maintain a 1:1 aspect ratio for circular buttons */
+        /* border-radius: 50%; Makes the button round */
+        /* margin: 1rem; Adds some spacing between buttons */
+        font-size: 4vw; /* Adjust the font size as needed */
+        align-self: flex-start;
+        
+    }
+    .myContainer {
+        flex-direction: column; /* Change to a single column layout */
+        align-items: center;
+        height: auto; /* Allow the container to adjust its height based on content */
+        flex-wrap: wrap; /* Allow items to wrap into multiple rows */
+    }
+    
+    .description {
+        margin: 2rem 0; /* Add vertical spacing between elements */
+        text-align: center; /* Center text within the description */
+    }
+
+    .buttonContainer {
+        text-align: center; /* Center the button container text */
+        margin: 1rem; /* Add vertical spacing */
+    }
+      
 }
