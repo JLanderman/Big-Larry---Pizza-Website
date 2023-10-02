@@ -38,9 +38,6 @@ const Navbar = () => {
           <NavLink to="/mainmenu">
             MENU
           </NavLink>
-          <NavLink to="/cart">
-            CART
-          </NavLink>
           {loggedIn
             ? <NavLink to="/" onClick={() => { logout() }}>LOG OUT</NavLink>
             : <NavLink to="/login">SIGN IN</NavLink>

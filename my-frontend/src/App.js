@@ -10,8 +10,6 @@ import Login from "./pages/login";
 import MainMenu from './pages/mainmenu';
 import Menu from "./pages/menu";
 import Details from "./pages/details";
-import Cart from './pages/cart';
-import Payment from './pages/payment';
 import Pizza_customize from './pages/pizza_customize'
 import Lunch from './pages/lunchMenu';
 import Drink_specialties from "./pages/drink";
@@ -41,11 +39,11 @@ const styles = {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <div id="app-container" style={styles.appContainer}>
-          <Navbar />
-          <div id="content-wrap" style={styles.contentWrap}>
+    <div id="app-container" data-testid="app" style={styles.appContainer}>
+      <div id="content-wrap" data-testid="content-wrap" style={styles.contentWrap}>
+        <AuthProvider>
+          <Router>
+            <Navbar />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
@@ -53,13 +51,11 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/mainmenu" element={<MainMenu />} />
               <Route path="/menu" element={<Menu />} />
-              <Route path="/cart" element={<Cart />} />
               <Route path="/comboSpecial" element={<ComboSp />} />
               <Route path="/pizzaSpecial" element={<PizzaSp />} />
               <Route path="/specialDeals" element={<SpDeals />} />
               <Route path="/details/:id" element={<Details />} />
               <Route path="/pizza_customize" element={<Pizza_customize />} />
-              <Route path="/payment" element={<Payment />} />
               <Route path="/lunchMenu" element={<Lunch />} />
               <Route path="/drink" element={<Drink_specialties />} />
               <Route path="/listOrderManager" element={<ListOrderManager />} />
@@ -67,11 +63,11 @@ function App() {
               <Route path="/TextForm" element={<UploadTextTemplate />} />
 
             </Routes>
-          </div>
-          <Footer />
-        </div>
-      </Router>
-    </AuthProvider>
+            <Footer />
+          </Router>
+        </AuthProvider>
+      </div>
+    </div>
   );
 }
 

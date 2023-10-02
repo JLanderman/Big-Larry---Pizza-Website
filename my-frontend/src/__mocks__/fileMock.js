@@ -1,0 +1,1 @@
+export default 'test-file-stub'; // Used by jest, empty file

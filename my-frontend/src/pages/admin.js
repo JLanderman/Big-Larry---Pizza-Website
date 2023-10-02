@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router";
 import { useAuth } from '../contexts/authContext';
@@ -28,7 +28,6 @@ const Admin = () => {
             <div className="preview-header-navbar">
               <div className="navlink">ABOUT</div>
               <div className="navlink">MENU</div>
-              <div className="navlink">CART</div>
               <div className="navlink">SIGN IN</div>
             </div>
           </div>
@@ -199,12 +198,14 @@ const Admin = () => {
         updateColors(root);
       }
       
-      let ColorPickerComponent = ({setterFunction}) => {
-        console.log(setterFunction)
-        return(<>
-          <HexColorPicker color={colorBG} onChange={(e) => {setterFunction(e); updatePreviewColors();}} />
-          <HexColorInput color={colorBG} onChange={setterFunction} />
-        </>)
+      useEffect(() => {
+        updatePreviewColors();
+      }, [colorBG, colorMenuLight, colorMenu, colorMenuDark, colorText, colorTextLight, colorTextHighlight, colorLink]);
+      
+      let MetaUpdate = (array) => {
+        // let previewer = document.querySelector(".preview-parent")
+        // previewer.paletteUpdate(array);
+        paletteUpdate(array);
       }
       
       return (<div className="palette-grandparent">
@@ -214,39 +215,39 @@ const Admin = () => {
           <div className="palette-container">
             Background
             <HexColorPicker color={colorBG} onChange={(e) => {setColorBG(e); updatePreviewColors();}} />
-            <HexColorInput color={colorBG} onChange={setColorBG} />
+            <HexColorInput color={colorBG} onChange={(e) => {setColorBG(e); updatePreviewColors();}} />
           </div>
           <div className="palette-container">
             Menu (Light)
             <HexColorPicker color={colorMenuLight} onChange={(e) => {setColorMenuLight(e); updatePreviewColors();}} />
-            <HexColorInput color={colorMenuLight} onChange={setColorMenuLight} />
+            <HexColorInput color={colorMenuLight} onChange={(e) => {setColorMenuLight(e); updatePreviewColors();}} />
           </div>
           <div className="palette-container">
             Menu (Main)
             <HexColorPicker color={colorMenu} onChange={(e) => {setColorMenu(e); updatePreviewColors();}} />
-            <HexColorInput color={colorMenu} onChange={setColorMenu} />
+            <HexColorInput color={colorMenu} onChange={(e) => {setColorMenu(e); updatePreviewColors();}} />
           </div>
           <div className="palette-container">
             Menu (Dark)
             <HexColorPicker color={colorMenuDark} onChange={(e) => {setColorMenuDark(e); updatePreviewColors();}} />
-            <HexColorInput color={colorMenuDark} onChange={setColorMenuDark} />
+            <HexColorInput color={colorMenuDark} onChange={(e) => {setColorMenuDark(e); updatePreviewColors();}} />
           </div>
         </div>
         <div className="palette-parent">
           <div className="palette-container">
             Text (Main)
             <HexColorPicker color={colorText} onChange={(e) => {setColorText(e); updatePreviewColors();}} />
-            <HexColorInput color={colorText} onChange={setColorText} />
+            <HexColorInput color={colorText} onChange={(e) => {setColorText(e); updatePreviewColors();}} />
           </div>
           <div className="palette-container">
             Text (light)
             <HexColorPicker color={colorTextLight} onChange={(e) => {setColorTextLight(e); updatePreviewColors();}} />
-            <HexColorInput color={colorTextLight} onChange={setColorTextLight} />
+            <HexColorInput color={colorTextLight} onChange={(e) => {setColorTextLight(e); updatePreviewColors();}} />
           </div>
           <div className="palette-container">
             Text (Highlighted)
             <HexColorPicker color={colorTextHighlight} onChange={(e) => {setColorTextHighlight(e); updatePreviewColors();}} />
-            <HexColorInput color={colorTextHighlight} onChange={setColorTextHighlight} />
+            <HexColorInput color={colorTextHighlight} onChange={(e) => {setColorTextHighlight(e); updatePreviewColors();}} />
           </div>
           <div className="palette-container">
             Text (Link)
@@ -256,12 +257,12 @@ const Admin = () => {
         </div>
         <button onClick={updateRootColors}>Apply changes to site</button>
         <div className="palette-presets">
-          <button onClick={(e) => {paletteUpdate(crimsonPalette); updatePreviewColors();}}>Crimson</button>
-          <button onClick={(e) => {paletteUpdate(figmaPalette); updatePreviewColors();}}>Figma</button>
-          <button onClick={(e) => {paletteUpdate(pinkPalette); updatePreviewColors();}}>Pink</button>
-          <button onClick={(e) => {paletteUpdate(oceanPalette); updatePreviewColors();}}>Ocean</button>
-          <button onClick={(e) => {paletteUpdate(burgerPalette); updatePreviewColors();}}>Burger</button>
-          <button onClick={(e) => {paletteUpdate(halloweenPalette); updatePreviewColors();}}>Halloween</button>
+          <button onClick={(e) => {MetaUpdate(crimsonPalette);   }}>Crimson</button>
+          <button onClick={(e) => {MetaUpdate(figmaPalette);     }}>Figma</button>
+          <button onClick={(e) => {MetaUpdate(pinkPalette);      }}>Pink</button>
+          <button onClick={(e) => {MetaUpdate(oceanPalette);     }}>Ocean</button>
+          <button onClick={(e) => {MetaUpdate(burgerPalette);    }}>Burger</button>
+          <button onClick={(e) => {MetaUpdate(halloweenPalette); }}>Halloween</button>
         </div>
       </div>);
     };

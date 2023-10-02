@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 const Lunch= (props) => {
     const [items, setItems] = useState([]);
 
-    const { auth} = useAuth();
+    const { auth} = useAuth(); 
 
     useEffect(() => {
       retrieveItems();
@@ -34,7 +34,7 @@ const Lunch= (props) => {
             : <div><h1 className="pb-5 pt-5">SAM'S LUNCH && DINNER </h1></div>
           }
           </div>
-          <div className="row pt-5">
+          <div className="row pt-5">  
             {!Array.isArray(items)
               ? items.item.map((currentItem) => {
                   return (                  
@@ -47,9 +47,9 @@ const Lunch= (props) => {
                               ?                              
                               <div >
                                 <div>   
-                                  <button>Removes</button> 
+                                  <button>Remove</button> 
                                   <h>  </h>
-                                  <button>Edit button</button> 
+                                  <button>Edit</button> 
                                 </div>
                               </div>
                              : null
