@@ -124,6 +124,23 @@ export default class ItemController {
     const name = req.body.name;
     const itemCategory = req.body.itemCategory;
     const photo = req.body.photo;
+    const price = req.body.price;
+    // we are putting in a lunch/Dinner item without a photo
+    console.log('apiPutitem: Received data:', name, itemCategory, photo, price);
+      try {
+        // Call the itemDAO.putItem method to insert the item into MongoDB
+        await itemDAO.putItem(name, itemCategory, price);
+        res.status(201).json({ success: true, message: "Item inserted successfully" });
+      } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ error: "An error occurred while inserting the item" });
+      }
+  }
+  
+  /*static async apiPutItem(req, res, next){
+    const name = req.body.name;
+    const itemCategory = req.body.itemCategory;
+    const photo = req.body.photo;
 
     if (!name) return res.status(400);
     if (!itemCategory) return res.status(400);
@@ -139,4 +156,5 @@ export default class ItemController {
     //await s3.putObject(params).promise();
       await itemDAO.putItem(name, itemCategory, photo);
   }
+  */
 }

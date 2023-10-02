@@ -32,11 +32,28 @@ function TextForm() {
     //Create a FormData object to append form fields and file
     const formData = new FormData();
     formData.append('name', name);
-    formData.append('category', updatedCategory);
+    formData.append('itemCategory', updatedCategory);
     formData.append('subCategory', updatedSubCategory);
     formData.append('price', price*100);
 
+
   // Send the formData to your server for processing
+  try {
+    console.log('Name:', formData.get('name'));
+    console.log('itemCategory:', formData.get('itemCategory'));
+    console.log('subCategory:', formData.get('subCategory'));
+    console.log('price:', formData.get('price'));
+    console.log('photo:', formData.get('photo'));
+    if(formData.get('photo') === null){
+      console.log("Photo was null before call was made to putItemFront")
+    }
+    const res = await DataService.putItemFront(formData);
+    console.log('Item uploaded successfully');
+    // Handle success (e.g., show a success message to the user)
+  } catch (error) {
+    console.error('Error uploading item:', error);
+    // Handle the error (e.g., show an error message to the user)
+  }
   //add a check for empty data?
 	// try {
 	// 	const res = await DataService.addItem(formData, token);

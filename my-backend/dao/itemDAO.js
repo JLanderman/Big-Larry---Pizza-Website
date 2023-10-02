@@ -232,9 +232,10 @@ export default class ItemDao {
     return { itemList, totalNumItem };
   }
 
-  static async putItem(name, itemCategory, photo){
+  static async putItem(name, itemCategory, photo, price){
+    console.log('itemDAO.js putItem Received data:', name, itemCategory, photo, price);
     let query;
-    query = {name: name, itemCategory: itemCategory, photo: photo};
+    query = {name: name, itemCategory: itemCategory, price: price};
     let cursor;
     try{
       cursor = await allItems.insertOne(query);
