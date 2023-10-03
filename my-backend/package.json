@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha '__tests__/**/*.js' --require esm",
     "start": "node server",
     "dev": "nodemon server"
   },
@@ -16,9 +16,14 @@
     "aws-sdk": "^2.1467.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
+    "esm": "^3.2.25",
     "express": "^4.18.2",
     "jose": "^4.14.6",
     "mongodb": "^5.2.0",
     "nodemon": "^3.0.1"
+  },
+  "devDependencies": {
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   }
 }

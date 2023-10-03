@@ -15,7 +15,7 @@ app.use(cors({
 app.use(express.json())
 
 app.get("/", (req, res) => {
-  res.send("Hello backend World")
+  res.send("Hello Backend World")
 })
 
 app.use('/pizza', pizzaRouter)
