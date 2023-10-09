@@ -3,12 +3,14 @@
  * Refer to routes/Pizza.route.js for routes to test and put them 
  * in files for their respective controllers
  * Test Framework: https://mochajs.org/
+ * Assertions: https://www.chaijs.com/
  * Library: https://www.npmjs.com/package/supertest
 */
+import {expect, assert, should} from 'chai';
 import request from 'supertest';
 import app from '../server.js';
 
-describe('Pizza.route.js get /pizza', () => { // Pizza Router starts at /pizza
+describe('GET /pizza', () => { // Pizza Router starts at /pizza
     it('should return a "Hello Pizza World" message', (done) => {
         request(app)
             .get('/pizza')
@@ -23,7 +25,7 @@ describe('Pizza.route.js get /pizza', () => { // Pizza Router starts at /pizza
     })
 })
 
-describe('Pizza.route.js get /pizza/cheese', () => { // Pizza Router starts at /pizza
+describe('GET /pizza/cheese', () => { // Pizza Router starts at /pizza
     it('should return a "Hello Cheese Pizza World" message', (done) => {
         request(app)
             .get('/pizza/cheese')

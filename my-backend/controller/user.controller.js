@@ -19,19 +19,19 @@ export default class UserController {
     const username = req.body.username;
     const password = req.body.password;
 
-    if (!username) return res.status(400);
-    if (!password) return res.status(400);
+    if (!username) return res.status(400).send("A username is required.");
+    if (!password) return res.status(400).send("A password is required.");
 
     try {
       const user = await UserDAO.login(username, password); // attempt login
       if (!user) return res.status(401).send("Access denied. Could not authenticate user.");
 
-      const data = {
+      const data = { // user data from DB
         username: user.username,
         isAdmin: user.isAdmin
       }
 
-      const jwt = await UserController.createToken(data);
+      const jwt = await UserController.createToken(data); // sign token
       res.status(200).json({token: jwt});
       return res;
     } catch (e) { 
