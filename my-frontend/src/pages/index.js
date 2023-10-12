@@ -9,12 +9,12 @@ const Home = () => {
   return (
     <div className="homeContainerStyle">
       <div className="homeTextContainer">
-        <h1 className="homeHeader">
+        <h1 className="homeHeader" data-testid="homeHeader">
           Sam's Pizza && More
         </h1>
         <div className='homeSubHeader'>
-          <div className='homeFirstLine'>BEST PRICE ! REAL TASTE !</div>
-          <div className='homeSecondLine'>
+          <div className='homeFirstLine' >BEST PRICE ! REAL TASTE !</div>
+          <div className='homeSecondLine' data-testid="homeSecondLine">
             <img src={contactSign} alt='telephone:' style={{ width: '1.75em', height: '1em', paddingRight: '0.75em' }} />
             {phoneNum}
           </div>
@@ -22,7 +22,7 @@ const Home = () => {
           <div className='homeThirdAndFourthLine'>(11:00 AM - 9:00 PM)</div>
         </div>
       </div>
-        <img src={homePizza} alt='pizza' className="homePizzaStyle" />
+        <img src={homePizza} data-testid="homePizza" alt='pizza' className="homePizzaStyle" />
     </div>
   );
 };

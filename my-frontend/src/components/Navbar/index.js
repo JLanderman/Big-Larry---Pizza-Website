@@ -21,7 +21,7 @@ const Navbar = () => {
 
   return (
     <>
-      <Nav>
+      <Nav data-testid="navbar">
         <NavLink to="/">
           SAM'S PIZZA & MORE
         </NavLink>
@@ -35,7 +35,7 @@ const Navbar = () => {
           <NavLink to="/about">
             ABOUT
           </NavLink>
-          <NavLink to="/mainmenu">
+          <NavLink to="/mainmenu" data-testid="menuLink">
             MENU
           </NavLink>
           {loggedIn

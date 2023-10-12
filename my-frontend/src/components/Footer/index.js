@@ -7,9 +7,9 @@ const Footer = () => {
   return (
     <Container data-testid="footer">
       <Div>
-        <span>{phoneNum}</span>
+        <span data-testid="footerPhoneNumber">{phoneNum}</span>
         <br />
-        <span>{address}</span>
+        <span data-testid="footerAddress">{address}</span>
       </Div>
       <Div>
         <NavLink to="https://www.facebook.com/bestfoodcountryclub/">
