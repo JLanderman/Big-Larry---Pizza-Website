@@ -157,4 +157,14 @@ export default class ItemController {
       await itemDAO.putItem(name, itemCategory, photo);
   }
   */
+
+  static async apiGetDrink(req, res, next)
+  {
+    const { itemList, totalNumItem} = await itemDAO.getDrink();
+    let response = {
+      item: itemList,
+      total_results: totalNumItem,
+    };
+    res.json(response);
+  }
 }

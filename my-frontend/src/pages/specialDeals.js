@@ -53,9 +53,9 @@ const SpDeals = (props) => {
 							{
 								auth ?
 								<div>
-									<button>Remove</button>
+									<button className="border px-10 py- fs-5 rounded-4" >Remove</button>
 									<h> </h>
-									<button>Edit</button>
+									<button className="border px-10 py- fs-5 rounded-4">Edit</button>
 								</div>
 								
 								:null

@@ -243,4 +243,27 @@ export default class ItemDao {
       console.error('Unable to put item');
     }
   }
+
+
+  static async getDrink(){
+    let query;
+    query = {itemCategory: {$eq: 'drink'}}
+    let cursor;
+
+    try{
+      cursor = await allItems.find(query);
+    }catch(e)
+    {
+      console.error(
+        `Unable to issue the getItem() find command in itemDAO.js, ${e}`
+      );
+      return {itemList: [], totalNumItem: 0};
+    }
+    const displayCursor = cursor.limit(100).skip(0);
+    const itemList = await displayCursor.toArray();
+    const totalNumItem = await allItems.countDocuments(query);
+
+    return {itemList, totalNumItem};
+  }
+
 }

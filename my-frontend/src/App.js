@@ -12,7 +12,7 @@ import Menu from "./pages/menu";
 import Details from "./pages/details";
 import Pizza_customize from './pages/pizza_customize'
 import Lunch from './pages/lunchMenu';
-import Drink_specialties from "./pages/drink";
+import Drink from "./pages/drink";
 import ComboSp from './pages/comboSpecial';
 import PizzaSp from './pages/pizzaSpecial';
 import SpDeals from './pages/specialDeals';
@@ -20,6 +20,10 @@ import ListOrderManager from './pages/listOrderManager';
 import AuthProvider from './contexts/authContext';
 import UploadTemplate from './pages/uploadTemplate';
 import UploadTextTemplate from './pages/uploadTextTemplate';
+
+
+
+
 
 
 
@@ -57,10 +61,12 @@ function App() {
               <Route path="/details/:id" element={<Details />} />
               <Route path="/pizza_customize" element={<Pizza_customize />} />
               <Route path="/lunchMenu" element={<Lunch />} />
-              <Route path="/drink" element={<Drink_specialties />} />
+              <Route path="/drink" element={<Drink />} />
               <Route path="/listOrderManager" element={<ListOrderManager />} />
               <Route path="/ItemFormLarge" element={<UploadTemplate />} />
               <Route path="/TextForm" element={<UploadTextTemplate />} />
+
+  
 
             </Routes>
             <Footer />
