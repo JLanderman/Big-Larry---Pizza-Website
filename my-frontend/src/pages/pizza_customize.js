@@ -65,9 +65,8 @@ const Pizza_customize = () => {
   const priceComboLarge = '18.99'
   const priceComboXLarge = '22.99'
 
-  //allows importing from database one by one if you import into above values if thats easier
   //2d array is necessary for determining price without a bunch of if/else statements
-  const priceChart = [ // [row][column]=[topping][size] *remember index is numbered 0-4*
+  const priceChart = [ // [row][column]=[topping][size]
     [priceCheesePersonal, priceCheeseSmall, priceCheeseMedium, priceCheeseLarge, priceCheeseXLarge],
     [priceSinglePersonal, priceSingleSmall, priceSingleMedium, priceSingleLarge, priceSingleXLarge],
     [priceTwoPersonal   , priceTwoSmall   , priceTwoMedium   , priceTwoLarge   , priceTwoXLarge],
@@ -109,13 +108,6 @@ const Pizza_customize = () => {
   const handleSizeClick = (index) => {
     setSelectedSize(index);
     setPrice(priceSelect(index, selectedTopping.length));
-    //implement logic for finding price and call setPrice with the new price
-      //logic in new function? woulld be neater
-      //look into mutiple variable arrays
-    //price needs displayed after size is chosen, then updating after every button
-    //default size = personal?
-    //so implement an update here with no conditions
-    //and update in the toppings when selectedSize exists
   };
 
   const handleToppingClick = (index) => {
