@@ -1,5 +1,5 @@
 import React from "react";
-import { Nav, NavLink, Bars, NavMenu, SamsAndMore } from "./NavbarElements";
+import { Nav, NavLink, Bars, NavMenu} from "./NavbarElements";
 import searchSvg from '../../images/Other/searchIcon.svg';
 import { useAuth } from '../../contexts/authContext';
 import Cookies from 'js-cookie';
@@ -30,6 +30,10 @@ const Navbar = () => {
         <NavMenu>
           {auth
             ? <NavLink to="/admin">ADMIN</NavLink>
+            : null
+          }
+          {auth
+            ? <NavLink to="/admin/editUserCred">Edit Username/Password</NavLink>
             : null
           }
           <NavLink to="/about">

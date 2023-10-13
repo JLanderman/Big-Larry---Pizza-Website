@@ -10,6 +10,21 @@ class UserService {
         });
         return res;
     }
-}
+
+    async editUserCred(username, newUsername, newPassword) {
+        const res = await http.post(`/user/editUser`, {
+            username: username,
+            newUsername: newUsername,
+            newPassword: newPassword,
+        });
+        return res;
+    }
+
+    async getUserbyToken(token) {
+        const res = await http.post(`/user/retrieveToken`, {
+       token});
+        return res.data.username;
+    }
+};
 
 export default new UserService();
