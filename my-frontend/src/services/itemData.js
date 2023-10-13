@@ -88,6 +88,9 @@ class DataService {
       }
     }
     */
+    getAllDrink(){
+        return http.get('/drink');
+    }
     
 };
 

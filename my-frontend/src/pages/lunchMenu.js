@@ -47,9 +47,9 @@ const Lunch= (props) => {
                               ?                              
                               <div >
                                 <div>   
-                                  <button>Remove</button> 
-                                  <h>  </h>
-                                  <button>Edit</button> 
+                                  <button className="border px-10 py- fs-5 rounded-4">Remove</button> 
+                                  <h>   </h>
+                                  <button className="border px-10 py- fs-5 rounded-4">Edit</button> 
                                 </div>
                               </div>
                              : null

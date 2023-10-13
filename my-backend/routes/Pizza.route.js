@@ -24,5 +24,7 @@ router.route("/comboSpecial").get(itemController.apiGetComboSpecial)
 router.route("/specialDeals").get(itemController.apiGetSpecialDeals)
 router.route("/user/login").post(userController.login)
 router.route("/allItems").post(itemController.apiPutItem)
+router.route("/drink").get(itemController.apiGetDrink)
+
 
 export default router
