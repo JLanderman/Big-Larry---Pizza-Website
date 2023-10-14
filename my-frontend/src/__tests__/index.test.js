@@ -1,7 +1,15 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, cleanup } from '@testing-library/react';
 import { Home } from '../pages';
 import { phoneNum } from '../data/global';
+import { App } from '../App';
 
+import React from "react";
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+afterEach(() => {
+    cleanup(); // Resets the DOM after each test suite
+})
 
 test('home header renders', () => {
     render(<Home />);

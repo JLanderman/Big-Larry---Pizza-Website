@@ -136,7 +136,7 @@ const Pizza_customize = () => {
     <div>
       <div className = "titleCustom">
         <div> 
-          <div><h1>Choose your size</h1> </div>
+          <div data-testid="pizzaCustom"><h1>Choose your size</h1> </div>
         </div>
       </div>
 
@@ -199,4 +199,5 @@ const Pizza_customize = () => {
   );
 };
 
+export { Pizza_customize }
 export default Pizza_customize;

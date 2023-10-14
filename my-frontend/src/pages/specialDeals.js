@@ -34,7 +34,7 @@ const SpDeals = (props) => {
   
 	  return (
 		  <div>
-			<h1 className="card" style={{paddingLeft:'40%', paddingTop:'1%', paddingBottom:'1%', borderBottom:'1px solid black', background: 'transparent', borderColor: 'transparent'}}>Special Deals</h1>
+			<h1 className="card" style={{paddingLeft:'40%', paddingTop:'1%', paddingBottom:'1%', borderBottom:'1px solid black', background: 'transparent', borderColor: 'transparent'}} data-testid="specialDeals">Special Deals</h1>
 			<div className="row">
 			  {!Array.isArray(items)
 				? items.item.map((currentItem) => {

@@ -31,7 +31,7 @@ const PizzaSp = (props) => {
 	  };
   
 	  return (
-		  <div>
+		  <div data-testid="pizzaSpecialties">
 			<h1 className="card" style={{paddingLeft:'40%', paddingTop:'1%', paddingBottom:'1%', borderBottom:'1px solid black', background: 'transparent', borderColor: 'transparent'}}>Pizza Specials</h1>
 			<div className="row">
 			  {!Array.isArray(items)
@@ -78,4 +78,5 @@ const PizzaSp = (props) => {
 	
   };
   
+  export { PizzaSp }
   export default PizzaSp;

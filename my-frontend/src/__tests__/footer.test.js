@@ -1,7 +1,11 @@
-import {render, fireEvent, screen} from "@testing-library/react";
+import {render, fireEvent, screen, cleanup} from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import Footer from "../components/Footer/index";
 import { phoneNum, address } from "../data/global";
+
+afterEach(() => {
+    cleanup(); // Resets the DOM after each test suite
+})
 
 test('Footer renders', () => {
     render(

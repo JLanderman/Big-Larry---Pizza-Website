@@ -7,7 +7,7 @@ import { useAuth } from '../contexts/authContext';
 import Cookies from 'js-cookie';
 
 
-const Lunch= (props) => {
+const Lunch = (props) => {
     const [items, setItems] = useState([]);
 
     const { auth} = useAuth(); 
@@ -26,7 +26,7 @@ const Lunch= (props) => {
         });
     };
     return (
-        <div>
+        <div data-testid="lunch">
           <div className="d-flex justify-content-center">
           {
             auth ?
@@ -38,7 +38,7 @@ const Lunch= (props) => {
             {!Array.isArray(items)
               ? items.item.map((currentItem) => {
                   return (                  
-                        <div className="col-lg-4 pb-3 px-5">
+                        <div className="col-lg-4 pb-3 px-5" data-testid="lunchItem"> 
                        
                             <div >
                               <h3 className="food-title">{currentItem.name}</h3>
@@ -74,6 +74,7 @@ const Lunch= (props) => {
       );
     };
 
+    export { Lunch }
     export default Lunch;
 
 

@@ -38,12 +38,12 @@ const Drink= (props) => {
     }
     return (
 
-        <div>
+        <div data-testid="drinks">
           <div className="d-flex justify-content-center">
           {
             auth ?
             <div className="text-danger fw-bold"><h1>Modify Your Drink</h1></div>
-            : <div><h1 className="pb-5 pt-5 text-danger fw-bold">Beverages</h1></div>
+            : <div><h1 data-testid="BeveragesHeader" className="pb-5 pt-5 text-danger fw-bold">Beverages</h1></div>
           }
           </div>
 
@@ -103,6 +103,9 @@ const Drink= (props) => {
         </div>     
       );
     };
+    
+    
  
 
+    export { Drink };
     export default Drink;
