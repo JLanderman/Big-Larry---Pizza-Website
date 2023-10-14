@@ -1,6 +1,10 @@
 import { React, useState, useEffect } from "react";
-import { render, screen } from '@testing-library/react';
+import { render, screen, cleanup } from '@testing-library/react';
 import { Drink } from '../pages/drink';
+
+afterEach(() => {
+    cleanup(); // Resets the DOM after each test suite
+})
 
 test('Drink Specialties render', () => {
     render(<Drink />);

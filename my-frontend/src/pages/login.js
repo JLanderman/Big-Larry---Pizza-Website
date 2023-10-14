@@ -131,7 +131,7 @@ const Login = () => {
 
   return (
     <div>
-    <form onSubmit={(e) => handleSubmit(e)} style={styles.container}>
+    <form onSubmit={(e) => handleSubmit(e)} style={styles.container}  data-testid="loginForm">
       <div style={{justifyContent: 'center', paddingLeft:'40%', paddingTop:'2%', paddingBottom:'3%'}}>
         <strong style={{fontSize:'150%'}}>Welcome to Sam's Side</strong> 
         <br></br>
@@ -187,4 +187,5 @@ const Login = () => {
   );
 };
 
+export { Login }
 export default Login;

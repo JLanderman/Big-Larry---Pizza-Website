@@ -89,7 +89,7 @@ const MainMenu = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="mainMenuContainer">
+    <div className="mainMenuContainer" data-testid="mainMenu">
       <div className="mainMenuHeader">
         <img src={downArrow} className="mainMenuDownArrow" alt='downArrow-image' />
         <span>CHECK OUT OUR MENU</span>
@@ -123,4 +123,5 @@ const MainMenu = () => {
   );
 };
 
+export { MainMenu }
 export default MainMenu;
