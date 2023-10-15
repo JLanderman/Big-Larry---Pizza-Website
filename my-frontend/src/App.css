@@ -162,6 +162,7 @@
   font-size: 3rem;
   font-weight: var(--bold-weight);
   padding-top: 1em; /* Adjust the padding as needed */
+  text-align: center;
 }
 
 .aboutText {

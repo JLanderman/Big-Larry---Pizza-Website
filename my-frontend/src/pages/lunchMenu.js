@@ -26,46 +26,16 @@ const Lunch = (props) => {
         });
     };
     return (
-// I left this previous code in case I broke something. If it didn't, it should be removed ASAP. -Skyler
-        // <div>
-        //   <div className="d-flex justify-content-center">
-        //   {
-        //     auth ?
-        //     <div><h1>MODIFY YOUR LUNCH AND DINNER </h1></div>
-        //     : <div><h1 className="pb-5 pt-5">SAM'S LUNCH & DINNER </h1></div>
-        //   }
-        //   </div>
-        //   <div className="row pt-5">  
-        //     {!Array.isArray(items)
-        //       ? items.item.map((currentItem) => {
-        //           return (                  
-        //                 <div className="col-lg-4 pb-3 px-5">
-                       
-        //                     <div >
-        //                       <h3 className="food-title">{currentItem.name}</h3>
-        //                     </div>
-        //                     {auth
-        //                       ?                              
-        //                       <div >
-        //                         <div>   
-        //                           <button>Remove</button> 
-        //                           <h>  </h>
-        //                           <button>Edit</button> 
-        //                         </div>
-        //                       </div>
-        //                      : null
-        //                     }
-        //                   </div>
-        //           );
-        //         })
-        //       : retrieveItems}
-        //   </div>
-        <div>
+        <div data-testid="lunch">
           <div className="lunchHeader">
-            <h1 className="text-center">Sam's Lunch & Dinner</h1>
+          {
+            auth ?
+            <h1>MODIFY YOUR LUNCH AND DINNER </h1>
+            : <h1 className="text-center">SAM'S LUNCH & DINNER</h1>
+          }
           </div>
           <div>
-            <div className="row px-4">
+            <div className="row px-4" data-testid="lunchItem">
               {!Array.isArray(items)
                 ? items.item.map((currentItem) => {
                     return (
@@ -74,6 +44,17 @@ const Lunch = (props) => {
                         <div className="lunchText">
                           <h3 className="food-title">{currentItem.name}</h3>
                         </div>
+                            {auth
+                              ?                              
+                              <div >
+                                <div>   
+                                  <button className="border px-10 py- fs-5 rounded-4">Remove</button> 
+                                  <h>   </h>
+                                  <button className="border px-10 py- fs-5 rounded-4">Edit</button> 
+                                </div>
+                              </div>
+                             : null
+                            }
                       </div><div className="col-lg-4" key={currentItem.id}>
                           <div className="lunchText">
                             {currentItem.price_small ? (
@@ -108,6 +89,3 @@ const Lunch = (props) => {
 
     export { Lunch }
     export default Lunch;
-
-
-
