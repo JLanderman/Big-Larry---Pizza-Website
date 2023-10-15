@@ -31,6 +31,7 @@ const styles = {
     backgroundColor: "var(--clr-bg)",
     color: "var(--clr-txt)",
     fontWeight: "bold",
+    fontFamily: 'Roboto, Helvetica, Segoe UI, Arial, sans-serif'
   },
   contentWrap: {
     paddingBottom: "4rem", // Space for footer

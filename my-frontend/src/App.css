@@ -20,40 +20,42 @@
   --clr-txt-light: #fff8e6;
   --clr-txt-highlight: #87edff;
   --clr-link: #ffffff; */
+
+  /* Other CSS Variables */
+  --bold-weight:700;
+  --medium-weight:400;
+  --light-weight:100;
+
 }
 
 /**************TYPOGRAPHY**************/
-@import url('https://fonts.googleapis.com/css2?family=Raleway:100,200,300,400,700&display=swap');
-
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap');
 
 /**************HOME PAGE**************/
 .homeHeader {
-  font-family: 'Raleway', sans-serif;
+  /* font-family: 'Raleway', sans-serif; */
   font-size: 4rem;
-  font-weight: 700;
+  font-weight: var(--bold-weight);
 }
 
 .homeSubHeader {
-  font-family: 'Raleway', sans-serif;
-  font-size: 2rem;
-  font-weight: 200;
+  font-size: 2.75rem;
+  font-weight: var(--light-weight);
 }
 
 .homeContainerStyle {
   display:flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: flex-end;
 }
 
-.homeFirstLine {
+.homeTextContainer{
   padding-left: 2em;
-}
-.homeSecondLine {
-  padding-left: 5em;
-}
-.homeThirdAndFourthLine {
-  padding-left: 8em;
+  padding-bottom: 2em;
+  justify-content: flex-end; /* Align the content to the bottom */
+  align-items: center; /* Center items horizontally */
+  text-align: center;
 }
 
 .homePizzaStyle {
@@ -61,17 +63,37 @@
   align-self: flex-end;
 }
 
-@media (max-width: 940px){
+.homePhoneNumber{
+  font-size: 4rem;
+  font-weight: var(--light-weight);
+  color: red;
+}
+
+.homePizzaColumn{
+  display: flex;
+  flex-direction: column;
+  padding-top: 1em;
+  padding-right: 1em;
+  font-size: 2.75rem;
+  font-weight: var(--light-weight);
+  justify-content: center; /* Center items vertically */
+  align-items: center; /* Center items horizontally */
+}
+
+@media (max-width: 1190px){
+  .homeContainerStyle{
+    flex-direction: column;
+  }
+
   .homeHeader {
     justify-content: center;
     font-size: 8vw;
-    font-weight: 700;
+    font-weight: var(--bold-weight);
   }
   .homeSubHeader {
     justify-content: center;
-    font-family: 'Raleway', sans-serif;
     font-size: 6vw;
-    font-weight: 200;
+    font-weight: var(--light-weight);
   }
   .homePizzaStyle{
     display: none;
@@ -81,96 +103,90 @@
     flex-direction: column;
     padding: 8%;
     align-items: center;
+    width: 100vw;
   }
-  .homeFirstLine {
-    padding-left: 0em;
+  .homePizzaColumn{
+    text-align: center; /* Center the text horizontally */
+    padding: 1em; /* Adjust padding as needed */
+    font-size: 6vw;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the items vertically */
   }
-  .homeSecondLine {
-    padding-left: 0em;
+  .homePhoneNumber{
+    font-size: 6vw;
   }
-  .homeThirdAndFourthLine {
-    padding-left: 0em;
-  }
-  
 }
 
 
 
 /**************About Page**************/
 
-.grayElipseContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-height: 20vh; 
-  position: relative;
-  z-index: 0;
-}
-
-.grayElipseStyle {
-  max-width: 90%;
-  height: auto;
-  position: relative;
-  left: 45%;
-  transform: translate(-50%, -50%);
-}
-
 .aboutContainerStyle {
-  position: relative;
   display:flex;
-  flex-direction: row;
+  flex-direction: column;
+}
+
+.aboutRowOne{
+  display: flex;
   justify-content: space-between;
-  z-index: 1;
+  align-items: flex-start; /* Align items vertically in the top row */
+}
+
+.aboutRowTwo{
+  text-align: center; /* Center the text in the second row */
 }
 
 .aboutColumnPictures{
+  display: flex;
   flex-direction: column;
-  flex:1;
+  align-items: flex-start; /* Align items to the left within the column */
+  max-width: 15%;
 }
 
-.deliveryStyle {
-  max-width: 80%;
-    z-index: 1;
-}
-
+.deliveryStyle,
+.doorDashStyle,
 .pickUpStyle {
-  max-width: 75%;
+  max-width: 100%; /* Allow images to take the full width of their container */
   padding: 5%;
 }
 
-.aboutColumnCenter{
-  flex:2;
+.aboutColumnCenter {
+  max-width: 80%; /* Adjust the max-width to your preference */
+  margin: 0 auto; /* Center the content horizontally */
 }
 
+
 .aboutHeader {
-  font-family: 'Raleway', sans-serif;
   font-size: 3rem;
-  font-weight: 700;
-  align-self: center;
-  justify-content: center;
-  text-align: center;
-  padding-top: 6em;
+  font-weight: var(--bold-weight);
+  padding-top: 1em; /* Adjust the padding as needed */
 }
 
 .aboutText {
-  font-family: 'Raleway', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 400;
-  background-color: transparent;
+  font-size: 2rem;
+  font-weight: var(--medium-weight);
+  padding: 1em; /* Adjust the padding as needed */
+  text-align: left; /* Center the text in the second row */
 }
 
 .aboutColumnAddress{
   flex:1;
   flex-direction: column;
+  max-width: 35%;
+  align-items: flex-start;
 }
 
 .addressStyle {
-  font-family: 'Raleway', sans-serif;
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 2.5rem;
+  font-weight: var(--medium-weight);
   color: red;
   z-index: 2;
   text-align: center;
+  padding-right: 1em;
+  padding-top: 1em;
+  align-self: flex-end;
 }
 
 .textContainer {
@@ -186,40 +202,42 @@
     flex-direction: column;
     align-items: flex-start;
   }
-  .grayElipseContainer{
-    display: none;
+  .aboutRowTwo{
+    order: 1;
   }
-
+  .aboutRowOne{
+    order: 2;
+    flex-direction: column;
+    width: 100vw;
+  }
+  .aboutColumnAddress{
+    order: 1;
+    max-width: 100vw;
+    align-self: center;
+  }
+  .aboutColumnPictures {
+    order: 2;
+    align-self: center;
+    max-width: 60vw;
+    width: 60vw;
+  }
   .aboutHeader{
     padding: 0;
     font-size: 6vw;
-  }
-  .aboutColumnCenter {
-    order: 1;
   }
   .aboutText {
     font-size: 4vw;
     padding: 0 1em;
   }
-  .aboutColumnAddress {
-    order: 2;
-    align-self: center;
-  }
   .addressStyle{
     font-size: 5vw;
   }
-  .aboutColumnPictures {
-    order: 3;
-    align-self: center;
-  }
-  .deliveryStyle{
-    width:50vw;
-    align-self: center;
-  }
-  .pickUpStyle{
-    width:50vw;
-    align-self: center;
-  }
+  .deliveryStyle,
+  .doorDashStyle,
+  .pickUpStyle {
+    max-width: none; /* Allow images to take the full width of their container */
+    width: 100%;
+}
 }
 
 
@@ -275,4 +293,46 @@
   align-items: center;
   height: 100%;
   width: 100%;
+}
+
+
+/*********** Lunch & Dinner Menu ***********/
+
+.lunchText{
+  font-size: 1rem;
+  font-weight: var(--medium-weight);
+  display: flex;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+.lunchHeader{
+  font-size: 2rem;
+  color:red;
+  font-weight: var(--light-weight);
+  display: flex;
+  padding-top: 0.5em;
+  padding-bottom: 2em;
+  justify-content: center;
+}
+
+@media (max-width: 1000px) {
+
+  .lunchText{
+    font-size: 3vw;
+    font-weight: var(--medium-weight);
+    display: flex;
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+  
+  .lunchHeader{
+    font-size: 3vw;
+    color:red;
+    font-weight: var(--light-weight);
+    display: flex;
+    padding-top: 0.5em;
+    padding-bottom: 2em;
+    justify-content: center;
+  }
 }

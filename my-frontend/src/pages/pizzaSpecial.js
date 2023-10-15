@@ -32,7 +32,7 @@ const PizzaSp = (props) => {
   
 	  return (
 		  <div>
-			<h1 className="card" style={{paddingLeft:'40%', paddingTop:'1%', paddingBottom:'1%', borderBottom:'1px solid black', background: 'transparent', borderColor: 'transparent'}}>Pizza Specials</h1>
+			<h1 className="card" style={{paddingLeft:'5%', paddingTop:'1%', paddingBottom:'1%', borderBottom:'1px solid black', background: 'transparent', borderColor: 'transparent'}}>Sam's Pizza Specialties (Large Size Only)</h1>
 			<div className="row">
 			  {!Array.isArray(items)
 				? items.item.map((currentItem) => {
@@ -54,6 +54,8 @@ const PizzaSp = (props) => {
 								/>
 								<p style = {{paddingTop: '5%', textAlign: 'center', fontSize: 25}}>
 									{currentItem.name}
+									<br />
+									{currentItem.price ? `$${(currentItem.price / 100).toFixed(2)}` : null}
 								</p>
 							</Link>
 							{

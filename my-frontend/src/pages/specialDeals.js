@@ -48,6 +48,11 @@ const SpDeals = (props) => {
 								/>
 								<p style = {{paddingTop: '5%', textAlign: 'center', fontSize: 25}}>
 									{currentItem.name}
+									<br />
+									{currentItem.price ? `$${(currentItem.price / 100).toFixed(2)}` : null}
+									{currentItem.price_chicken ? `Chicken: $${(currentItem.price_chicken / 100).toFixed(2)}` : null}
+									<br />
+									{currentItem.price_veggie ? `Veggie: $${(currentItem.price_veggie / 100).toFixed(2)}` : null}
 								</p>
 							</Link>
 							{

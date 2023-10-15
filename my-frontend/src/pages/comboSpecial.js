@@ -47,6 +47,8 @@ const ComboSp = (props) => {
 								/>
 								<p style = {{paddingTop: '5%', textAlign: 'center', fontSize: 25}}>
 									{currentItem.name}
+									<br />
+									{currentItem.price ? `$${(currentItem.price / 100).toFixed(2)}` : null}
 								</p>
 							</Link>
 
