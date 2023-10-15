@@ -7,12 +7,14 @@ import About from "./pages/about";
 import Admin from './pages/admin';
 import { Home } from "./pages";
 import Login from "./pages/login";
+import EditUserCred from "./pages/editUser";
 import MainMenu from './pages/mainmenu';
 import Menu from "./pages/menu";
 import Details from "./pages/details";
-import Pizza_customize from './pages/pizza_customize'
+import PizzaCustomize from './pages/pizza_customize'
 import Lunch from './pages/lunchMenu';
-import Drink_specialties from "./pages/drink";
+import Drink from "./pages/drink";
+import DrinkSpecialties from "./pages/drink";
 import ComboSp from './pages/comboSpecial';
 import PizzaSp from './pages/pizzaSpecial';
 import SpDeals from './pages/specialDeals';
@@ -20,6 +22,10 @@ import ListOrderManager from './pages/listOrderManager';
 import AuthProvider from './contexts/authContext';
 import UploadTemplate from './pages/uploadTemplate';
 import UploadTextTemplate from './pages/uploadTextTemplate';
+
+
+
+
 
 
 
@@ -50,18 +56,22 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/admin/editUserCred" element={<EditUserCred />} />
               <Route path="/mainmenu" element={<MainMenu />} />
               <Route path="/menu" element={<Menu />} />
               <Route path="/comboSpecial" element={<ComboSp />} />
               <Route path="/pizzaSpecial" element={<PizzaSp />} />
               <Route path="/specialDeals" element={<SpDeals />} />
               <Route path="/details/:id" element={<Details />} />
-              <Route path="/pizza_customize" element={<Pizza_customize />} />
+              <Route path="/pizza_customize" element={<PizzaCustomize />} />
               <Route path="/lunchMenu" element={<Lunch />} />
-              <Route path="/drink" element={<Drink_specialties />} />
+              <Route path="/drink" element={<Drink />} />
+              <Route path="/drink" element={<DrinkSpecialties />} />
               <Route path="/listOrderManager" element={<ListOrderManager />} />
               <Route path="/ItemFormLarge" element={<UploadTemplate />} />
               <Route path="/TextForm" element={<UploadTextTemplate />} />
+
+  
 
             </Routes>
             <Footer />

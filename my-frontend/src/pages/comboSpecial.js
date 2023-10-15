@@ -32,13 +32,13 @@ const ComboSp = (props) => {
 	  };
   
 	  return (
-		  <div>
+		  <div data-testid="comboSpecials">
 			<h1 className="card" style={{paddingLeft:'40%', paddingTop:'1%', paddingBottom:'1%', borderBottom:'1px solid black', background: 'transparent', borderColor: 'transparent'}}>Combo Sets</h1>
 			<div className="row">
 			  {!Array.isArray(items)
 				? items.item.map((currentItem) => {
 					return (
-						<div className="col-lg-3 pb-5" style={{display:'flex', flexDirection:'column', textAlign: 'center', paddingTop:'10px', paddingBottom:'2%'}}>
+						<div className="col-lg-3 pb-5" data-testid="comboMenuItem" style={{display:'flex', flexDirection:'column', textAlign: 'center', paddingTop:'10px', paddingBottom:'2%'}}>
 							<Link to={`/details/${currentItem._id}`} style={{color: 'black', textDecoration: 'none'}}>
 								<img
 									style={{width: 'auto', height: 225, borderRadius: '20%', objectfit: 'cover'}}
@@ -55,9 +55,9 @@ const ComboSp = (props) => {
 							{
 								auth ?
 								<div>
-									<button>Remove</button>
+									<button className="border px-10 py- fs-2 rounded-4">Remove</button>
 									<h> </h>
-									<button>Edit</button>
+									<button className="border px-10 py- fs-2 rounded-4">Edit</button>
 								</div>: null
 							}
 						</div>
@@ -68,5 +68,5 @@ const ComboSp = (props) => {
 	  </div>
 	);
   };
-  
+  export { ComboSp };
   export default ComboSp;

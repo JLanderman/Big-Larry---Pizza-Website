@@ -31,7 +31,7 @@ const PizzaSp = (props) => {
 	  };
   
 	  return (
-		  <div>
+		  <div data-testid="pizzaSpecialties">
 			<h1 className="card" style={{paddingLeft:'5%', paddingTop:'1%', paddingBottom:'1%', borderBottom:'1px solid black', background: 'transparent', borderColor: 'transparent'}}>Sam's Pizza Specialties (Large Size Only)</h1>
 			<div className="row">
 			  {!Array.isArray(items)
@@ -61,9 +61,9 @@ const PizzaSp = (props) => {
 							{
 								auth ?
 								<div>
-									<button>Remove</button>
+									<button className="border px-10 py- fs-5 rounded-4">Remove</button>
 									<h> </h>
-									<button>Edit</button>
+									<button className="border px-10 py- fs-5 rounded-4">Edit</button>
 								</div> : null
 							}
 						</div>
@@ -80,4 +80,5 @@ const PizzaSp = (props) => {
 	
   };
   
+  export { PizzaSp }
   export default PizzaSp;

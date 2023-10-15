@@ -54,7 +54,7 @@ describe('POST pizza/user/login', () => {
     })
 
     it('should return a token to a valid user', (done) => {
-        const payload = {username: "notadmin", password: "samspizza"};
+        const payload = {username: "unit_test", password: "samspizza&more_test_do_not_change!"};
         request(app)
             .post('/pizza/user/login')
             .send(payload)

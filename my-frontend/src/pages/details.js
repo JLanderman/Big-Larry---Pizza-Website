@@ -41,7 +41,7 @@ const Details = () => {
   };
 
   return (
-    <div>
+    <div data-testid="details">
       <div className = "title">
         <div>
           <div><h1>Choose your size</h1> </div>
@@ -94,4 +94,5 @@ const Details = () => {
   );
 };
 
+export { Details }
 export default Details;

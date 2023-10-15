@@ -57,17 +57,18 @@
   display: flex;
   justify-content: flex-start; /* Adjust as needed */
   align-items: center; /* Adjust as needed */
+  padding-left: 14%;
 }
 
 .pizzaSizeButtonCustom 
 {
-  width: var(--Round_Button_Size); /* Adjust the width as needed */
+  width: flex; /* Adjust the width as needed */
+  min-width: var(--Round_Button_Size);/* Makes button a circle at minimum size*/
   height: var(--Round_Button_Size); /* Adjust the height as needed */
   border-radius: 50%; /* Makes the button round */
-  margin: 30px; /* Adds some spacing between buttons */
+  margin: 1%; /* Adds some spacing between buttons */
   font-size: 30px; /* Adjust the font size as needed */
   position: relative; /* Use relative positioning */
-  left: 260px; /* Adjust this value to control the space to the left */
   
 }
 
@@ -78,21 +79,28 @@
   border: 2px solid #000000; /* Add a border to maintain button outline */
 }
 
-.toppingButtonsCustom 
+.toppingButtonsCustom /*this one*/
 {
   display: flex;
+  padding-left: 15%;
+  padding-right: 30%;
   flex-wrap: wrap;
-  gap: 10px; /* Adjust the gap as needed */
-  max-width: 100%; /* Ensure it doesn't exceed the container width */
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0px; /* Adjust the gap as needed */
 }
 
-.pizzaToppingButtonCustom 
+.pizzaToppingButtonCustom /*this one*/
 {
-  width: calc(16.666% - 10px); /* 16.666% represents 1/6 of the container width */
-  height: auto; /* Let the height adjust based on content */
+  min-width: 15%;
+  max-width: calc(25% - 10px); /* 16.666% represents 1/6 of the container width */
+  min-height: 55px;
+  height: flex; /* Let the height adjust based on content */
   border: none; /* Remove border */
-  background-color: transparent; /* Remove background color */
-  flex-grow: 1; /* Allow buttons to grow within the available space */
+  border-radius: 20%;
+  margin: 10px;
+  background-color: rgba(52, 52, 52, 0.08); /* Remove background color */
+  /*flex-grow: 1; /* Allow buttons to grow within the available space */
   font-size: 20px; /* Adjust the font size as needed */
   position: relative; /* Use relative positioning */
 }
@@ -103,7 +111,7 @@
   flex-direction: column;
   gap: 10px; /* Adjust the gap between buttons in a row as needed */
 }
-.pizzaToppingButtonCustom.selected 
+.pizzaToppingButtonCustom.selected /*final one*/
 {
   background-color: var(--clr-menu-dark); /* Change background color when selected */ 
   color: #fff; /* Change text color when selected */

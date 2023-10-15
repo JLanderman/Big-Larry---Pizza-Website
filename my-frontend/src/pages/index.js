@@ -9,13 +9,13 @@ const Home = () => {
   return (
     <div className="homeContainerStyle">
       <div className="homeTextContainer">
-        <h1 className="homeHeader">
-          Sam's Pizza & More
+        <h1 className="homeHeader" data-testid="homeHeader">
+          Sam's Pizza && More
         </h1>
         <div className='homeSubHeader'>
-          <div>BEST PRICE ! REAL TASTE !</div>
-          <div className='homePhoneNumber'>
-            <img src={contactSign} alt='telephone:' style={{ height: '1em', paddingRight: '0.25em' }} />
+          <div className='homeFirstLine'>BEST PRICE ! REAL TASTE !</div>
+          <div className='homeSecondLine'>
+            <img src={contactSign} alt='telephone:' style={{ width: '1.75em', height: '1em', paddingRight: '0.75em' }} />
             {phoneNum}
           </div>
         </div>

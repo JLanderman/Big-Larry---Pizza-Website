@@ -34,7 +34,7 @@ const SpDeals = (props) => {
   
 	  return (
 		  <div>
-			<h1 className="card" style={{paddingLeft:'40%', paddingTop:'1%', paddingBottom:'1%', borderBottom:'1px solid black', background: 'transparent', borderColor: 'transparent'}}>Special Deals</h1>
+			<h1 className="card" style={{paddingLeft:'40%', paddingTop:'1%', paddingBottom:'1%', borderBottom:'1px solid black', background: 'transparent', borderColor: 'transparent'}} data-testid="specialDeals">Special Deals</h1>
 			<div className="row">
 			  {!Array.isArray(items)
 				? items.item.map((currentItem) => {
@@ -58,9 +58,9 @@ const SpDeals = (props) => {
 							{
 								auth ?
 								<div>
-									<button>Remove</button>
+									<button className="border px-10 py- fs-5 rounded-4" >Remove</button>
 									<h> </h>
-									<button>Edit</button>
+									<button className="border px-10 py- fs-5 rounded-4">Edit</button>
 								</div>
 								
 								:null

@@ -7,7 +7,7 @@ import '../App.css';
 import Cookies from 'js-cookie';
 
 
-const Lunch= (props) => {
+const Lunch = (props) => {
     const [items, setItems] = useState([]);
 
     const { auth} = useAuth(); 
@@ -106,6 +106,7 @@ const Lunch= (props) => {
       );
     };
 
+    export { Lunch }
     export default Lunch;
 
 

@@ -1,5 +1,5 @@
 import UserDAO from '../dao/UserDAO.js';
-import { SignJWT } from 'jose';
+import { SignJWT, decodeJwt, jwtVerify } from 'jose';
 const maxAgeMS = 1000 * 60 * 30; // 1000 * 60 * 30 = 30 mins
 
 export default class UserController {
@@ -38,4 +38,33 @@ export default class UserController {
       console.error(`Failed to login user in user controller, ${e}`)
     };
   };
+
+  static async apiGetUserbyToken(req, res, next){
+    try{
+      let signedToken = req.body.token;
+      const verified = await decodeJwt(signedToken, process.env.JWT_SECRET);
+      res.status(200).json({username: verified.user.username});
+      return res;
+    } catch(e) {
+      console.error(`Token failed, ${e}`)
+    }
+  }
+
+  static async apiEditUser(req, res){
+    const username = req.body.username;
+    const newUsername = req.body.newUsername;
+    const newPassword = req.body.newPassword;
+
+    if (!username) return res.status(400);
+    if (!newUsername) return res.status(400);
+    if (!newPassword) return res.status(400);
+
+
+    try{
+      await UserDAO.editUserLogin(username, newUsername, newPassword); //attempt to edit user login
+      console.log('Change Success')
+    }catch(e){
+      console.error(`Failed to edit user in user controller, ${e}`);
+    }
+  }
 };
