@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import styles from "./details.css";
-
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
@@ -10,10 +9,6 @@ const picUrl = 'https://testingschoolproject.s3.us-west-1.amazonaws.com/'
 const Details = () => {
   let [menuItem, setMenuItem] = useState();
   let params = useParams();
-
-  const sizeList = [
-    "P", "S", "M", "L", "XL"
-  ];
 
   const [selectedSize, setSelectedSize] = useState(null);
 
@@ -44,7 +39,7 @@ const Details = () => {
     <div data-testid="details">
       <div className = "title">
         <div>
-          <div><h1>Choose your size</h1> </div>
+          <div><h1>Item Details</h1> </div>
         </div>
       </div>
 
@@ -59,37 +54,14 @@ const Details = () => {
 
         <div className = "description">
           <div>
-            <div>{menuItem ? <h1>{menuItem.name}</h1> : <p>Loading Name</p>}</div>
-            <div>{menuItem ? <p>{menuItem.info}</p> : <p> Loading information</p>}</div>
+            <div>{menuItem && menuItem.name ? <h1>{menuItem.name}</h1> : <p>Loading Name</p>}</div>
+            <div>{menuItem && menuItem.info ? <p>{menuItem.info}</p> : null}</div>
+            <div>{menuItem && menuItem.price ? <p>${(menuItem.price / 100).toFixed(2)}</p> : null}</div>
+            <div>{menuItem && menuItem.price_chicken ? <p>Chicken: ${(menuItem.price_chicken / 100).toFixed(2)}</p> : null}</div>
+            <div>{menuItem && menuItem.price_veggie ? <p>Veggie: ${(menuItem.price_veggie / 100).toFixed(2)}</p> : null}</div>
           </div>
-
-          
         </div>
       </div>
-      <div className="sizeButtons">
-            {sizeList.map((size, index) => (
-              <button
-                key={index}
-                className={`pizzaSizeButton ${
-                  selectedSize === index ? "selected" : ""
-                }`}
-                onClick={() => handleSizeClick(index)}
-              >
-                {size}
-              </button>
-            ))}
-          </div>
-
-          <div className = "buttonContainer">
-            <select name = "menu" id = "menu-select">
-              <option value= "1">1</option>
-              <option value= "2">2</option>
-              <option value= "3">3</option>
-            </select>
-            < button className="myButton">
-               Add to cart
-            </button>
-          </div>
     </div>
   );
 };
