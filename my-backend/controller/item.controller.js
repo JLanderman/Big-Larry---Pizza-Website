@@ -173,10 +173,6 @@ export default class ItemController {
     console.log("Received values:", req.body);
   
     try {
-      if (price instanceof String){
-        //Just in case a string is thrown into the api
-        const newPrice = parseInt(price);
-      }
       //Turn the dollar amount into a whole integer
       const newPrice = price * 100;
       

@@ -42,9 +42,8 @@ class DataService {
       //The current toppings available are: Cheese, topping_1, topping_2, topping_3, comboVeggieAllMeat, xToppingxCheese
       //The current sizes are price_p, price_s, price_m, price_l, price_xl
 
-      //Assuming the new price is being passed in in the format of X.XX or "X.XX"; 
-      //i.e. a dollar amount. Will work as either a float or string.
-      //The api will handle turning it into an integer
+      //Assuming the new price is being passed in in the format of X.XX; 
+      //i.e. a dollar amount.The api will handle turning it into an integer
     }
 
     async putItemFront(formData) {
