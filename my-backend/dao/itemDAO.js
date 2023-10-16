@@ -2,6 +2,7 @@ let item;
 let cart;
 let lunch;
 let allItems;
+let customToppings;
 
 
 export default class ItemDao {
@@ -26,12 +27,22 @@ export default class ItemDao {
     }
     lunch = await conn.db(process.env.ITEM_NS).collection("lunchItems");
 
+    if(customToppings)
+    {
+      return;
+    }
+    customToppings = await conn.db(process.env.ITEM_NS).collection("customToppings");
+
     if (allItems) {
       return;
     }
     allItems = await conn.db(process.env.ITEM_NS).collection("allMenuItems");
   }
 
+  static async getCustomToppingsCollection(){
+    return customToppings;
+  }
+  
   static async getItem() {
     let query;
 

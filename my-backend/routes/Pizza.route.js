@@ -27,5 +27,8 @@ router.route("/allItems").post(itemController.apiPutItem)
 router.route("/drink").get(itemController.apiGetDrink)
 router.route("/user/editUser").post(userController.apiEditUser)
 router.route("/user/retrieveToken").post(userController.apiGetUserbyToken)
+router.route("/customToppings").post(itemController.apiGetToppingPrice);
+router.route("/customToppings/update").post(itemController.apiUpdateToppingPrice);
+
 
 export default router
