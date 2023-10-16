@@ -6,9 +6,11 @@ import Cookies from "js-cookie";
 
 function TextForm() {
   const [name, setName] = useState('');
+  // eslint-disable-next-line
   const [category, setCategory] = useState('');
   const [subCategory, setSubCategory] = useState('');
   const [price, setPrice] = useState('');
+  // eslint-disable-next-line
   const token = Cookies.get('x-auth-token'); 
 
   let updatedCategory;
@@ -24,7 +26,7 @@ function TextForm() {
       updatedSubCategory = '';
     }
     //if a drink was selected, set drink to be the category
-    else if(subCategory != ''){
+    else if(subCategory !== ''){
       updatedCategory = 'drink';
       updatedSubCategory = subCategory;
     }

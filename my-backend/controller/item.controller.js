@@ -120,6 +120,94 @@ export default class ItemController {
     res.json(response);
   }
 
+  static async apiGetToppingPrice(req, res, next) {
+    const { topping } = req.body;
+    console.log('topping:', topping);
+    try {
+      // Query the 'customToppings' collection based on topping and size
+      const customToppings = await itemDAO.getCustomToppingsCollection();
+
+      const customTopping = await customToppings.findOne({topping});
+      /* The Database items for the cutom toppings collection is set up like this:
+      _id: [OBJECTID]
+      topping: [TOPPING NAME]
+      price_p: [PERSONAL TOPPING PRICE]
+      price_s: [SMALL TOPPING PRICE]
+      price_m: [MEDIUMTOPPING PRICE]
+      price_l: [LARGE TOPPING PRICE]
+      price_xl: [EXTRA LARGE TOPPING PRICE]"*/
+      //The current toppings available are: Cheese, topping_1, topping_2, topping_3, comboVeggieAllMeat, xToppingxCheese
+
+      if (customTopping) {
+          // Return all price values divided by 100 to the front end
+          const {
+            price_p,
+            price_s,
+            price_m,
+            price_l,
+            price_xl
+          } = customTopping;
+
+          // Convert prices to dollars by dividing by 100
+          const prices = {
+            price_p: `$${(price_p / 100).toFixed(2)}`,
+            price_s: `$${(price_s / 100).toFixed(2)}`,
+            price_m: `$${(price_m / 100).toFixed(2)}`,
+            price_l: `$${(price_l / 100).toFixed(2)}`,
+            price_xl: `$${(price_xl / 100).toFixed(2)}`
+          };
+          res.json(prices);
+      } else {
+        // Handle the case when the topping is not found
+        res.status(404).json({ message: 'Topping not found' });
+      }
+    } catch (error) {
+      // Handle any errors that may occur during the database query
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  }
+
+  static async apiUpdateToppingPrice(req, res, next) {
+    const { topping, size, price } = req.body;
+    console.log("Received values:", req.body);
+  
+    try {
+      //Turn the dollar amount into a whole integer
+      const newPrice = price * 100;
+      
+  
+      // Update the price for the matching topping in the 'customToppings' collection
+      const updateQuery = {
+        topping,
+      };
+      updateQuery[size] = newPrice;
+      console.log(newPrice); // You can display success or error messages here
+
+      const customToppings = await itemDAO.getCustomToppingsCollection();
+
+      const result = await customToppings.updateOne(
+        { topping },
+        { $set: updateQuery }
+      );
+
+
+
+      if (result.modifiedCount === 1) {
+        // Handle success
+        res.json({ message: 'Price updated successfully' });
+      } else {
+        // Handle the case when the topping is not found
+        res.status(404).json({ message: 'Topping not found' });
+      }
+    } catch (error) {
+      // Handle any errors that may occur during the update
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  }
+  
+
   static async apiPutItem(req, res, next){
     const name = req.body.name;
     const itemCategory = req.body.itemCategory;

@@ -1,4 +1,6 @@
 let allItems;
+let customToppings;
+
 
 export default class ItemDao {
   /*
@@ -9,9 +11,15 @@ export default class ItemDao {
       return;
     }
     allItems = await conn.db(process.env.ITEM_NS).collection("allMenuItems");
+    
+    if(customToppings)
+    {
+      return;
+    }
+    customToppings = await conn.db(process.env.ITEM_NS).collection("customToppings");
   }
 
-  // getItem() gets all items.
+
   static async getItem() {
     let query;
 

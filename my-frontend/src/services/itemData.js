@@ -28,6 +28,24 @@ class DataService {
         return http.get('/specialDeals');
 
     }
+
+    getCustomToppings(topping){
+      return http.post(`/customToppings`, {topping}); 
+      // Pass the topping as a query parameter
+      //The current toppings available are: Cheese, topping_1, topping_2, topping_3, comboVeggieAllMeat, xToppingxCheese
+      //Outputs all price data from a given topping category
+    }
+
+    updateCustomToppingPrice(topping, size, price){
+      return http.post(`/customToppings/update`, {topping, size, price}); 
+      // Pass the topping, size, and price as a query parameter
+      //The current toppings available are: Cheese, topping_1, topping_2, topping_3, comboVeggieAllMeat, xToppingxCheese
+      //The current sizes are price_p, price_s, price_m, price_l, price_xl
+
+      //Assuming the new price is being passed in in the format of X.XX; 
+      //i.e. a dollar amount.The api will handle turning it into an integer
+    }
+
     async putItemFront(formData) {
       let res;
       const name = formData.get('name');
