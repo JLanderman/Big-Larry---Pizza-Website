@@ -183,10 +183,21 @@ export default class ItemDao {
     return { itemList, totalNumItem };
   }
 
-  static async putItem(name, itemCategory, photo, price){
-    console.log('itemDAO.js putItem Received data:', name, itemCategory, photo, price);
+  // get rid of photo field
+  static async putItem(name, itemCategory, subCategory, price, description, photo){
+    console.log('itemDAO.js putItem Received data:', name, itemCategory, subCategory, price, description, photo);
     let query;
-    query = {name: name, itemCategory: itemCategory, price: price};
+    if(itemCategory === 'lunch/Dinner'){
+      query = {name: name, itemCategory: itemCategory, price: price};
+    }
+    else if(itemCategory === 'drink'){
+      query = {name: name, itemCategory: itemCategory, subCategory: subCategory, price: price};
+    }
+    // pizza special category
+    else{
+      query = {name: name, itemCategory: itemCategory, price: price, description: description, photo: photo};
+    }
+    
     let cursor;
     try{
       cursor = await allItems.insertOne(query); //Insert items to query in database

@@ -207,13 +207,15 @@ export default class ItemController {
   static async apiPutItem(req, res, next){
     const name = req.body.name;
     const itemCategory = req.body.itemCategory;
-    const photo = req.body.photo;
+    const subCategory = req.body.subCategory;
     const price = req.body.price;
+    const description = req.body.description;
+    const photo =  req.body.photo;
         // we are putting in a lunch/Dinner item without a photo
-    console.log('apiPutitem: Received data:', name, itemCategory, photo, price);
+    console.log('apiPutitem: Received data:', name, itemCategory, subCategory, price, description, photo);
       try {
         // Call the itemDAO.putItem method to insert the item into MongoDB
-        await itemDAO.putItem(name, itemCategory, price);
+        await itemDAO.putItem(name, itemCategory, subCategory, price, description, photo);
           res.status(201).json({ success: true, message: "Item inserted successfully" });
               } catch (error) {
         console.error("Error:", error);
