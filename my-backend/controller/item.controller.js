@@ -176,7 +176,6 @@ export default class ItemController {
       //Turn the dollar amount into a whole integer
       const newPrice = price * 100;
       
-  
       // Update the price for the matching topping in the 'customToppings' collection
       const updateQuery = {
         topping,
@@ -190,8 +189,6 @@ export default class ItemController {
         { topping },
         { $set: updateQuery }
       );
-
-
 
       if (result.modifiedCount === 1) {
         // Handle success
@@ -207,19 +204,18 @@ export default class ItemController {
     }
   }
   
-
   static async apiPutItem(req, res, next){
     const name = req.body.name;
     const itemCategory = req.body.itemCategory;
     const photo = req.body.photo;
     const price = req.body.price;
-    // we are putting in a lunch/Dinner item without a photo
+        // we are putting in a lunch/Dinner item without a photo
     console.log('apiPutitem: Received data:', name, itemCategory, photo, price);
       try {
         // Call the itemDAO.putItem method to insert the item into MongoDB
         await itemDAO.putItem(name, itemCategory, price);
-        res.status(201).json({ success: true, message: "Item inserted successfully" });
-      } catch (error) {
+          res.status(201).json({ success: true, message: "Item inserted successfully" });
+              } catch (error) {
         console.error("Error:", error);
         res.status(500).json({ error: "An error occurred while inserting the item" });
       }
@@ -245,6 +241,41 @@ export default class ItemController {
       await itemDAO.putItem(name, itemCategory, photo);
   }
   */
+
+  static async apiDeleteItem(req, res, next){
+    const name = req.body.name;
+    const itemCategory = req.body.itemCategory;
+      try {
+        await itemDAO.deleteItem(name, itemCategory); //Delete item by name and it's category
+        res.status(200).json({ success: true, message: "Item deleted successfully" });
+      } catch (error) {
+        console.error(`Cannot delete item, ${e}`)
+      }
+  }
+
+  static async apiModifyItem(req, res, next){
+    const curName = req.body.curName;
+    const curItemCat = req.body.curItemCat;
+    const name = req.body.name;
+    const itemCategory = req.body.itemCategory;
+    const photo = req.body.photo;
+    const price = req.body.price;
+    const priceLarge = req.body.price_large;
+    const priceSmall = req.body.price_small;
+      try {
+        if(!priceLarge && !priceSmall){
+          itemDAO.modifyItem(curName, curItemCat, name, itemCategory, photo, price);  //Modify item that only has one price
+          res.status(200).json({ success: true, message: "Item modified successfully with one price" });
+          return res;
+        }else{
+          itemDAO.modifyItemTwo(curName, curItemCat, name, itemCategory, photo, priceLarge, priceSmall); //Modify item that has two prices (large/small)
+          res.status(200).json({ success: true, message: "Item modified successfully with two prices" });
+          return res;
+        }
+      } catch (error) {
+        console.error(`Cannot modify item, ${e}`)
+      }
+  }
 
   static async apiGetDrink(req, res, next)
   {

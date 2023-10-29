@@ -61,8 +61,12 @@ export default class UserController {
 
 
     try{
-      await UserDAO.editUserLogin(username, newUsername, newPassword); //attempt to edit user login
-      console.log('Change Success')
+      const checkSuccess = await UserDAO.editUserLogin(username, newUsername, newPassword); //attempt to edit user login
+      if(checkSuccess){
+        return res.status(200).send("Change Success");
+      }else{
+        return res.status(200).send("No Change Done");
+      }
     }catch(e){
       console.error(`Failed to edit user in user controller, ${e}`);
     }
