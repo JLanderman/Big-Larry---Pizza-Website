@@ -46,24 +46,29 @@ class DataService {
       //i.e. a dollar amount.The api will handle turning it into an integer
     }
 
+    // works with items from textTemplate that just have name, itemCategory, price
     async putItemFront(formData) {
       let res;
       const name = formData.get('name');
       const itemCategory = formData.get('itemCategory');
-      const photo = formData.get('photo');
       const price = formData.get('price');
+      const subCategory = formData.get('subCategory');
+      const description = formData.get('description');
+      const photo = formData.get('photo');
 
       console.log('Name:', formData.get('name'));
       console.log('itemCategory:', formData.get('itemCategory'));
       console.log('subCategory:', formData.get('subCategory'));
       console.log('price:', formData.get('price'));
-      console.log('photo:', formData.get('photo'));
-      
+      // added subCategory field
       try {
           res = await http.post("/allItems", {
             name,
             itemCategory,
+            subCategory,
             price,
+            description,
+            photo,
           });
 
     
@@ -79,6 +84,7 @@ class DataService {
         throw { success: false, message: "An error occurred while making the API request" };
       }
     }
+    
     /*
     // works with dummy data on uploadText
     async putItemFront(formData) {

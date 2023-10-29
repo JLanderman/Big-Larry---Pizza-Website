@@ -19,7 +19,18 @@ function TextForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    // don't allow empty submission
+    if (!token) {
+      // User is not authenticated, handle accordingly (e.g., redirect to the login page or show an alert)
+      alert('You need to be logged in to submit the form.');
+      return;
+    }
+    if (name === '' || (subCategory === '' && category !== 'lunch/Dinner') || price === '') {
+      // Display an error message or alert the user
+      alert('Please fill in all required fields before submitting.');
+      return; // Exit the function without further processing
+    }
+    
     //lunch/Dinner has no subcategory, but is a category itself. 
     if (subCategory === 'lunch/Dinner'){
       updatedCategory = 'lunch/Dinner';
@@ -45,10 +56,7 @@ function TextForm() {
     console.log('itemCategory:', formData.get('itemCategory'));
     console.log('subCategory:', formData.get('subCategory'));
     console.log('price:', formData.get('price'));
-    console.log('photo:', formData.get('photo'));
-    if(formData.get('photo') === null){
-      console.log("Photo was null before call was made to putItemFront")
-    }
+    
     const res = await DataService.putItemFront(formData);
     console.log('Item uploaded successfully');
     // Handle success (e.g., show a success message to the user)

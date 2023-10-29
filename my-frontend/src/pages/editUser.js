@@ -58,24 +58,40 @@ const styles = {
     const EditUser = () => {
       const [newUsername, setNewUsername] = useState("");
       const [newPassword, setNewPassword] = useState("");
+      const [confirmPassword, setConfirmPassword] = useState('');
+      const [error, setError] = useState(null);
+      const [success, setSuccess] = useState(false);
       const navigate = useNavigate();
 
       const handleSubmit = async event => {
           event.preventDefault();
+          if (newPassword !== confirmPassword) {
+            setError("Passwords do not match");
+            return; // Prevent further execution if passwords do not match
+          } else {
+            setSuccess("Passwords matched and updated successfully");
+          }
+        
           try {
             const token = Cookies.get('x-auth-token');
             const user = await UserService.getUserbyToken(token);
             console.log('check user recieved')
             console.log(user)
-            const res = await UserService.editUserCred(user, newUsername, newPassword);
+            const res = await UserService.editUserCred(user, newUsername,newPassword);
+            setSuccess(true);
+            //message display sucessful
+            setSuccess("Sucess");
           } catch (e) {
             console.error(`handleSubmit failed in editUser.js, ${e}`);
+            setError('An error occurred. Please try again');
             navigate('/');
           };
         };
 
     return(
         <div>
+            {error && <div style={{color: 'red'}}>{error}</div>}
+            {success && <div style={{color: 'green'}}>{success}</div>}
             <form onSubmit={(e) => handleSubmit(e)} style={styles.container}>
             <div style={{justifyContent: 'center', paddingLeft:'40%', paddingTop:'2%', paddingBottom:'3%'}}>
             </div>
@@ -101,6 +117,18 @@ const styles = {
                 onChange={(e) => setNewPassword(e.target.value)}
                 style={styles.input}>
                 </input>
+            </div>
+ 
+            <div style = {styles.innerContainer}>
+              <label htmlFor="confirmPassword">Confirm Password</label> <br />
+              <input
+              type ="password"
+              className="square rounded-pill"
+              id ='confirmPassword'
+              autoComplete ="off"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              style={styles.input}
+              />
             </div>
 
             <div style={styles.innerContainer}>
