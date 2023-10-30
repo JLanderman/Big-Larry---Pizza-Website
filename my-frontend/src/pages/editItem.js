@@ -43,7 +43,9 @@ const EditItem = () => {
             <div className="detailsFlexContainer">
               <div className="detailsPictureContainer">
                 {menuItem.photo ? // Render item picture
-                  <img className="detailsPicture" src={picUrl + menuItem.photo}></img>
+                  <div style={{display: 'flex', width: '100%', height: '100%', justifyContent: 'center', alignContent: 'center'}}>
+                    <img className="detailsPicture" src={picUrl + menuItem.photo}></img>
+                  </div>
                   : <div>No picture for item</div>
                 }
                 <button className="detailsButton">

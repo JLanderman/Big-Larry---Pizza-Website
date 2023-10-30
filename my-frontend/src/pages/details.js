@@ -42,7 +42,9 @@ const Details = () => {
             <div className="detailsFlexContainer">
               <div className="detailsPictureContainer">
                 {menuItem.photo ?
-                  <div style={{display: 'flex', width: '100%', height: '100%'}}><img className="detailsPicture" src={picUrl + menuItem.photo}></img></div>
+                  <div style={{display: 'flex', width: '100%', height: '100%', justifyContent: 'center', alignContent: 'center'}}>
+                    <img className="detailsPicture" src={picUrl + menuItem.photo}></img>
+                  </div>
                   : <div>No picture for item</div>
                 }
               </div>
