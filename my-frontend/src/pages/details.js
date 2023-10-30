@@ -55,8 +55,8 @@ const Details = () => {
         <div className = "description">
           <div>
             <div>{menuItem && menuItem.name ? <h1>{menuItem.name}</h1> : <p>Loading Name</p>}</div>
-            <div>{menuItem && menuItem.info ? <p>{menuItem.info}</p> : null}</div>
-            <div>{menuItem && menuItem.price ? <p>${(menuItem.price / 100).toFixed(2)}</p> : null}</div>
+            <div>{menuItem && menuItem.info ? <h4><p>{menuItem.info}</p></h4> : null}</div>
+            <div>{menuItem && menuItem.price ? <h2><p>${(menuItem.price / 100).toFixed(2)}</p></h2> : null}</div>
             <div>{menuItem && menuItem.price_chicken ? <p>Chicken: ${(menuItem.price_chicken / 100).toFixed(2)}</p> : null}</div>
             <div>{menuItem && menuItem.price_veggie ? <p>Veggie: ${(menuItem.price_veggie / 100).toFixed(2)}</p> : null}</div>
           </div>
