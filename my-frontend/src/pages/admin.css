@@ -148,3 +148,7 @@
 .preview-submit{
     width: 100%;
 }
+
+.custom-palette-apply, .custom-palette-name {
+    width: 50%;
+}

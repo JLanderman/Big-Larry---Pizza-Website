@@ -22,6 +22,33 @@ import AuthProvider from './contexts/authContext';
 import UploadTemplate from './pages/uploadTemplate';
 import UploadTextTemplate from './pages/uploadTextTemplate';
 import EditItem from './pages/editItem';
+import PaletteService from "./services/paletteData"
+
+
+let res = PaletteService.getLatestPalette()
+  .then((res) => {
+    console.log("getCurrentPalette return = " + JSON.stringify(res.data))
+    let currentPaletteArr = res.data.palette[0].colorArr;
+    // console.log(JSON.stringify(currentPaletteArr))
+    let root = document.querySelector(":root");
+    root.setAttribute(
+      "style",
+      `
+      --clr-bg: ${currentPaletteArr[0]};
+      --clr-menu-light: ${currentPaletteArr[1]};
+      --clr-menu: ${currentPaletteArr[2]};
+      --clr-menu-dark: ${currentPaletteArr[3]};
+      
+      --clr-txt: ${currentPaletteArr[4]};
+      --clr-txt-light: ${currentPaletteArr[5]};
+      --clr-txt-highlight: ${currentPaletteArr[6]};
+      --clr-link: ${currentPaletteArr[7]};
+        `
+    );
+  }).catch((e) => {
+    console.log("error in admin getCurrentPalette")
+    console.log(e);
+  })
 
 const styles = {
   appContainer: {

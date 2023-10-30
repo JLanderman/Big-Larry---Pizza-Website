@@ -5,6 +5,7 @@ import pizzaRouter from './routes/Pizza.route.js'
 import dotenv from 'dotenv'
 import itemDao from './dao/itemDAO.js'
 import UserDAO from './dao/UserDAO.js';
+import PaletteDao from './dao/paletteDAO.js'
 
 const app = express()
 
@@ -27,6 +28,7 @@ MongoClient.connect(process.env.ITEM_DB_URI, {
 }).then(async (client) => {
   await itemDao.injectDB(client);
   await UserDAO.injectDB(client);
+  await PaletteDao.injectDB(client);
 });
 
 app.listen(5000, () => { console.log("Server started on port 5000") }) //api needs to run on a different port than the front end

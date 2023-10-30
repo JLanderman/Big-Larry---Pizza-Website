@@ -7,20 +7,54 @@ import { HexColorPicker, HexColorInput } from "react-colorful";
 import { useState } from "react";
 import "./admin.css"
 
+import PaletteService from "../services/paletteData"
+
 const Admin = () => {
     const { auth } = useAuth();
     const navigate = useNavigate();
 
     React.useEffect(() => {
       if (!auth) navigate('/');
-  });
-
-  const token = Cookies.get('x-auth-token');
+    });
+    
+    const token = Cookies.get('x-auth-token');
+    
+    const [currentPalette, setCurrentPalette] = useState([]);
+    const getCurrentPalette = () => {
+      let res = PaletteService.getLatestPalette()
+        .then((res) => {
+          console.log("getCurrentPalette return = " + JSON.stringify(res.data))
+          setCurrentPalette(res.data)
+          console.log(JSON.stringify(currentPalette))
+          console.log(JSON.stringify(currentPalette.palette[0].colorArr))
+          console.log(JSON.stringify(res.data.palette[0].colorArr))
+        }).catch((e) => {
+          console.log("error in admin getCurrentPalette")
+          console.log(e);
+        })
+    }
+    
+    
+    const [customPalettes, setCustomPalettes] = useState([]);
+    const retrievePalettes = () => {
+      console.log("retrievePalettes in admin.js")
+      let res = PaletteService.getLastTenPalettes()
+        .then((res) => {
+          setCustomPalettes(res.data)
+        }).catch((e) => {
+          console.log("error in admin retrievePalettes")
+          console.log(e);
+        })
+    }
+    
+    useEffect(() => {
+      retrievePalettes();
+      getCurrentPalette();
+    }, []);
     
     const PalettePreviewer = () => {
       return (
-        <div className="preview-parent preview">
-        {/* <div className="preview-accent-oval"></div> */}
+        <div className="preview-parent preview" data-testid="palettePreviewer">
           <div className="preview-header">
             <div className="navlink">
               SAM'S PIZZA & MORE
@@ -60,17 +94,6 @@ const Admin = () => {
           </div>
         </div>
       );
-      
-      // return (
-      // <div className="preview-parent preview">
-      //   <div className="preview menu">Menu</div>
-      //   <div className="preview accent">Menu</div>
-      //   <div className="preview menu">Menu</div>
-      //   <div className="preview accent">Menu</div>
-      //   <div className="preview menu">Menu</div>
-      //   <div className="preview accent">Menu</div>
-      //   <div className="preview menu">Menu</div>
-      // </div>)
     }
     
     
@@ -160,32 +183,31 @@ const Admin = () => {
     ]
     
     let paletteUpdate = (array) => {
-          setColorBG(array[0]);
-          setColorMenuLight(array[1])
-          setColorMenu(array[2])
-          setColorMenuDark(array[3])
-          setColorText(array[4])
-          setColorTextLight(array[5])
-          setColorTextHighlight(array[6])
-          setColorLink(array[7])
+      setColorBG(array[0]);
+      setColorMenuLight(array[1])
+      setColorMenu(array[2])
+      setColorMenuDark(array[3])
+      setColorText(array[4])
+      setColorTextLight(array[5])
+      setColorTextHighlight(array[6])
+      setColorLink(array[7])
     }
       
     let updateColors = (element) => {
       element.setAttribute(
-              "style",
-              `
-              --clr-bg: ${colorBG};
-              --clr-menu-light: ${colorMenuLight};
-              --clr-menu: ${colorMenu};
-              --clr-menu-dark: ${colorMenuDark};
-              
-              --clr-txt: ${colorText};
-              --clr-txt-light: ${colorTextLight};
-              --clr-txt-highlight: ${colorTextHighlight};
-              --clr-link: ${colorLink};
-                `
-            );
-            //add logic here to push changes to db
+        "style",
+        `
+        --clr-bg: ${colorBG};
+        --clr-menu-light: ${colorMenuLight};
+        --clr-menu: ${colorMenu};
+        --clr-menu-dark: ${colorMenuDark};
+        
+        --clr-txt: ${colorText};
+        --clr-txt-light: ${colorTextLight};
+        --clr-txt-highlight: ${colorTextHighlight};
+        --clr-link: ${colorLink};
+          `
+      );
     }
       
       let updatePreviewColors = () => {
@@ -196,6 +218,9 @@ const Admin = () => {
       let updateRootColors = () => {
         let root = document.querySelector(":root");
         updateColors(root);
+        
+        //logic here to push changes to db
+        pushPalette();
       }
       
       useEffect(() => {
@@ -203,12 +228,22 @@ const Admin = () => {
       }, [colorBG, colorMenuLight, colorMenu, colorMenuDark, colorText, colorTextLight, colorTextHighlight, colorLink]);
       
       let MetaUpdate = (array) => {
-        // let previewer = document.querySelector(".preview-parent")
-        // previewer.paletteUpdate(array);
         paletteUpdate(array);
       }
       
-      return (<div className="palette-grandparent">
+      const [customPaletteName, setCustomPaletteName] = useState("Custom");
+      const pushPalette = async () => {
+        console.log("pushPalette")
+        const res = await PaletteService.putPaletteFront(customPaletteName, [colorBG, colorMenuLight, colorMenu, colorMenuDark, colorText, colorTextLight, colorTextHighlight, colorLink])
+          .then((res) => {
+            console.log("putPaletteFront response = " + res.data); 
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      };
+      
+      return (<div className="palette-grandparent" data-testid="palettePicker">
         <div className="palette-parent">
           {/* <ColorPickerComponent setterFunction={setColorBG} /> */}
           
@@ -255,7 +290,10 @@ const Admin = () => {
             <HexColorInput color={colorLink} onChange={(e) => {setColorLink(e); updatePreviewColors();}} />
           </div>
         </div>
-        <button onClick={updateRootColors}>Apply changes to site</button>
+        <div>
+          <button className="custom-palette-apply" onClick={updateRootColors}>Apply changes to site</button>
+          <input type="text" value={customPaletteName} onInput={e => setCustomPaletteName(e.target.value)} className="custom-palette-name"></input>
+        </div>
         <div className="palette-presets">
           <button onClick={(e) => {MetaUpdate(crimsonPalette);   }}>Crimson</button>
           <button onClick={(e) => {MetaUpdate(figmaPalette);     }}>Figma</button>
@@ -264,15 +302,30 @@ const Admin = () => {
           <button onClick={(e) => {MetaUpdate(burgerPalette);    }}>Burger</button>
           <button onClick={(e) => {MetaUpdate(halloweenPalette); }}>Halloween</button>
         </div>
+        
+        <div className="palette-history">
+          {!Array.isArray(customPalettes)
+            ? customPalettes.palettes.map((currentItem) => {
+                return (
+                  <>
+                    <button onClick={e => MetaUpdate(currentItem.colorArr)}>
+                      {currentItem.name}
+                    </button>
+                  </>
+                );
+              })
+            : retrievePalettes}
+        </div>
       </div>);
     };
     
     return ( // render admin page
-    <div className="admin-container">
+    <div className="admin-container" data-testid="adminContainer">
         <PalettePreviewer />
         <PaletteManager />
     </div>
     )
 };
 
+export { Admin };
 export default Admin;
