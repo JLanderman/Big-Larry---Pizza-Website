@@ -68,6 +68,8 @@ function App() {
               <Route path="/drink" element={<DrinkSpecialties />} />
               <Route path="/ItemFormLarge" element={<UploadTemplate />} />
               <Route path="/TextForm" element={<UploadTextTemplate />} />
+              <Route path="/TextForm/:id" element={<UploadTextTemplate />} />
+
 
   
 

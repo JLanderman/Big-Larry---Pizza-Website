@@ -46,6 +46,41 @@ class DataService {
       //i.e. a dollar amount.The api will handle turning it into an integer
     }
 
+    async updateMenuItemTextOnly(formData){
+      //currentName, currentItemCategory, name, itemCategory, photo, price
+      let res;
+      const curName = formData.get('currentName');
+      const name = formData.get('name');
+      const curItemCat = formData.get('currentItemCategory');
+      const itemCategory = formData.get('itemCategory');
+      const price = formData.get('price');
+      const subCat = formData.get('subCategory');
+
+      try {
+        res = await http.post("/allItems/updateItem", {
+          curName,
+          curItemCat,
+          name,
+          itemCategory,
+          subCat,
+          price,
+        });
+
+  
+      // Check if the response contains a 'success' property
+      if (res.data && res.data.success) {
+        return res.data; // Return the response data
+      } else {
+        // Return an error response if 'success' is not present
+        return { success: false, message: "Item upload failed" };
+      }
+      } catch (error) {
+        console.error("Error:", error);
+        throw { success: false, message: "An error occurred while making the API request" };
+      }
+    }
+
+
     // works with items from textTemplate that just have name, itemCategory, price
     async putItemFront(formData) {
       let res;

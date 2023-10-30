@@ -1,7 +1,10 @@
+//This page is for the uploading/editing menu items that are text only / lack pictures
+//This means the drink menu and lunch/dinner menu items. 
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DataService from "../services/itemData";
 import Cookies from "js-cookie";
+import { useParams } from "react-router-dom";
 
 
 function TextForm() {
@@ -10,12 +13,69 @@ function TextForm() {
   const [category, setCategory] = useState('');
   const [subCategory, setSubCategory] = useState('');
   const [price, setPrice] = useState('');
-  // eslint-disable-next-line
+  const [formattedPrice, setFormattedPrice] = useState('');
   const token = Cookies.get('x-auth-token'); 
+
+  //const { itemId } = useParams();
 
   let updatedCategory;
   let updatedSubCategory;
+  let existingName;
 
+
+  let [menuItem, setMenuItem] = useState();
+  let params = useParams();
+
+  
+  
+  useEffect(() => {
+    retrieveMenuItem();
+  }, []);
+  
+  const retrieveMenuItem = () => {
+    let url = `http://localhost:5000/pizza/items?_id=${params.id}`;
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+      setMenuItem(data[0]);
+      console.log(menuItem);
+
+      })
+      .catch((e) => 
+      {
+        console.log(e);
+      });
+      
+  };
+
+  const handlePriceChange = (e) => {
+    const newValue = e.target.value;
+
+    // Use a regular expression to match the expected format "x.xx, y.yy, z.zz"
+    const regex = /^\d+\.\d+(,\s*\d+\.\d+)*$/;
+
+    if (regex.test(newValue)) {
+      // If the input matches the format, set the state with the raw value
+      setFormattedPrice(newValue);
+    } else {
+      // Otherwise, set an empty value (or handle it differently)
+      setFormattedPrice('');
+    }
+  };
+  
+  const formatPrice = (price) => {
+    return price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1, ');
+  };
+
+  const formatPriceArray = (priceArray) => {
+    return priceArray.map((price) => `${price}`).join(', ');
+  };
+
+  React.useEffect(() => {
+    setFormattedPrice(formatPrice(price));
+  }, [price]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,31 +117,27 @@ function TextForm() {
     console.log('subCategory:', formData.get('subCategory'));
     console.log('price:', formData.get('price'));
     
-    const res = await DataService.putItemFront(formData);
-    console.log('Item uploaded successfully');
-    // Handle success (e.g., show a success message to the user)
+    if (menuItem) {
+      //Add neccessary values to the formdata for updating
+      formData.append('currentName', menuItem.name);
+      formData.append('currentItemCategory', menuItem.category); //this might need some work
+    
+
+      // If existingName has a value, use the updateMenuItemTextOnly API
+      const res = await DataService.updateMenuItemTextOnly(formData);
+      console.log('Item updated successfully');
+      // Handle success for update
+    } else {
+      // If existingName is empty, use the putItemFront API
+      const res = await DataService.putItemFront(formData);
+      console.log('Item uploaded successfully');
+      // Handle success for upload
+    }
   } catch (error) {
-    console.error('Error uploading item:', error);
+    console.error('Error uploading/updating item:', error);
     // Handle the error (e.g., show an error message to the user)
   }
-  //add a check for empty data?
-	// try {
-	// 	const res = await DataService.addItem(formData, token);
-	// 	console.log('Item uploaded successfully');
-	//   } catch (error) {
-	// 	console.error('Error uploading item:', error);
-	//   }
 
-
-	//// THIS CODE IS FOR TESTING. IT WILL THROW THE ////
-	//// UPLOADED VALUES INTO THE CONSOLE (f12) SO YOU CAN ////
-	//// DOUBLE CHECK TO MAKE SURE THE PROPER VALUES ARE BEING READ ////
-	//// CONTROL + BACKSLASH TO UNCOMMENT ENTIRE SECTION ////
-	//
-	// console.log('Name:', formData.get('name'));
-  // console.log('Category:', formData.get('category'));
-  // console.log('Sub category:', formData.get('subCategory'));
-  // console.log('Price:', formData.get('price'));
 
 
     // Reset form fields and selected file
@@ -94,37 +150,68 @@ function TextForm() {
   };
 
   return (
-    <div>
-		<div> <br></br><br></br><br></br> This is for Lunches and Drinks</div>
-      <form onSubmit={handleSubmit}>
+    
+    <div data-testid="textUpload">
+		  <div> <br></br><br></br><br></br></div>
+      <div className="centered-text">
+          {menuItem && menuItem.name ? <h1>Currently editing "{menuItem.name}"</h1> : <h1>Adding a new menu item</h1>} 
+      </div>
+      <div> <br></br><br></br><br></br></div>
+
+      <form onSubmit={handleSubmit} className="vertical-center">
+        {menuItem && menuItem.name ? <h3>Current item name: {menuItem.name}</h3> : <h3>Name</h3>}
         <input
           type="text"
-          placeholder="Item Name"
+          placeholder={menuItem && menuItem.name ? "New Item Name" : "Item Name"}
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-
+        <br></br>
+        {menuItem && (menuItem.drinktype || menuItem.category === 'lunch/Dinner') ? (
+          <h3>
+            Current category: {menuItem.drinktype || 'lunch/Dinner'}
+          </h3>
+        ) : (
+          <h3>Category</h3>
+        )}
         <select value={subCategory} onChange={(e) => setSubCategory(e.target.value)}>
           <option value="">Select an option</option>
           <option value= "lunch/Dinner">Lunch & Dinner</option>
-          <option value= "cold drink">Cold Drink</option>
-          <option value= "liter">Liter Bottles</option>
-          <option value= "shake">Milk-Shake</option>
-          <option value= "smoothie">Smoothie</option>
-          <option value= "other">Other Drink</option>
+          <option value= "Cold Drink">Cold Drink</option>
+          <option value= "2-Litter Soda">Liter Bottles</option>
+          <option value= "Shaved Ice">Shaved Ice</option>
+          <option value= "Milk Shakes">Milk Shake</option>
+          <option value= "Smoothies">Smoothie</option>
+          <option value= "Freeze/Float">Freeze/Float</option>
+          <option value= "Ice Cream  &  Other">Other Drink</option>
         </select>
+        <br></br>
+        {menuItem && menuItem.name ? (
+          <h3>
+            Currently Price(s):{" "}
+            {menuItem.category === "lunch/Dinner"
+              ? menuItem.price 
+              : Array.isArray(menuItem.price)
+              ? formatPriceArray(menuItem.price)
+              : menuItem.price / 100}
+          </h3>
+        ) : (
+          <h3>Price(s)</h3>
+        )}
+
 
         <input
-          type="number"
-          placeholder="Price"
+          type="text"
+          placeholder="X.XX,Y.YY,Z.ZZ" 
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
+        <br></br>
+        <button type="submit">{existingName ? "Update Item" : "Submit"}</button>
 
-        <button type="submit">Submit</button>
       </form>
     </div>
   );
 }
-
+export { TextForm }
 export default TextForm;
