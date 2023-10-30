@@ -14,14 +14,14 @@ const Home = () => {
         </h1>
         <div className='homeSubHeader'>
           <div className='homeFirstLine'>BEST PRICE ! REAL TASTE !</div>
-          <div className='homeSecondLine'>
+          <div className='homeSecondLine' data-testid="homeSecondLine">
             <img src={contactSign} alt='telephone:' style={{ width: '1.75em', height: '1em', paddingRight: '0.75em' }} />
             {phoneNum}
           </div>
         </div>
       </div>
       <div className='homePizzaColumn'>
-        <img src={homePizza} alt='pizza' className="homePizzaStyle" />
+        <img src={homePizza} alt='pizza' className="homePizzaStyle" data-testid="homePizza" />
         <div>OPEN MON TO SUN</div>
         <div>(11:00 AM - 9:00 PM)</div>
       </div>

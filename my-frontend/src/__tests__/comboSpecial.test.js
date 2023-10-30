@@ -7,7 +7,7 @@ afterEach(() => {
 })
 
 describe("Combo Specialties", () => {
-    render(<ComboSp />);
+    render(<BrowserRouter><ComboSp /></BrowserRouter>);
     test("Combo Specialties renders properly", () => {
         const combos = screen.getByTestId("comboSpecials");
         expect(combos).toBeInTheDocument();

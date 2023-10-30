@@ -7,9 +7,9 @@ const Footer = () => {
   return (
     <Container data-testid="footer">
       <Div>
-        <span data-testid="footerPhoneNumber">{phoneNum}</span>
+        <span style={{color: 'var(--clr-txt-light)'}} data-testid="footerPhoneNumber">{phoneNum}</span>
         <br />
-        <span data-testid="footerAddress">{address}</span>
+        <span style={{color: 'var(--clr-txt-light)'}} data-testid="footerAddress">{address}</span>
       </Div>
       <Div>
         <NavLink to="https://www.facebook.com/bestfoodcountryclub/">

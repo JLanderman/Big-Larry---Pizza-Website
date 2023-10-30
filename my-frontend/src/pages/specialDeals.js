@@ -1,19 +1,19 @@
 import React, { useEffect } from "react";
 import DataService from "../services/itemData";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useAuth } from "../contexts/authContext";
 import Cookies from 'js-cookie';
-
 
 const url = 'https://testingschoolproject.s3.us-west-1.amazonaws.com/'
 
 const SpDeals = (props) => {
 	// react hook, keeps track of items
 	const [items, setItems] = useState([]);
-
 	const {auth} = useAuth();
+	const navigate = useNavigate();
 
 
   
@@ -35,7 +35,7 @@ const SpDeals = (props) => {
 	  return (
 		  <div>
 			<h1 className="card" style={{paddingLeft:'40%', paddingTop:'1%', paddingBottom:'1%', borderBottom:'1px solid black', background: 'transparent', borderColor: 'transparent'}} data-testid="specialDeals">Special Deals</h1>
-			<div className="row">
+			<div className="row" style={{width: '100%'}}>
 			  {!Array.isArray(items)
 				? items.item.map((currentItem) => {
 					return (
@@ -55,22 +55,24 @@ const SpDeals = (props) => {
 									{currentItem.price_veggie ? `Veggie: $${(currentItem.price_veggie / 100).toFixed(2)}` : null}
 								</p>
 							</Link>
-							{
-								auth ?
+							{ auth ?
 								<div>
-									<button className="border px-10 py- fs-5 rounded-4" >Remove</button>
+									<button className="border px-10 py- fs-3 rounded-4">Remove</button>
 									<h> </h>
-									<button className="border px-10 py- fs-5 rounded-4">Edit</button>
+									<button // Redirect to edit page
+										className="border px-10 py- fs-3 rounded-4" 
+										onClick={(e) => navigate(`/editItem/${currentItem._id}`)}>
+										Edit
+									</button>
 								</div>
-								
-								:null
+								: null
 							}
 
 						</div>
 						
 				);
 			  })
-			: retrieveItems}
+			: null}
 		</div>
 	  </div>
 	);

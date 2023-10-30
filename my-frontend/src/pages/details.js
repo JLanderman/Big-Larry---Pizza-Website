@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import styles from "./details.css";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
@@ -10,11 +9,11 @@ const Details = () => {
   let [menuItem, setMenuItem] = useState();
   let params = useParams();
 
-  const [selectedSize, setSelectedSize] = useState(null);
+  // const [selectedSize, setSelectedSize] = useState(null);
 
-  const handleSizeClick = (index) => {
-    setSelectedSize(index);
-  };
+  // const handleSizeClick = (index) => {
+  //   setSelectedSize(index);
+  // };
 
   useEffect(() => {
     retrieveMenuItem();
@@ -29,39 +28,51 @@ const Details = () => {
       .then((data) => {
         setMenuItem(data[0]);
       })
-      .catch((e) => 
-      {
+      .catch((e) => {
         console.log(e);
       });
   };
 
   return (
-    <div data-testid="details">
-      <div className = "title">
-        <div>
-          <div><h1>Item Details</h1> </div>
-        </div>
-      </div>
+    <div className="detailsContainer" >
+      {menuItem && menuItem.name ? // Load menu item
+        <>
+          <h1 className="detailsHeader">{menuItem.name}</h1>
+          <div className="detailsGrid">
+            <div className="detailsFlexContainer">
+              <div className="detailsPictureContainer">
+                {menuItem.photo ?
+                  <div style={{display: 'flex', width: '100%', height: '100%'}}><img className="detailsPicture" src={picUrl + menuItem.photo}></img></div>
+                  : <div>No picture for item</div>
+                }
+              </div>
+            </div>
 
-      <div className = "myContainer">
-        <div className = "picture">
-          <div>{menuItem ? 
-            <img 
-            className = "itemPicture" src ={picUrl + menuItem.photo}></img> : 
-            <p>Loading Name</p>}
+            <div className="detailsFlexContainer">
+              <div className="detailsItemDetails">
+                {menuItem.price ?
+                  <h2>Price: ${(menuItem.price / 100).toFixed(2)}</h2>
+                  : null
+                }
+                {menuItem.price_chicken ?
+                  <h2>Chicken: ${(menuItem.price_chicken / 100).toFixed(2)}</h2>
+                  : null
+                }
+                {menuItem.price_veggie ?
+                  <h2>Veggie: ${(menuItem.price_veggie / 100).toFixed(2)}</h2>
+                  : null
+                }
+                {menuItem.info ?
+                  <p>{menuItem.info}</p>
+                  : <span>No description available.</span>
+                }
+              </div>
+            </div>
           </div>
-        </div>
+        </>
 
-        <div className = "description">
-          <div>
-            <div>{menuItem && menuItem.name ? <h1>{menuItem.name}</h1> : <p>Loading Name</p>}</div>
-            <div>{menuItem && menuItem.info ? <p>{menuItem.info}</p> : null}</div>
-            <div>{menuItem && menuItem.price ? <p>${(menuItem.price / 100).toFixed(2)}</p> : null}</div>
-            <div>{menuItem && menuItem.price_chicken ? <p>Chicken: ${(menuItem.price_chicken / 100).toFixed(2)}</p> : null}</div>
-            <div>{menuItem && menuItem.price_veggie ? <p>Veggie: ${(menuItem.price_veggie / 100).toFixed(2)}</p> : null}</div>
-          </div>
-        </div>
-      </div>
+        : null // Item still loading
+      }
     </div>
   );
 };

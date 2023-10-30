@@ -55,7 +55,7 @@ const Drink= (props) => {
                 
                 <div key ={type}>
                   <h2>{type}</h2>
-                    <div className="row">
+                    <div className="row" style={{width: '100%'}}>
                     {
                     drinkByType[type].map((currentItem) =>(
                      

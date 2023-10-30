@@ -170,7 +170,7 @@ const Login = () => {
           ? <div
             className="text-danger"
             style={styles.centerText}>
-            The user name or password are incorrect.
+            The username or password is incorrect.
           </div>
           : null
         }

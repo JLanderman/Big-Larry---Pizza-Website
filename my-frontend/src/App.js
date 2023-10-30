@@ -22,13 +22,7 @@ import ListOrderManager from './pages/listOrderManager';
 import AuthProvider from './contexts/authContext';
 import UploadTemplate from './pages/uploadTemplate';
 import UploadTextTemplate from './pages/uploadTextTemplate';
-
-
-
-
-
-
-
+import EditItem from './pages/editItem';
 
 const styles = {
   appContainer: {
@@ -37,17 +31,16 @@ const styles = {
     backgroundColor: "var(--clr-bg)",
     color: "var(--clr-txt)",
     fontWeight: "bold",
-    fontFamily: 'Roboto, Helvetica, Segoe UI, Arial, sans-serif'
-  },
-  contentWrap: {
-    paddingBottom: "4rem", // Space for footer
+    fontFamily: 'Roboto, Helvetica, Segoe UI, Arial, sans-serif',
+    display: "flex",
+    flexDirection: "column",
+    paddingBottom: "4rem",
   },
 };
 
 function App() {
   return (
     <div id="app-container" data-testid="app" style={styles.appContainer}>
-      <div id="content-wrap" data-testid="content-wrap" style={styles.contentWrap}>
         <AuthProvider>
           <Router>
             <Navbar />
@@ -70,14 +63,11 @@ function App() {
               <Route path="/listOrderManager" element={<ListOrderManager />} />
               <Route path="/ItemFormLarge" element={<UploadTemplate />} />
               <Route path="/TextForm" element={<UploadTextTemplate />} />
-
-  
-
+              <Route path="/editItem/:id" element={<EditItem />} />
             </Routes>
             <Footer />
           </Router>
         </AuthProvider>
-      </div>
     </div>
   );
 }

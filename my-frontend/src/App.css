@@ -337,3 +337,120 @@
     justify-content: center;
   }
 }
+
+/*********** Details ***********/
+.detailsContainer{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  flex: 1;
+}
+
+.detailsHeader{
+  width: auto;
+  height: auto;
+  text-align: center;
+  font-weight: var(--bold-weight);
+  padding-top: 2.5em;
+}
+
+.detailsGrid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 1em;
+  width: 100% - 1em;
+  height: 100% - 1em;
+  flex: 1;
+}
+
+.detailsFlexContainer
+{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2em;
+  width: 100% - 2em;
+  height: 100% - 2em;
+}
+
+.detailsPictureContainer
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+}
+
+.detailsPicture
+{
+  object-fit: contain;
+}
+
+.detailsItemDetails
+{
+  font-size: 2em;
+  font-weight: var(--light-weight);
+}
+
+@media (max-width: 1000px){
+  .detailsGrid{
+    grid-template-columns: 1fr;
+  }
+  
+  .detailsItemDetail
+  {
+    margin-top: 1em;
+  }
+}
+
+/** EditItem **/
+.detailsPictureButtonContainer
+{
+  margin: 2em;
+  display: flex;
+  flex-direction: column;
+}
+
+.detailsButtonContainer
+{
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  width: 100%-2em;
+  margin: 2em;
+}
+
+.detailsButton
+{
+  width: 50%;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  margin-top: 1em;
+  border-radius: 20px;
+  box-shadow: 0px 1px 1px var(--clr-menu-dark);
+  background-color: yellow;
+  color: black;
+  font-size: x-large;
+  font-weight: var(--bold-weight);
+}
+
+.detailsButton.delete{
+  margin: auto;
+  background-color: red;
+  color: white;
+}
+
+.detailsButton.save{
+  margin: auto;
+  background-color: green;
+  color: white;
+}
+
+.detailsEditDescription{
+  width: 100%;
+}

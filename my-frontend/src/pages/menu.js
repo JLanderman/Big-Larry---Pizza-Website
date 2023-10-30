@@ -51,7 +51,7 @@ const Menu = (props) => {
                 </div>
               );
             })
-          : retrieveItems}
+          : null}
       </div>
     </div>
   );

@@ -35,7 +35,7 @@ const Lunch = (props) => {
           }
           </div>
           <div>
-            <div className="row px-4" data-testid="lunchItem">
+            <div className="row px-4" data-testid="lunchItem" style={{width: '100%'}}>
               {!Array.isArray(items)
                 ? items.item.map((currentItem) => {
                     return (
@@ -71,7 +71,7 @@ const Lunch = (props) => {
                       </>
                     );
                   })
-                : retrieveItems}
+                : null}
             </div>
           </div>
 

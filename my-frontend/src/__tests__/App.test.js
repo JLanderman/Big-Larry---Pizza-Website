@@ -10,9 +10,3 @@ test('App renders', () => {
   const app = screen.getByTestId("app")
   expect(app).toBeInTheDocument();
 });
-
-test("Content wrap renders", () =>{
-  render(<App />);
-  const contentWrap = screen.getByTestId("content-wrap");
-  expect(contentWrap).toBeInTheDocument();
-})

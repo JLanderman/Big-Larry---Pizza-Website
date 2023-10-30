@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import DataService from "../services/itemData";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Cookies from 'js-cookie';
@@ -11,9 +12,8 @@ const url = 'https://testingschoolproject.s3.us-west-1.amazonaws.com/'
 const ComboSp = (props) => {
 	// react hook, keeps track of items
 	const [items, setItems] = useState([]);
-
 	const {auth} = useAuth();
-
+	const navigate = useNavigate();
 
   
 	// tells react hooks that it needs to do something after render.
@@ -34,7 +34,7 @@ const ComboSp = (props) => {
 	  return (
 		  <div data-testid="comboSpecials">
 			<h1 className="card" style={{paddingLeft:'40%', paddingTop:'1%', paddingBottom:'1%', borderBottom:'1px solid black', background: 'transparent', borderColor: 'transparent'}}>Combo Sets</h1>
-			<div className="row">
+			<div className="row" style={{width: '100%'}}>
 			  {!Array.isArray(items)
 				? items.item.map((currentItem) => {
 					return (
@@ -52,18 +52,22 @@ const ComboSp = (props) => {
 								</p>
 							</Link>
 
-							{
-								auth ?
+							{ auth ?
 								<div>
-									<button className="border px-10 py- fs-2 rounded-4">Remove</button>
+									<button className="border px-10 py- fs-3 rounded-4">Remove</button>
 									<h> </h>
-									<button className="border px-10 py- fs-2 rounded-4">Edit</button>
-								</div>: null
+									<button // Redirect to edit page
+										className="border px-10 py- fs-3 rounded-4" 
+										onClick={(e) => navigate(`/editItem/${currentItem._id}`)}>
+										Edit
+									</button>
+								</div>
+								: null
 							}
 						</div>
 					);
 			  	})
-			: retrieveItems}
+			: null}
 		</div>
 	  </div>
 	);
