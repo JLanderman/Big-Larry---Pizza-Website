@@ -52,12 +52,6 @@ const Navbar = () => {
             ? <NavLink to="/" onClick={() => { logout() }}>LOG OUT</NavLink>
             : <NavLink to="/login">SIGN IN</NavLink>
           }
-          <NavLink to="/listOrderManager">
-            List Order Manager
-          </NavLink>
-          <NavLink to="/">
-            <img src={searchSvg} alt='Search' style={SearchStyle} />
-          </NavLink>
         </NavMenu>
       </Nav>
     </>
