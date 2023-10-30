@@ -16,11 +16,12 @@ export default class UserDAO {
     const user = await users.findOne({username: username})
     
     try{ // Find match in db
-
-      if(await argon2.verify(user.password, password)){
+      if(!user){
+        return user;
+      }else if(await argon2.verify(user.password, password)){
         const newPswrdHash = await UserDAO.hashUser(password);
         await users.updateOne({username: username}, {$set: {password: newPswrdHash}});
-        return user
+        return user;
       }
     }
     catch (e){
@@ -46,6 +47,7 @@ export default class UserDAO {
 
     try{
         await users.updateOne(query1, {$set: query2});
+        return true;
     }catch(e){
       console.error(
         `Unable to issue user edit, ${e}`

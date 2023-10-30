@@ -5,6 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useAuth } from '../contexts/authContext';
 import '../App.css';
 import Cookies from 'js-cookie';
+import { Link } from 'react-router-dom';
+
 
 
 const Lunch = (props) => {
@@ -48,10 +50,13 @@ const Lunch = (props) => {
                               ?                              
                               <div >
                                 <div>   
-                                  <button className="border px-10 py- fs-5 rounded-4">Remove</button> 
-                                  <h>   </h>
-                                  <button className="border px-10 py- fs-5 rounded-4">Edit</button> 
-                                </div>
+                                    <button className="border px-10 py- fs-5 rounded-4">Remove</button> 
+                                    <h>   </h>
+                                    <Link to={`/TextForm/${currentItem._id}`}>
+                                      <button className="border px-10 py- fs-5 rounded-4">Edit</button>
+                                    </Link> 
+
+                                  </div>
                               </div>
                              : null
                             }
@@ -78,9 +83,13 @@ const Lunch = (props) => {
 
           <div className="d-flex justify-content-end pe-5 pt-5">
           {
-            auth ? 
-            <div><button className="border px-5 py-3 fs-2 rounded-4">Add New Item</button></div>
-            : null
+            auth ? (
+              <div>
+                <Link to="/TextForm">
+                  <button className="border px-5 py-3 fs-2 rounded-4">Add New Item</button>
+                </Link>
+              </div>
+            ) : null
           }
           </div>
         </div>     

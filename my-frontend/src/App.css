@@ -338,6 +338,44 @@
   }
 }
 
+/*********** Lunch & Dinner / Drink Upload Page ***********/
+.vertical-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+.vertical-center button {
+  margin-bottom: 10px; /* Adjust the spacing as needed */
+  width :30%;
+  height: 120%;
+  font-size:x-large;
+  border-radius: 20px;
+}
+.vertical-center input {
+  margin-bottom: 10px; /* Adjust the spacing as needed */
+  width :30%;
+  height: 120%;
+  font-size:x-large;
+  border-radius: 20px;
+}
+.vertical-center select {
+  margin-bottom: 10px; /* Adjust the spacing as needed */
+  width :30%;
+  height: 120%;
+  font-size:x-large;
+  border-radius: 20px;
+  
+}
+.centered-text {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+
+}
+
+
 /*********** Details ***********/
 .detailsContainer{
   display: flex;

@@ -18,7 +18,6 @@ import DrinkSpecialties from "./pages/drink";
 import ComboSp from './pages/comboSpecial';
 import PizzaSp from './pages/pizzaSpecial';
 import SpDeals from './pages/specialDeals';
-import ListOrderManager from './pages/listOrderManager';
 import AuthProvider from './contexts/authContext';
 import UploadTemplate from './pages/uploadTemplate';
 import UploadTextTemplate from './pages/uploadTextTemplate';
@@ -60,9 +59,9 @@ function App() {
               <Route path="/lunchMenu" element={<Lunch />} />
               <Route path="/drink" element={<Drink />} />
               <Route path="/drink" element={<DrinkSpecialties />} />
-              <Route path="/listOrderManager" element={<ListOrderManager />} />
               <Route path="/ItemFormLarge" element={<UploadTemplate />} />
               <Route path="/TextForm" element={<UploadTextTemplate />} />
+              <Route path="/TextForm/:id" element={<UploadTextTemplate />} />
               <Route path="/editItem/:id" element={<EditItem />} />
             </Routes>
             <Footer />

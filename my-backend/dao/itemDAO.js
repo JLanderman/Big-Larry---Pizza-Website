@@ -19,6 +19,9 @@ export default class ItemDao {
     customToppings = await conn.db(process.env.ITEM_NS).collection("customToppings");
   }
 
+  static async getCustomToppingsCollection(){
+    return customToppings;
+  }
 
   static async getItem() {
     let query;
@@ -180,18 +183,39 @@ export default class ItemDao {
     return { itemList, totalNumItem };
   }
 
-  static async putItem(name, itemCategory, photo, price){
-    console.log('itemDAO.js putItem Received data:', name, itemCategory, photo, price);
+  // get rid of photo field
+  static async putItem(name, itemCategory, subCategory, price, description, photo){
+    console.log('itemDAO.js putItem Received data:', name, itemCategory, subCategory, price, description, photo);
     let query;
-    query = {name: name, itemCategory: itemCategory, price: price};
+    if(itemCategory === 'lunch/Dinner'){
+      query = {name: name, itemCategory: itemCategory, price: price};
+    }
+    else if(itemCategory === 'drink'){
+      query = {name: name, itemCategory: itemCategory, subCategory: subCategory, price: price};
+    }
+    // pizza special category
+    else{
+      query = {name: name, itemCategory: itemCategory, price: price, description: description, photo: photo};
+    }
+    
     let cursor;
     try{
-      cursor = await allItems.insertOne(query);
+      cursor = await allItems.insertOne(query); //Insert items to query in database
     } catch(e){
       console.error('Unable to put item');
     }
   }
 
+  static async putItemTwo(name, itemCategory, photo, priceLarge, priceSmall){
+    let query;
+    query = {name: name, itemCategory: itemCategory, price_large: priceLarge, price_small: priceSmall, photo: photo};
+    let cursor;
+    try{
+      cursor = await allItems.insertOne(query); //Insert items to query in database
+    } catch(e){
+      console.error('Unable to put item');
+    }
+  }
 
   static async getDrink(){
     let query;
@@ -212,6 +236,41 @@ export default class ItemDao {
     const totalNumItem = await allItems.countDocuments(query);
 
     return {itemList, totalNumItem};
+  }
+
+  static async deleteItem(name, itemCategory){
+    let query;
+    query = {name: name, itemCategory: itemCategory};
+    let cursor;
+    try{
+      cursor = await allItems.deleteOne(query); //Delete item in database based on query
+    } catch(e){
+      console.error(`unable to delete item, ${e}`)
+    }
+  }
+
+  static async modifyItem(currentName, currentItemCategory, name, itemCategory, photo, price){
+    let query1, query2;
+    query1 = {name: currentName, itemCategory: currentItemCategory};
+    query2 = {name: name, itemCategory: itemCategory, photo: photo, price: price};
+    let cursor;
+    try{
+      cursor = await allItems.updateOne(query1, {$set: query2});  //Modify item in database based on name and category with query2
+    } catch(e){
+      console.error(`unable to modify item, ${e}`)
+    }
+  }
+
+  static async modifyItemTwo(currentName, currentItemCategory, name, itemCategory, photo, priceLarge, priceSmall){
+    let query1, query2;
+    query1 = {name: currentName, itemCategory: currentItemCategory};
+    query2 = {name: name, itemCategory: itemCategory, photo: photo, price_large: priceLarge, price_small: priceSmall};
+    let cursor;
+    try{
+      cursor = await allItems.updateOne(query1, {$set: query2});  //Modify item in database based on name and category with query2
+    } catch(e){
+      console.error(`unable to modify item, ${e}`)
+    }
   }
 
 }

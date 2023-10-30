@@ -17,24 +17,38 @@ function ItemFormLarge() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!token) {
+      // User is not authenticated, handle accordingly (e.g., redirect to the login page or show an alert)
+      alert('You need to be logged in to submit the form.');
+      return;
+    }
+    if(name ==='' || category ==='' || price ==='' || description ==='' || selectedFile.name ===''){
+    alert('Please fill in all required fields before submitting.');
+    return;
+  }
 
-
-    // Create a FormData object to append form fields and file
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('category', category);
-    formData.append('price', price*100);
-    formData.append('description', description);
-    formData.append('image', selectedFile);
-
-    // Send the formData to your server for processing
-    //check for empty data?
-	// try {
-	// 	const res = await DataService.addItem(formData, token);
-	// 	console.log('Item uploaded successfully');
-	//   } catch (error) {
-	// 	console.error('Error uploading item:', error);
-	//   }
+  // Create a FormData object to append form fields and file
+  const formData = new FormData();
+  formData.append('name', name);
+  formData.append('itemCategory', category);
+  formData.append('price', price*100);
+  formData.append('description', description);
+  //formData.append('image', selectedFile);
+  // just use filename for now
+  if (selectedFile) {
+    formData.append('photo', selectedFile.name);
+  }
+  else{
+    formData.append('photo', null);
+  }
+  // Send the formData to your server for processing
+  //check for empty data?
+	try {
+	const res = await DataService.putItemFront(formData);
+	console.log('Item uploaded successfully');
+	} catch (error) {
+	console.error('Error uploading item:', error);
+	}
 
 
 	//// THIS CODE IS FOR TESTING. IT WILL THROW THE ////

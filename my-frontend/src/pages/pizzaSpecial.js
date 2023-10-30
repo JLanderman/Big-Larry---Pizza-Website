@@ -58,7 +58,7 @@ const PizzaSp = (props) => {
 										{currentItem.price ? `$${(currentItem.price / 100).toFixed(2)}` : null}
 									</p>
 								</Link>
-								{auth ?
+								{auth && (currentItem.name !== 'Lets Customize') ?
 									<div>
 										<button className="border px-10 py- fs-3 rounded-4">Remove</button>
 										<h> </h>

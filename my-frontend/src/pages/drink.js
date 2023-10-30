@@ -4,6 +4,8 @@ import DataService from "../services/itemData";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useAuth } from '../contexts/authContext';
+import { Link } from 'react-router-dom';
+
 
 
 const Drink= (props) => {
@@ -58,31 +60,33 @@ const Drink= (props) => {
                     <div className="row" style={{width: '100%'}}>
                     {
                     drinkByType[type].map((currentItem) =>(
-                     
-                    <div className="col-6 text-dark fs-5 fw-normal">
-                      
-                        <div>{currentItem.drink}</div>  
-                       
-                            {auth
-                              ?                              
-                              <div >
-                                <div>   
-                                  <button className="border px-10 py- fs-5 rounded-4">Remove</button> 
-                                  <h>   </h>
-                                  <button className="border px-10 py- fs-5 rounded-4">Edit</button> 
+                      <div key={currentItem.id} className="col-6 text-dark fs-5 fw-normal">
+                        
+                          <div>{currentItem.name}</div>  
+                        
+                              {auth
+                                ?                              
+                                <div >
+                                  <div>   
+                                    <button className="border px-10 py- fs-5 rounded-4">Remove</button> 
+                                    <h>   </h>
+                                    <Link to={`/TextForm/${currentItem._id}`}>
+                                      <button className="border px-10 py- fs-5 rounded-4">Edit</button>
+                                    </Link> 
+
+                                  </div>
                                 </div>
-                              </div>
-                             : null
-                            } 
-                        {drinkByType[type][0].drinktype === 'Ice Cream  &  Other' ? (<p className="fw-semibold fs-5 text-primary"> ${currentItem.price}</p>): ('')}
-                    </div> 
+                              : null
+                              } 
+                          {drinkByType[type][0].drinktype === 'Ice Cream  &  Other' ? (<p className="fw-semibold fs-5 text-primary"> ${currentItem.price}</p>): ('')}
+                      </div> 
                     )) 
                   }
                   </div>
                   <div>
                       {drinkByType[type][0].price.length == 1 ? (<p className="fw-semibold fs-5 text-primary"> ${drinkByType[type][0].price[0]}</p>): ('')}
-                      {drinkByType[type][0].price.length == 2 ? (<p className="fw-semibold fs-5 text-primary">Small:${drinkByType[type][0].price[0]}  Large:${drinkByType[type][0].price[1]}</p>): ('')}
-                      {drinkByType[type][0].price.length == 3 ? (<p className="fw-semibold fs-5 text-primary"> Small${drinkByType[type][0].price[0]}    Medium:${drinkByType[type][0].price[1]}  Large: ${drinkByType[type][0].price[2]}</p>): ('')}
+                      {drinkByType[type][0].price.length == 2 ? (<p className="fw-semibold fs-5 text-primary">Small: ${drinkByType[type][0].price[0]}  Large: ${drinkByType[type][0].price[1]}</p>): ('')}
+                      {drinkByType[type][0].price.length == 3 ? (<p className="fw-semibold fs-5 text-primary"> Small: ${drinkByType[type][0].price[0]}    Medium: ${drinkByType[type][0].price[1]}  Large: ${drinkByType[type][0].price[2]}</p>): ('')}
                 
                       
                   </div>
@@ -95,9 +99,13 @@ const Drink= (props) => {
 
           <div className="d-flex justify-content-end pe-5 pt-5">
           {
-            auth ? 
-            <div><button className="border px-5 py-3 fs-2 rounded-4">Add New Item</button></div>
-            : null
+            auth ? (
+              <div>
+                <Link to="/TextForm">
+                  <button className="border px-5 py-3 fs-2 rounded-4">Add New Item</button>
+                </Link>
+              </div>
+            ) : null
           }
           </div>
         </div>     

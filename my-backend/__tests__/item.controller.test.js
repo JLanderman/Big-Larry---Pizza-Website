@@ -121,10 +121,182 @@ describe('ItemController', () => {
         });
     });
   }); // end getSpecialDeals
+
+  describe('apiGetDrink', () => {
+    it('should return a list of drink items', (done) => {
+      request(app)
+        .get('/pizza/drink')
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body).to.be.an('object')
+            done();
+        });
+    });
+  }); // end getDrink
+
+  describe('apiGetToppingPrice', () => {
+    it('should return a list of prices for topping', (done) => {
+      const payload = {topping: "Cheese"}
+      request(app)
+        .post('/pizza/customToppings')
+        .send(payload)
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body).to.be.an('object')
+          expect(res.body.price_p).to.equal('$4.99')
+          done();
+        });
+    });
+
+    it('should not return a list of prices for topping', (done) => {
+      const payload = {topping: "Mystery"}
+      request(app)
+        .post('/pizza/customToppings')
+        .send(payload)
+        .expect(404)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.message).to.equal('Topping not found')
+          done();
+        });
+    });
+  }) // end getToppingPrice
+
+  describe('apiUpdateToppingPrice', () => {
+
+    it('should update price for topping and size', (done) => {
+      const payload = {topping: "Cheese", size: "price_p", price: "5.99"}
+      request(app)
+        .post('/pizza/customToppings/update')
+        .send(payload)
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.message).to.equal('Price updated successfully')
+          done();
+        });
+    });
+
+    it('should update price for topping and size', (done) => {
+      const payload = {topping: "Cheese", size: "price_p", price: "4.99"}
+      request(app)
+        .post('/pizza/customToppings/update')
+        .send(payload)
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.message).to.equal('Price updated successfully')
+          done();
+        });
+    });
+
+    it('should not update for unknown topping', (done) => {
+      const payload = {topping: "mystery", size: "price_p", price: "4.99"}
+      request(app)
+        .post('/pizza/customToppings/update')
+        .send(payload)
+        .expect(404)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.message).to.equal('Topping not found')
+          done();
+        });
+    });
+
+  }) // end updateToppingPrice
+
+  describe('apiPutItem', () => {
+    it('should add item to database', (done) => {
+      const payload = {name: 'testFood', itemCategory: 'lunch/Dinner', photo: 'random.png', price: 666}
+      request(app)
+        .post('/pizza/allItems')
+        .send(payload)
+        .expect(201)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.message).to.equal("Item inserted successfully")
+          done();
+        });
+    });
+
+    it('should add item with two prices to database', (done) => {
+      const payload = {name: 'testFood1', itemCategory: 'lunch/Dinner', photo: 'random.png', price_large: 666, price_small: 333}
+      request(app)
+        .post('/pizza/allItems')
+        .send(payload)
+        .expect(201)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.message).to.equal("Item inserted successfully")
+          done();
+        });
+    });
+  }) // end putItem
+
+  describe('apiModifyItem', () => {
+    it('should modify item from database', (done) => {
+      const payload = {curName: 'testFood', curItemCat: 'lunch/Dinner', name: 'testFood2', itemCategory: 'lunch/Dinner', photo: 'random2.png', price: 777}
+      request(app)
+        .post('/pizza/allItems/updateItem')
+        .send(payload)
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.message).to.equal("Item modified successfully with one price")
+          done();
+        });
+    });
+  }) // end modifyItem
+
+  describe('apiModifyItemTwo', () => {
+    it('should modify item with two prices from database', (done) => {
+      const payload = {curName: 'testFood1', curItemCat: 'lunch/Dinner', name: 'testFood3', itemCategory: 'lunch/Dinner', photo: 'random2.png', price_large: 777, price_small: 666}
+      request(app)
+        .post('/pizza/allItems/updateItem')
+        .send(payload)
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.message).to.equal("Item modified successfully with two prices")
+          done();
+        });
+    });
+  }) // end modifyItem
+
+  describe('apiDeleteItem', () => {
+    it('should delete item from database', (done) => {
+      const payload = {name: 'testFood2', itemCategory: 'lunch/Dinner'}
+      request(app)
+        .post('/pizza/allItems/deleteItem')
+        .send(payload)
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.message).to.equal("Item deleted successfully")
+          done();
+        });
+    });
+
+    it('should delete item from database', (done) => {
+      const payload = {name: 'testFood3', itemCategory: 'lunch/Dinner'}
+      request(app)
+        .post('/pizza/allItems/deleteItem')
+        .send(payload)
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.message).to.equal("Item deleted successfully")
+          done();
+        });
+    });
+  }) // end deleteItem
+  
   /*
   * TODO:
   * fix putItem and get tests up
-  * create deleteItem, modifyItem, create tests
+  * create tests
   * unify database fields/schema
   */
 
