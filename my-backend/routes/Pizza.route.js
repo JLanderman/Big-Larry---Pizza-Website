@@ -1,6 +1,7 @@
 import express from 'express'
 import itemController from '../controller/item.controller.js'
 import userController from '../controller/user.controller.js'
+import paletteController from '../controller/palette.controller.js'
 
 const router = express.Router()
 
@@ -31,6 +32,9 @@ router.route("/user/editUser").post(userController.apiEditUser)
 router.route("/user/retrieveToken").post(userController.apiGetUserbyToken)
 router.route("/customToppings").post(itemController.apiGetToppingPrice);
 router.route("/customToppings/update").post(itemController.apiUpdateToppingPrice);
+router.route("/palettes").get(paletteController.apiGetLastTenPalettes);
+router.route("/palettes/current").get(paletteController.apiGetCurrentPalette);
+router.route("/palettes/add").post(paletteController.apiPutPalette);
 
 
 export default router
