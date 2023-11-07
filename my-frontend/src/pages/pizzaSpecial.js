@@ -5,10 +5,9 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useAuth } from "../contexts/authContext";
-import Cookies from 'js-cookie';
 
 
-const url = 'https://testingschoolproject.s3.us-west-1.amazonaws.com/'
+const url = process.env.REACT_APP_IMAGE_BASE_URL;
 
 const PizzaSp = (props) => {
 	// react hook, keeps track of items

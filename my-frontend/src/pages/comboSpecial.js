@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
 import DataService from "../services/itemData";
-import { Link, redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Cookies from 'js-cookie';
 import { useAuth } from "../contexts/authContext";
 
-const url = 'https://testingschoolproject.s3.us-west-1.amazonaws.com/'
+const url = process.env.REACT_APP_IMAGE_BASE_URL;
 
 const ComboSp = (props) => {
 	// react hook, keeps track of items
