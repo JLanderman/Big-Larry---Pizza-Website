@@ -9,7 +9,7 @@
   .bar {
     width: 25px;
     height: 3px;
-    background-color: #333;
+    /* background-color: #ff0000; */
     margin: 5px auto;
     transition: 0.4s;
   }
@@ -27,7 +27,7 @@
     top: 60px;
     left: 0;
     width: 100%;
-    background-color: #fff;
+    background-color: var(--clr-menu-light);
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   }
   
@@ -37,4 +37,8 @@
   
   .menu li {
     padding: 10px;
+  }
+
+  .hamburgerMenuItemText{
+    color:var(--clr-txt);
   }
