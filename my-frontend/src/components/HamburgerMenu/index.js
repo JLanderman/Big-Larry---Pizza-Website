@@ -15,10 +15,21 @@ function HamburgerMenu({ onClick }) {
       };
 
     const toggleMenu = () => {
-        setMenuOpen(!menuOpen);
-        if (onClick) {
+      setMenuOpen(!menuOpen);
+      if (onClick) {
         onClick();
-        }
+      }
+    };
+    
+    const closeMenu = () => {
+      setMenuOpen(false); // Close the menu
+      const menuToggle = document.getElementById('menu-toggle');
+      if (menuToggle) {
+        menuToggle.checked = false;
+      }
+      if (onClick) {
+        onClick();
+      }
     };
 
   return (
@@ -28,11 +39,11 @@ function HamburgerMenu({ onClick }) {
         <Bars />
       </label>
       <ul className={`menu ${menuOpen ? 'open' : ''}`} >
-        <li><NavLink to="/about"><div className='hamburgerMenuItemText'>ABOUT</div></NavLink></li>
-        <li><NavLink to="/mainmenu" data-testid="menuLinkHamburgerMenu"><div className='hamburgerMenuItemText'>MENU</div></NavLink></li>
+        <li><NavLink to="/about" onClick={closeMenu}><div className='hamburgerMenuItemText'>ABOUT</div></NavLink></li>
+        <li><NavLink to="/mainmenu" data-testid="menuLinkHamburgerMenu" onClick={closeMenu}><div className='hamburgerMenuItemText'>MENU</div></NavLink></li>
         <li>{loggedIn
-            ? <NavLink to="/" onClick={() => { logout() }}><div className='hamburgerMenuItemText'>LOG OUT</div></NavLink>
-            : <NavLink to="/login"><div className='hamburgerMenuItemText'>SIGN IN</div></NavLink>
+            ? <NavLink to="/" onClick={() => { logout() ; closeMenu(); }} ><div className='hamburgerMenuItemText'>LOG OUT</div></NavLink>
+            : <NavLink to="/login" onClick={closeMenu}><div className='hamburgerMenuItemText'>SIGN IN</div></NavLink>
           }</li>
       </ul>
     </div>
