@@ -14,7 +14,6 @@ import Details from "./pages/details";
 import PizzaCustomize from './pages/pizza_customize'
 import Lunch from './pages/lunchMenu';
 import Drink from "./pages/drink";
-import DrinkSpecialties from "./pages/drink";
 import ComboSp from './pages/comboSpecial';
 import PizzaSp from './pages/pizzaSpecial';
 import SpDeals from './pages/specialDeals';
@@ -85,7 +84,6 @@ function App() {
               <Route path="/pizza_customize" element={<PizzaCustomize />} />
               <Route path="/lunchMenu" element={<Lunch />} />
               <Route path="/drink" element={<Drink />} />
-              <Route path="/drink" element={<DrinkSpecialties />} />
               <Route path="/ItemFormLarge" element={<UploadTemplate />} />
               <Route path="/TextForm" element={<UploadTextTemplate />} />
               <Route path="/TextForm/:id" element={<UploadTextTemplate />} />

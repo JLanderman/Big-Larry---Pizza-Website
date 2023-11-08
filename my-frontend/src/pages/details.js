@@ -1,9 +1,8 @@
 import React from "react";
-import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-const picUrl = 'https://testingschoolproject.s3.us-west-1.amazonaws.com/'
+const picUrl = process.env.REACT_APP_IMAGE_BASE_URL;
 
 const Details = () => {
   let [menuItem, setMenuItem] = useState();
@@ -20,7 +19,7 @@ const Details = () => {
   }, []);
 
   const retrieveMenuItem = () => {
-    let url = `http://localhost:5000/pizza/items?_id=${params.id}`;
+    let url = process.env.REACT_APP_API_BASE_URL+`/items?_id=${params.id}`;
     fetch(url)
       .then((response) => {
         return response.json();

@@ -5,10 +5,9 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useAuth } from "../contexts/authContext";
-import Cookies from 'js-cookie';
 
 
-const url = 'https://testingschoolproject.s3.us-west-1.amazonaws.com/'
+const url = process.env.REACT_APP_IMAGE_BASE_URL;
 
 const PizzaSp = (props) => {
 	// react hook, keeps track of items
@@ -16,6 +15,28 @@ const PizzaSp = (props) => {
 	const { auth } = useAuth();
 	const navigate = useNavigate();
 
+	const handleRemoveItem = (_id) => {
+		const confirmation = window.confirm(`Are you sure you want to remove this item from the menu?`);
+		console.log('package id:', _id);
+  
+		if (confirmation) {
+		  if (confirmation) {
+			// User confirmed, proceed with deletion
+			DataService.deleteItem(_id).then((response) => {
+			  if (response.status === 200) {
+				console.log('Item deleted successfully');
+				window.location.reload(); // Refresh the page
+			  } else {
+				console.error('Failed to delete item');
+			  }
+			})
+			.catch((error) => {
+			  console.error('Error deleting item:', error);
+			}); // Call your deleteItem function with the _id
+		  }
+		}
+	  };
+  
 	// tells react hooks that it needs to do something after render.
 	useEffect(() => {
 		retrieveItems();
@@ -59,14 +80,18 @@ const PizzaSp = (props) => {
 									</p>
 								</Link>
 								{auth && (currentItem.name !== 'Lets Customize') ?
-									<div>
-										<button className="border px-10 py- fs-3 rounded-4">Remove</button>
-										<h> </h>
-										<button // Redirect to edit page
-											className="border px-10 py- fs-3 rounded-4"
-											onClick={(e) => navigate(`/editItem/${currentItem._id}`)}>
-											Edit
-										</button>
+                                  <div style={{ display: 'flex', justifyContent: 'center', gap: '3px' }}>   
+									<button
+										className="border px-10 py- fs-3 rounded-4"
+										onClick={() => handleRemoveItem(currentItem._id)}
+										>
+										Remove
+									</button>
+									<button // Redirect to edit page
+										className="border px-10 py- fs-3 rounded-4"
+										onClick={(e) => navigate(`/editItem/${currentItem._id}`)}>
+										Edit
+									</button>
 									</div>
 									: null
 								}

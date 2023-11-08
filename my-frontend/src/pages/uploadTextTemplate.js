@@ -33,7 +33,7 @@ function TextForm() {
   }, []);
   
   const retrieveMenuItem = () => {
-    let url = `http://localhost:5000/pizza/items?_id=${params.id}`;
+    let url = process.env.REACT_APP_API_BASE_URL+`/items?_id=${params.id}`;
     fetch(url)
       .then((response) => {
         return response.json();

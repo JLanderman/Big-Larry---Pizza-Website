@@ -245,14 +245,17 @@ export default class ItemController {
   */
 
   static async apiDeleteItem(req, res, next){
-    const name = req.body.name;
-    const itemCategory = req.body.itemCategory;
-      try {
-        await itemDAO.deleteItem(name, itemCategory); //Delete item by name and it's category
-        res.status(200).json({ success: true, message: "Item deleted successfully" });
-      } catch (error) {
-        console.error(`Cannot delete item, ${e}`)
-      }
+    const _id = req.body._id;
+    let query;
+    console.log('received id:', query);
+
+    try {
+      await itemDAO.deleteItem(_id);
+      res.status(200).json({ success: true, message: "Item deleted successfully" });
+    } catch (error) {
+      console.error(`Cannot delete item: ${error}`);
+      res.status(500).json({ success: false, message: "Error deleting item" });
+    }
   }
 
   static async apiModifyItem(req, res, next){

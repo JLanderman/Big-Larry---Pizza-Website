@@ -14,6 +14,27 @@ const Drink= (props) => {
 
     const { auth} = useAuth(); 
 
+    const handleRemoveItem = (_id) => {
+      const confirmation = window.confirm(`Are you sure you want to remove this item from the menu?`);
+      console.log('package id:', _id);
+
+      if (confirmation) {
+        if (confirmation) {
+          // User confirmed, proceed with deletion
+          DataService.deleteItem(_id).then((response) => {
+            if (response.status === 200) {
+              console.log('Item deleted successfully');
+              window.location.reload(); // Refresh the page
+            } else {
+              console.error('Failed to delete item');
+            }
+          })
+          .catch((error) => {
+            console.error('Error deleting item:', error);
+          }); // Call your deleteItem function with the _id
+        }
+      }
+    };
 
     useEffect(() => {
       retrieveItems();
@@ -69,8 +90,13 @@ const Drink= (props) => {
                               {auth
                                 ?                              
                                 <div >
-                                  <div>   
-                                    <button className="border px-10 py- fs-5 rounded-4">Remove</button> 
+                                  <div style={{ display: 'flex', gap: '3px' }}>   
+                                  <button
+                                    className="border px-10 py- fs-5 rounded-4"
+                                    onClick={() => handleRemoveItem(currentItem._id)}
+                                  >
+                                    Remove
+                                  </button>
                                     <h>   </h>
                                     <Link to={`/TextForm/${currentItem._id}`}>
                                       <button className="border px-10 py- fs-5 rounded-4">Edit</button>
