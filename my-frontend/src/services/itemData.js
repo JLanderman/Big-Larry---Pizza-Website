@@ -46,6 +46,12 @@ class DataService {
       //i.e. a dollar amount.The api will handle turning it into an integer
     }
 
+    deleteItem(_id){
+      console.log('payload id:', _id);
+      return http.post('/allItems/deleteItem', {_id});
+
+    }
+
     async updateMenuItemTextOnly(formData){
       //currentName, currentItemCategory, name, itemCategory, photo, price
       let res;

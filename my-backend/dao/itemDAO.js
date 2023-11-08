@@ -1,5 +1,7 @@
 let allItems;
 let customToppings;
+import { ObjectId } from "mongodb";
+
 
 
 export default class ItemDao {
@@ -238,12 +240,16 @@ export default class ItemDao {
     return {itemList, totalNumItem};
   }
 
-  static async deleteItem(name, itemCategory){
+  static async deleteItem(_id){
     let query;
-    query = {name: name, itemCategory: itemCategory};
-    let cursor;
+    query = { _id: new ObjectId(_id) };    let cursor;
     try{
       cursor = await allItems.deleteOne(query); //Delete item in database based on query
+      if (cursor.deletedCount === 1) {
+        console.log('Item deleted successfully');
+      } else {
+        console.log('Item not found');
+      }
     } catch(e){
       console.error(`unable to delete item, ${e}`)
     }

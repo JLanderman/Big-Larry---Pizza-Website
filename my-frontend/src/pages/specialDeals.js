@@ -14,7 +14,27 @@ const SpDeals = (props) => {
 	const {auth} = useAuth();
 	const navigate = useNavigate();
 
-
+	const handleRemoveItem = (_id) => {
+		const confirmation = window.confirm(`Are you sure you want to remove this item from the menu?`);
+		console.log('package id:', _id);
+  
+		if (confirmation) {
+		  if (confirmation) {
+			// User confirmed, proceed with deletion
+			DataService.deleteItem(_id).then((response) => {
+			  if (response.status === 200) {
+				console.log('Item deleted successfully');
+				window.location.reload(); // Refresh the page
+			  } else {
+				console.error('Failed to delete item');
+			  }
+			})
+			.catch((error) => {
+			  console.error('Error deleting item:', error);
+			}); // Call your deleteItem function with the _id
+		  }
+		}
+	  };
   
 	// tells react hooks that it needs to do something after render.
 	useEffect(() => {
@@ -55,9 +75,13 @@ const SpDeals = (props) => {
 								</p>
 							</Link>
 							{ auth ?
-								<div>
-									<button className="border px-10 py- fs-3 rounded-4">Remove</button>
-									<h> </h>
+                                  <div style={{ display: 'flex', justifyContent: 'center', gap: '3px' }}>   
+								  <button
+										className="border px-10 py- fs-3 rounded-4"
+										onClick={() => handleRemoveItem(currentItem._id)}
+										>
+										Remove
+									</button>
 									<button // Redirect to edit page
 										className="border px-10 py- fs-3 rounded-4" 
 										onClick={(e) => navigate(`/editItem/${currentItem._id}`)}>
