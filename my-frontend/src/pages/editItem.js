@@ -1,6 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import DataService from "../services/itemData";
+
 
 const picUrl = process.env.REACT_APP_IMAGE_BASE_URL;
 
@@ -9,6 +11,27 @@ const EditItem = () => {
   const [category, setCategory] = useState('');
   let params = useParams();
 
+  const handleRemoveItem = (_id) => {
+		const confirmation = window.confirm(`Are you sure you want to remove this item from the menu?`);
+		console.log('package id:', _id);
+  
+		if (confirmation) {
+		  if (confirmation) {
+			// User confirmed, proceed with deletion
+			DataService.deleteItem(_id).then((response) => {
+			  if (response.status === 200) {
+				console.log('Item deleted successfully');
+				window.location.reload(); // Refresh the page
+			  } else {
+				console.error('Failed to delete item');
+			  }
+			})
+			.catch((error) => {
+			  console.error('Error deleting item:', error);
+			}); // Call your deleteItem function with the _id
+		  }
+		}
+	  };
   // const [selectedSize, setSelectedSize] = useState(null);
 
   // const handleSizeClick = (index) => {
@@ -126,7 +149,8 @@ const EditItem = () => {
               </div>
             </div>
             <div className="detailsButtonContainer">
-              <button className="detailsButton delete">
+              <button className="detailsButton delete"
+              onClick={() => handleRemoveItem(menuItem._id)}>
                 DELETE ITEM
               </button>
             </div>
