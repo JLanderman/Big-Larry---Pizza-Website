@@ -428,6 +428,8 @@
 .detailsPicture
 {
   object-fit: contain;
+  max-width: 40vw;
+  height: auto;
 }
 
 .detailsItemDetails
