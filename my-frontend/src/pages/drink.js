@@ -5,6 +5,7 @@ import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useAuth } from '../contexts/authContext';
 import { Link } from 'react-router-dom';
+import '../App.css';
 
 
 
@@ -48,7 +49,8 @@ const Drink= (props) => {
             : <div><h1 data-testid="BeveragesHeader" className="pb-5 pt-5 text-danger fw-bold">Beverages</h1></div>
           }
           </div>
-
+          <div className="drinksContainer">
+            
           <div className="text-danger ps-5">
             
             <div>
@@ -60,9 +62,9 @@ const Drink= (props) => {
                     <div className="row" style={{width: '100%'}}>
                     {
                     drinkByType[type].map((currentItem) =>(
-                      <div key={currentItem.id} className="col-6 text-dark fs-5 fw-normal">
+                      <div key={currentItem.id} className="col-6 fs-5 fw-normal">
                         
-                          <div>{currentItem.name}</div>  
+                          <div className="drinkText">{currentItem.name}</div>  
                         
                               {auth
                                 ?                              
@@ -78,15 +80,15 @@ const Drink= (props) => {
                                 </div>
                               : null
                               } 
-                          {drinkByType[type][0].drinktype === 'Ice Cream  &  Other' ? (<p className="fw-semibold fs-5 text-primary"> ${currentItem.price}</p>): ('')}
+                          {drinkByType[type][0].drinktype === 'Ice Cream  &  Other' ? (<p className="drinkPrice"> ${currentItem.price}</p>): ('')}
                       </div> 
                     )) 
                   }
                   </div>
                   <div>
-                      {drinkByType[type][0].price.length == 1 ? (<p className="fw-semibold fs-5 text-primary"> ${drinkByType[type][0].price[0]}</p>): ('')}
-                      {drinkByType[type][0].price.length == 2 ? (<p className="fw-semibold fs-5 text-primary">Small: ${drinkByType[type][0].price[0]}  Large: ${drinkByType[type][0].price[1]}</p>): ('')}
-                      {drinkByType[type][0].price.length == 3 ? (<p className="fw-semibold fs-5 text-primary"> Small: ${drinkByType[type][0].price[0]}    Medium: ${drinkByType[type][0].price[1]}  Large: ${drinkByType[type][0].price[2]}</p>): ('')}
+                      {drinkByType[type][0].price.length == 1 ? (<p className="drinkPrice"> ${drinkByType[type][0].price[0]}</p>): ('')}
+                      {drinkByType[type][0].price.length == 2 ? (<p className="drinkPrice">Small: ${drinkByType[type][0].price[0]} &nbsp;&nbsp;&nbsp; Large: ${drinkByType[type][0].price[1]}</p>): ('')}
+                      {drinkByType[type][0].price.length == 3 ? (<p className="drinkPrice"> Small: ${drinkByType[type][0].price[0]}   &nbsp;&nbsp;&nbsp; Medium: ${drinkByType[type][0].price[1]} &nbsp;&nbsp;&nbsp; Large: ${drinkByType[type][0].price[2]}</p>): ('')}
                 
                       
                   </div>
@@ -108,6 +110,8 @@ const Drink= (props) => {
             ) : null
           }
           </div>
+          
+        </div>
         </div>     
       );
     };

@@ -1,5 +1,5 @@
 import React from 'react';
-import homePizza from '../images/Pizza Specialties/Pizza Pepperoni.png';
+import pizzaGuy from '../images/Other/PizzaGuy_HQ_1.0.png';
 import contactSign from '../images/Other/contactSign.png';
 import '../App.css';
 import { phoneNum } from '../data/global';
@@ -21,7 +21,7 @@ const Home = () => {
         </div>
       </div>
       <div className='homePizzaColumn'>
-        <img src={homePizza} alt='pizza' className="homePizzaStyle" data-testid="homePizza" />
+        <img src={pizzaGuy} alt='PizzaGuy' className="homePizzaStyle" data-testid="homePizza" />
         <div>OPEN MON TO SUN</div>
         <div>(11:00 AM - 9:00 PM)</div>
       </div>

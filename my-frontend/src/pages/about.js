@@ -37,7 +37,7 @@ const About = () => {
 				</h1>
 				<p className="aboutText" data-testid="aboutText">
 					SAM'S PIZZA && MORE.......... is a local fast food restaurant that has been serving the community for about 10 years. 
-					We offer a variety of food choices such as pizza with many toppings, fried foods, teriyaki bowls, milkshakes, smoothies, and more. <br />
+					We offer a variety of food choices such as pizza with many toppings, hamburger, fries, teriyaki bowls, egg rolls, milkshakes, smoothies, and much more. <br />
 					We're dedicated to serve everyone with the best quality and reasonable price.
 				</p>
 			</div>

@@ -59,7 +59,8 @@
 }
 
 .homePizzaStyle {
-  max-height: '100%';
+  max-width: '100%';
+  width: 40vw;
   align-self: flex-end;
 }
 
@@ -491,4 +492,23 @@
 
 .detailsEditDescription{
   width: 100%;
+}
+
+/* *****DRINKS***** */
+.drinksContainer{
+  /* background-color: #c01111; */
+  /* display: flex; */
+  /* align-items: center;
+  flex-direction: column; */
+  /* padding-left: 10%; */
+}
+.drinkText{
+  color:var(--clr-txt);
+}
+.drinkPrice{
+  color:var(--clr-txt);
+  font-size: 1.25rem;
+  font-weight: 700;
+  display: flex;
+  align-items: flex-end;
 }
