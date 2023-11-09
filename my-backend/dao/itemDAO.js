@@ -1,6 +1,7 @@
 let allItems;
 let customToppings;
-import { ObjectId } from "mongodb";
+import { ObjectId, MongoClient  } from "mongodb";
+//import MongoClient from "../server";
 
 
 
@@ -46,31 +47,47 @@ export default class ItemDao {
     return { itemList, totalNumItem };
   }
 
-  static async getLunch()
-  {
-    let query;
-    query = {itemCategory: "lunch/Dinner"};
-    let cursor;
+  static async getLunch() {
+    const query = { itemCategory: 'lunch/Dinner' };
+    const client = new MongoClient(process.env.ITEM_DB_URI, { useUnifiedTopology: true });
+  
+    try {
+      await client.connect();
+      const collection = client.db('samsPizza').collection('allMenuItems');
+      const results = await collection.find(query).toArray();
+  
+      // Sort the results based on the custom logic
+      results.sort((a, b) => {
+        const substringOrder = ['burger','Burger', 'Sandwich','sandwich', 
+        'Grilled', 'grilled', 'Dog', 'dog', 'Burrito', 'burrito', 
+        'Egg Roll', 'Egg roll', 'egg Roll', 'egg roll', 'Fries', 'fries', 'Fry', 'fry'];
+        //These are the 'groups' the api is sorting by. Added extra copies of sorting groups 
+        // without caps in case the client ever makes a typo
 
-    try
-    {
-      cursor = await allItems.find(query);
-    }catch (e)
-    {
-      console.error(
-        `Unable to issue the getLunchItem find command in lunchDAO.js, ${e}`
-      );
-      return {lunchList: [], totalNumItem: 0 }; 
+        const getSubstringIndex = (item) => {
+          const itemName = item.name.toLowerCase();
+          for (let i = 0; i < substringOrder.length; i++) {
+            if (itemName.includes(substringOrder[i].toLowerCase())) {
+              return i;
+            }
+          }
+          return substringOrder.length; // If not found, consider it last
+        };
+  
+        return getSubstringIndex(a) - getSubstringIndex(b);
+      });
+  
+      const totalNumItem = results.length;
+  
+      return { lunchList: results, totalNumItem };
+    } catch (e) {
+      console.error(`Error in getLunch: ${e}`);
+      return { lunchList: [], totalNumItem: 0 };
+    } finally {
+      client.close();
     }
-
-    const displayCursor = cursor.limit(100).skip(0);
-    const lunchList = await displayCursor.toArray();
-    const totalNumItem = await allItems.countDocuments(query);
-
-    return {lunchList, totalNumItem};
-
   }
-
+  
   //overloading this function with a variation for getting specific MongoDB "_id"s
   static async getItem(DesiredObjectId) {
     let query;
@@ -123,46 +140,70 @@ export default class ItemDao {
   // }
 
   static async getPizzaSpecial() {
-    let query;
-    query = {itemCategory: {$eq: 'pizzaSpecial'}}
-    let cursor;
-
+    const query = { itemCategory: 'pizzaSpecial' };
+    const customSortField = 'Lets Customize'; // Specify the item name to move to the end
+    const client = new MongoClient(process.env.ITEM_DB_URI, { useUnifiedTopology: true });
+  
     try {
-      cursor = await allItems.find(query);
+      await client.connect();
+      const collection = client.db('samsPizza').collection('allMenuItems');
+      
+      // Use the aggregation framework to add a custom sort field
+      const pipeline = [
+        { $match: query },
+        {
+          $addFields: {
+            customSortField: {
+              $cond: {
+                if: { $eq: ['$name', customSortField] },
+                then: 1, // Set a value that moves it to the end
+                else: 0,
+              },
+            },
+          },
+        },
+        { $sort: { customSortField: 1 } }, // Sort by customSortField in ascending order
+      ];
+  
+      const results = await collection.aggregate(pipeline).toArray();
+      const totalNumItem = results.length;
+  
+      return { itemList: results, totalNumItem };
     } catch (e) {
-      console.error(
-        `Unable to issue the getItem() find command in itemDAO.js, ${e}`
-      );
+      console.error(`Error in getPizzaSpecial: ${e}`);
       return { itemList: [], totalNumItem: 0 };
+    } finally {
+      client.close();
     }
-
-    const displayCursor = cursor.limit(100).skip(0);
-    const itemList = await displayCursor.toArray();
-    const totalNumItem = await allItems.countDocuments(query);
-
-    return { itemList, totalNumItem };
   }
+  
+  
 
   static async getComboSpecial() {
-    let query;
-    query = {itemCategory: {$eq: 'comboSpecial'}}
-    let cursor;
-
+    const query = { itemCategory: 'comboSpecial' };
+    const client = new MongoClient(process.env.ITEM_DB_URI, { useUnifiedTopology: true });
+  
     try {
-      cursor = await allItems.find(query);
+      await client.connect();
+      const collection = client.db('samsPizza').collection('allMenuItems');
+      const results = await collection.find(query).toArray();
+  
+      // Sort the results based on the productNumber
+      results.sort((a, b) => {
+        const numberA = parseInt(a.name.match(/#(\d+)/)[1]);
+        const numberB = parseInt(b.name.match(/#(\d+)/)[1]);
+        return numberA - numberB;
+      });
+  
+      return { itemList: results, totalNumItem: results.length };
     } catch (e) {
-      console.error(
-        `Unable to issue the getItem() find command in itemDAO.js, ${e}`
-      );
+      console.error(`Error in getComboSpecial: ${e}`);
       return { itemList: [], totalNumItem: 0 };
+    } finally {
+      client.close();
     }
-
-    const displayCursor = cursor.limit(100).skip(0);
-    const itemList = await displayCursor.toArray();
-    const totalNumItem = await allItems.countDocuments(query);
-
-    return { itemList, totalNumItem };
   }
+  
 
   static async getSpecialDeals() {
     let query;
