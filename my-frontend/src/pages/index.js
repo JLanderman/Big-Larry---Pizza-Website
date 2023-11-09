@@ -10,7 +10,7 @@ const Home = () => {
     <div className="homeContainerStyle">
       <div className="homeTextContainer">
         <h1 className="homeHeader" data-testid="homeHeader">
-          Sam's Pizza && More
+          Sam's Pizza & More
         </h1>
         <div className='homeSubHeader'>
           <div className='homeFirstLine'>BEST PRICE ! REAL TASTE !</div>
