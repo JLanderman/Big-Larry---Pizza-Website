@@ -45,6 +45,16 @@ class DataService {
       //Assuming the new price is being passed in in the format of X.XX; 
       //i.e. a dollar amount.The api will handle turning it into an integer
     }
+    
+    getAllToppingsPrices = async () => {
+      try {
+        const response = await http.get('/allToppingsPrices');
+        return response.data;
+      } catch (error) {
+        console.error('Error fetching topping prices:', error);
+        throw error;
+      }
+    };
 
     deleteItem(_id){
       console.log('payload id:', _id);

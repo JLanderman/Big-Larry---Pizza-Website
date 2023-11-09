@@ -62,14 +62,16 @@
 
 .pizzaSizeButtonCustom 
 {
-  width: flex; /* Adjust the width as needed */
-  min-width: var(--Round_Button_Size);/* Makes button a circle at minimum size*/
-  height: var(--Round_Button_Size); /* Adjust the height as needed */
-  border-radius: 50%; /* Makes the button round */
-  margin: 1%; /* Adds some spacing between buttons */
-  font-size: 30px; /* Adjust the font size as needed */
-  position: relative; /* Use relative positioning */
-  
+  min-width: 15%;
+  max-width: calc(25% - 10px);
+  min-height: 55px;
+  height: flex;
+  border: none;
+  border-radius: 20%;
+  margin: 10px;
+  background-color: #fff; /* Add a background color */
+  font-size: 20px;
+  position: relative;
 }
 
 .pizzaSizeButtonCustom.selected 

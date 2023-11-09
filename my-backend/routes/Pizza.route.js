@@ -35,6 +35,7 @@ router.route("/customToppings/update").post(itemController.apiUpdateToppingPrice
 router.route("/palettes").get(paletteController.apiGetLastTenPalettes);
 router.route("/palettes/current").get(paletteController.apiGetCurrentPalette);
 router.route("/palettes/add").post(paletteController.apiPutPalette);
+router.route("/allToppingsPrices").get(itemController.apiGetAllToppingsPrices);
 
 
 export default router

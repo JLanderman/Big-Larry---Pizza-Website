@@ -168,6 +168,30 @@ export default class ItemController {
     }
   }
 
+  static async apiGetAllToppingsPrices(req, res, next) {
+    try {
+      const customToppings = await itemDAO.getCustomToppingsCollection();
+      const allToppings = await customToppings.find({}).toArray();
+  
+      // Convert prices to dollars by dividing by 100
+      const toppingsWithPrices = allToppings.map(topping => ({
+        topping: topping.topping,
+        prices: {
+          price_p: `$${(topping.price_p / 100).toFixed(2)}`,
+          price_s: `$${(topping.price_s / 100).toFixed(2)}`,
+          price_m: `$${(topping.price_m / 100).toFixed(2)}`,
+          price_l: `$${(topping.price_l / 100).toFixed(2)}`,
+          price_xl: `$${(topping.price_xl / 100).toFixed(2)}`
+        }
+      }));
+  
+      res.json(toppingsWithPrices);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  }
+
   static async apiUpdateToppingPrice(req, res, next) {
     const { topping, size, price } = req.body;
     console.log("Received values:", req.body);
@@ -202,8 +226,9 @@ export default class ItemController {
       console.error(error);
       res.status(500).json({ message: 'Internal server error' });
     }
-  }
-  
+  } // end apiUpdateCustomTopping
+
+
   static async apiPutItem(req, res, next){
     const name = req.body.name;
     const itemCategory = req.body.itemCategory;
