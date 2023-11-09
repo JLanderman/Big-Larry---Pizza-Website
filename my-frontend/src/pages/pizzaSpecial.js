@@ -18,25 +18,25 @@ const PizzaSp = (props) => {
 	const handleRemoveItem = (_id) => {
 		const confirmation = window.confirm(`Are you sure you want to remove this item from the menu?`);
 		console.log('package id:', _id);
-  
+
 		if (confirmation) {
-		  if (confirmation) {
-			// User confirmed, proceed with deletion
-			DataService.deleteItem(_id).then((response) => {
-			  if (response.status === 200) {
-				console.log('Item deleted successfully');
-				window.location.reload(); // Refresh the page
-			  } else {
-				console.error('Failed to delete item');
-			  }
-			})
-			.catch((error) => {
-			  console.error('Error deleting item:', error);
-			}); // Call your deleteItem function with the _id
-		  }
+			if (confirmation) {
+				// User confirmed, proceed with deletion
+				DataService.deleteItem(_id).then((response) => {
+					if (response.status === 200) {
+						console.log('Item deleted successfully');
+						window.location.reload(); // Refresh the page
+					} else {
+						console.error('Failed to delete item');
+					}
+				})
+					.catch((error) => {
+						console.error('Error deleting item:', error);
+					}); // Call your deleteItem function with the _id
+			}
 		}
-	  };
-  
+	};
+
 	// tells react hooks that it needs to do something after render.
 	useEffect(() => {
 		retrieveItems();
@@ -54,8 +54,8 @@ const PizzaSp = (props) => {
 
 	return (
 		<div data-testid="pizzaSpecialties" >
-			<h1 className="card" style={{ paddingLeft: '5%', paddingTop: '1%', paddingBottom: '1%', borderBottom: '1px solid black', background: 'transparent', borderColor: 'transparent' }}>Sam's Pizza Specialties (Large Size Only)</h1>
-			<div className="row" style={{width: '100%'}}>
+			<h1 style={{ textAlign: 'center', paddingTop: '1%', paddingBottom: '1%', borderBottom: '1px solid black', background: 'transparent', borderColor: 'transparent' }}>Sam's Pizza Specialties (Large Size Only)</h1>
+			<div className="row" style={{ width: '100%' }}>
 				{!Array.isArray(items)
 					? items.item.map((currentItem) => {
 						let temp
@@ -80,18 +80,18 @@ const PizzaSp = (props) => {
 									</p>
 								</Link>
 								{auth && (currentItem.name !== 'Lets Customize') ?
-                                  <div style={{ display: 'flex', justifyContent: 'center', gap: '3px' }}>   
-									<button
-										className="border px-10 py- fs-3 rounded-4"
-										onClick={() => handleRemoveItem(currentItem._id)}
+									<div style={{ display: 'flex', justifyContent: 'center', gap: '3px' }}>
+										<button
+											className="border px-10 py- fs-3 rounded-4"
+											onClick={() => handleRemoveItem(currentItem._id)}
 										>
-										Remove
-									</button>
-									<button // Redirect to edit page
-										className="border px-10 py- fs-3 rounded-4"
-										onClick={(e) => navigate(`/editItem/${currentItem._id}`)}>
-										Edit
-									</button>
+											Remove
+										</button>
+										<button // Redirect to edit page
+											className="border px-10 py- fs-3 rounded-4"
+											onClick={(e) => navigate(`/editItem/${currentItem._id}`)}>
+											Edit
+										</button>
 									</div>
 									: null
 								}
@@ -103,11 +103,11 @@ const PizzaSp = (props) => {
 
 				<div className="d-flex justify-content-end pe-5 pt-5">{
 					auth ? (
-					<div>
-						<Link to="/ItemFormLarge">
-						<button className="border px-5 py-3 fs-2 rounded-4">Add New Item</button>
-						</Link>
-					</div>
+						<div>
+							<Link to="/ItemFormLarge">
+								<button className="border px-5 py-3 fs-2 rounded-4">Add New Item</button>
+							</Link>
+						</div>
 					) : null
 				}</div>
 			</div>
