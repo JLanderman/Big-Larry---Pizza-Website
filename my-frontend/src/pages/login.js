@@ -123,7 +123,6 @@ const Login = () => {
       }
     } catch (e) {
       console.error(`handleSubmit failed in login.js, ${e}`);
-      navigate('/');
     };
 
     setBadLogin(true); // unsuccessful login
