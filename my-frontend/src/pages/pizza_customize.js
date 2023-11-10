@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import styles from "./pizza_customize.css";
-import PizzaCombinationImage from "../images/Pizza Specialties/Pizza Combination.png";
 import DataService from "../services/itemData";
 import Cookies from "js-cookie";
 
@@ -9,6 +6,7 @@ const Pizza_customize = () => {
   const token = Cookies.get('x-auth-token');
   const [toppingPrices, setToppingPrices] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [selectedToppingCategory, setSelectedToppingCategory] = useState(null);
 
   useEffect(() => {
     const fetchToppingPrices = async () => {
@@ -21,32 +19,18 @@ const Pizza_customize = () => {
     };
 
     fetchToppingPrices();
-
-    // Check if there is a token and set isAdmin accordingly
-    setIsAdmin(!!token); // !!token will be true if token is present, otherwise false
+    setIsAdmin(true); // Temporarily set isAdmin to true for testing
   }, [token]);
 
   const sizeList = ["P", "S", "M", "L", "XL"];
-  const sizeLabels = ["price_p", "price_s", "price_m", "price_l", "price_xl"]; // Modified labels for sizes
+  const sizeLabels = ["price_p", "price_s", "price_m", "price_l", "price_xl"];
+  const displaySizeLabels = ["Personal", "Small", "Medium", "Large", "X-Large"];
 
   const toppingList = [
-    "Cheese",
-    "Pepperoni",
-    "Salami",
-    "Ground Beef",
-    "Sausage",
-    "Linguica",
-    "Chicken",
-    "Ham",
-    "Onion",
-    "Bell pepper",
-    "Cilantro",
-    "Pineapple",
-    "Tomato",
-    "Artichoke",
-    "Pepperoncini",
-    "Anchovies",
-  ];
+    "Cheese", "Pepperoni", "Salami", "Ground Beef", "Sausage", "Linguica",
+    "Chicken", "Ham", "Onion", "Bell pepper", "Cilantro", "Pineapple",
+    "Tomato", "Artichoke", "Pepperoncini", "Anchovies",
+  ].map(topping => topping + " ");
 
   const toppingLabels = [
     "Cheese",
@@ -57,55 +41,82 @@ const Pizza_customize = () => {
     "Xtra-Topping",
   ];
 
-  const [selectedSize, setSelectedSize] = useState(0);
+  const [selectedSize, setSelectedSize] = useState(null);
   const [selectedTopping, setSelectedTopping] = useState([]);
-  const [price, setPrice] = useState(priceSelect(sizeLabels[selectedSize], selectedTopping.length));
+  const [price, setPrice] = useState(priceSelect(selectedSize, selectedTopping.length));
 
   const handleSizeClick = (index) => {
     setSelectedSize(index);
-    setPrice(priceSelect(sizeLabels[index], selectedTopping.length));
+    setPrice(priceSelect(index, selectedTopping.length));
   };
 
   const handleToppingClick = (index) => {
-    if (selectedTopping.includes(index)) {
-      setSelectedTopping((prevSelected) => prevSelected.filter((item) => item !== index));
-      setPrice(priceSelect(sizeLabels[selectedSize], selectedTopping.length - 1));
+    const selectedToppingName = toppingList[index];
+
+    setSelectedTopping([selectedToppingName]);
+
+    let toppingCategory = "";
+    if (selectedTopping.length === 1) {
+      toppingCategory = "topping_1";
+    } else if (selectedTopping.length === 4) {
+      toppingCategory = "comboVeggieAllMeat";
     } else {
-      setSelectedTopping((prevSelected) => [...prevSelected, index]);
-      setPrice(priceSelect(sizeLabels[selectedSize], selectedTopping.length + 1));
+      toppingCategory = `xTopping${selectedTopping.length}Cheese`;
     }
+
+    setSelectedToppingCategory(toppingCategory);
+
+    setPrice(priceSelect(selectedSize, selectedToppingName === "Cheese" ? 0 : 1));
   };
 
   const handleUpdate = () => {
-    const selectedToppingCategory = toppingLabels[selectedTopping.length];
     const selectedSizeLabel = sizeLabels[selectedSize];
     const updatedPrice = parseFloat(price);
-  
-    // Call the updateCustomToppingPrice function with separate parameters
+
+    let mappedToppingCategory = "";
+    switch (selectedToppingCategory) {
+      case "1 Topping":
+        mappedToppingCategory = "topping_1";
+        break;
+      case "2 Toppings":
+        mappedToppingCategory = "topping_2";
+        break;
+      case "3 Toppings":
+        mappedToppingCategory = "topping_3";
+        break;
+      case "4 Toppings":
+        mappedToppingCategory = "comboVeggieAllMeat";
+        break;
+      case "Xtra-Topping":
+        mappedToppingCategory = "xToppingxCheese";
+        break;
+      default:
+        mappedToppingCategory = selectedToppingCategory;
+    }
+
     DataService.updateCustomToppingPrice(
-      selectedToppingCategory,
-      selectedSizeLabel, // Pass the size directly without the 'price_' prefix
+      mappedToppingCategory,
+      selectedSizeLabel,
       updatedPrice
     )
       .then((response) => {
         console.log("Topping updated successfully:", response);
-        // Reset form fields after successful update
         setSelectedTopping([]);
-        setSelectedSize(0);
-        setPrice(priceSelect(sizeLabels[0], 0));
+        setSelectedSize(null);
+        setPrice(priceSelect(null, 0));
+        setSelectedToppingCategory(null);
       })
       .catch((error) => {
         console.error("Error updating topping price:", error);
       });
   };
-  
+
   function priceSelect(size, toppings) {
-    if (!toppingPrices || toppingPrices.length === 0) {
-      //console.error("Topping prices not available");
+    if (!toppingPrices || toppingPrices.length === 0 || size === null) {
       return 0;
     }
 
-    const sizeString = typeof size === "string" ? size : String(size);
+    const sizeString = typeof size === "string" ? sizeLabels[size] : sizeLabels[size];
 
     if (toppings > 3) {
       return toppingPrices[4]?.prices?.[`price_${sizeString.toLowerCase()}`] || 0;
@@ -114,7 +125,6 @@ const Pizza_customize = () => {
     }
   }
 
-  // Render the update form only if the user is an admin
   const renderUpdateForm = () => {
     if (isAdmin) {
       return (
@@ -122,9 +132,10 @@ const Pizza_customize = () => {
           <h2 style={{ color: "red" }}>Update Topping Price</h2>
           <div>
             <label>Select Topping Category:</label>
-            <select onChange={(e) => setSelectedTopping(parseInt(e.target.value))}>
+            <select onChange={(e) => setSelectedToppingCategory(e.target.value)} value={selectedToppingCategory || ''}>
+              <option value="" disabled>Select Topping Category</option>
               {toppingLabels.map((label, index) => (
-                <option key={index} value={index}>
+                <option key={index} value={label}>
                   {label}
                 </option>
               ))}
@@ -132,8 +143,9 @@ const Pizza_customize = () => {
           </div>
           <div>
             <label>Select Size:</label>
-            <select onChange={(e) => setSelectedSize(parseInt(e.target.value))}>
-              {sizeLabels.map((label, index) => (
+            <select onChange={(e) => setSelectedSize(parseInt(e.target.value))} value={selectedSize || ''}>
+              <option value="" disabled>Select Size</option>
+              {displaySizeLabels.map((label, index) => (
                 <option key={index} value={index}>
                   {label}
                 </option>
@@ -160,9 +172,9 @@ const Pizza_customize = () => {
           </div>
         </div>
       </div>
-      <div className="toppingButtonsCustom" style={{ maxWidth: "80%", minWidth: "610px" }}>
+      <div className="toppingButtonsCustom" style={{ maxWidth: "80%", minWidth: "610px", display: "flex", flexWrap: "wrap" }}>
         {toppingList.map((size, index) => (
-          <span key={index} className="pizzaToppingButtonCustom" onClick={() => handleToppingClick(index)}>
+          <span key={index} className="pizzaToppingButtonCustom" onClick={() => handleToppingClick(index)} style={{ fontSize: "24px", margin: "5px", whiteSpace: "nowrap" }}>
             {size}
           </span>
         ))}
@@ -177,48 +189,51 @@ const Pizza_customize = () => {
       </div>
       <div style={{ border: "0px solid", paddingLeft: "20%" }}>
         <table style={{ border: "0px solid", width: "85%", maxWidth: "950px" }}>
-          <tr style={{ borderBottom: "1px solid", padding: "5px", fontSize: "120%" }}>
-            <th style={{ borderRight: "1px solid", minWidth: "100px" }}>
-              <div
-                className="diagonalHeader"
-                style={{ display: "grid", gridTemplateAreas: "'. a' 'b .'" }}
-              >
-                <span style={{ gridArea: "a", color: "red", fontSize: "90%" }}>Size</span>
-                <span style={{ gridArea: "b", color: "red", fontSize: "90%" }}>Topping</span>
-              </div>
-            </th>
-            {sizeLabels.map((label, sizeIndex) => (
-              <th key={sizeIndex} style={{ border: "0px solid", minWidth: "100px", paddingLeft: "10px" }}>
-                {label}
-              </th>
-            ))}
-          </tr>
-          {toppingPrices.map((topping, index) => (
-            <tr
-              key={index}
-              style={{
-                borderBottom: index === 4 ? "1px solid" : "0px",
-                padding: "5px",
-                fontSize: "120%",
-              }}
-            >
+          <thead>
+            <tr style={{ borderBottom: "1px solid", padding: "5px", fontSize: "120%" }}>
               <th style={{ borderRight: "1px solid", minWidth: "100px" }}>
-                {toppingLabels[index]}
-                {index === 4 && (
-                  <div style={{ fontSize: "80%", marginTop: "5px" }}>(combo/allmeat/veggie)</div>
-                )}
+                <div
+                  className="diagonalHeader"
+                  style={{ display: "grid", gridTemplateAreas: "'. a' 'b .'" }}
+                >
+                  <span style={{ gridArea: "a", color: "red", fontSize: "90%" }}>Size</span>
+                  <span style={{ gridArea: "b", color: "red", fontSize: "90%" }}>Topping</span>
+                </div>
               </th>
-              {sizeList.map((size, sizeIndex) => (
+              {displaySizeLabels.map((label, sizeIndex) => (
                 <th key={sizeIndex} style={{ border: "0px solid", minWidth: "100px" }}>
-                  {topping.prices[`price_${size.toLowerCase()}`]}
+                  {label}
                 </th>
               ))}
             </tr>
-          ))}
+          </thead>
+          <tbody>
+            {toppingPrices.map((topping, index) => (
+              <tr
+                key={index}
+                style={{
+                  borderBottom: index === 4 ? "1px solid" : "0px",
+                  padding: "5px",
+                  fontSize: "120%",
+                }}
+              >
+                <th style={{ borderRight: "1px solid", minWidth: "100px" }}>
+                  {toppingLabels[index]}
+                  {index === 4 && (
+                    <div style={{ fontSize: "80%", marginTop: "5px" }}>(combo/allmeat/veggie)</div>
+                  )}
+                </th>
+                {sizeList.map((size, sizeIndex) => (
+                  <th key={sizeIndex} style={{ border: "0px solid", minWidth: "100px" }}>
+                    {topping.prices[`price_${size.toLowerCase()}`]}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
 
-      {/* Render the update form */}
       {renderUpdateForm()}
     </div>
   );
