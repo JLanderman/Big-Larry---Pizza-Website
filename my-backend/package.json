@@ -14,14 +14,16 @@
   "license": "ISC",
   "dependencies": {
     "argon2": "^0.31.1",
-    "aws-sdk": "^2.1467.0",
+    "aws": "^0.0.3-2",
+    "aws-sdk": "^2.1494.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "esm": "^3.2.25",
     "express": "^4.18.2",
     "jose": "^4.14.6",
     "mongodb": "^5.2.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "sdk": "^0.5.0"
   },
   "devDependencies": {
     "chai": "^4.3.10",

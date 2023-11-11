@@ -1,10 +1,7 @@
 import { ObjectId } from "mongodb";
 import itemDAO from "../dao/itemDAO.js";
-import AWS from "aws-sdk";
 import fs from "fs";
-AWS.config.update({region: 'us-west-1'})
-
-const s3 = new AWS.S3();
+//If using AWS statements, make sure to v3 not v2
 
 export default class ItemController {
   /*
