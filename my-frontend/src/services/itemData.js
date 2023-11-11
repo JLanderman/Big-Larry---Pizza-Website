@@ -166,6 +166,16 @@ class DataService {
     getAllDrink(){
         return http.get('/drink');
     }
+
+
+
+    updateItem(_id){
+      
+    }
+
+
+
+
     
 };
 

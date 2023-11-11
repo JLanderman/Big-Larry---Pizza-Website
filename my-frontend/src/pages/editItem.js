@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{ useRef }from "react";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import DataService from "../services/itemData";
@@ -7,36 +7,39 @@ import DataService from "../services/itemData";
 const picUrl = process.env.REACT_APP_IMAGE_BASE_URL;
 
 const EditItem = () => {
-  let [menuItem, setMenuItem] = useState();
-  const [category, setCategory] = useState('');
+  const [menuItem, setMenuItem] = useState();
+  const [category, setCategory] = useState("");
+  const [newName , setNewName] = useState("");
+  const [newPrice, setNewPrice] = useState("");
+  const [newDescription, SetnewDescription] = useState("");
+  const [newPhoto, setNewPhoto] = useState(null);
+
   let params = useParams();
 
-  const handleRemoveItem = (_id) => {
-		const confirmation = window.confirm(`Are you sure you want to remove this item from the menu?`);
-		console.log('package id:', _id);
-  
-		if (confirmation) {
-		  if (confirmation) {
-			// User confirmed, proceed with deletion
-			DataService.deleteItem(_id).then((response) => {
-			  if (response.status === 200) {
-				console.log('Item deleted successfully');
-				window.location.reload(); // Refresh the page
-			  } else {
-				console.error('Failed to delete item');
-			  }
-			})
-			.catch((error) => {
-			  console.error('Error deleting item:', error);
-			}); // Call your deleteItem function with the _id
-		  }
-		}
-	  };
-  // const [selectedSize, setSelectedSize] = useState(null);
+    const handleSaveChange = () =>{
+      const updatedData = {
+        name: newName || menuItem.name,
+        itemCategory : category || menuItem.itemCategory,
+        price: newPrice || menuItem.price,
+        info: newDescription ||  menuItem.info,
+        photo: newPhoto || menuItem.photo
+      };
 
-  // const handleSizeClick = (index) => {
-  //   setSelectedSize(index);
-  // };
+
+      DataService.updateItem(menuItem._id, updatedData)
+      .then((response) =>{
+        if(response.status === 200)
+        {
+          console.log('Item updated sucessfully');
+        }
+        else{
+          console.error('Failed to update item');
+        }
+      })
+      .catch((error) =>{
+        console.error('Error updating the item:', error);
+      });
+    };
 
   useEffect(() => {
     retrieveMenuItem();
@@ -56,6 +59,20 @@ const EditItem = () => {
       });
   };
 
+  const fileInputRef = useRef(null);
+
+  const chooseFile = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    // You can perform any file-related logic here
+    console.log('Selected file:', file);
+
+    setNewPhoto(file);
+  };
+
   return (
     <div className="detailsContainer" data-testid="details">
       {menuItem && menuItem.name ? // Load menu item
@@ -64,29 +81,36 @@ const EditItem = () => {
           <div className="detailsGrid">
             <div className="detailsFlexContainer">
               <div className="detailsPictureContainer">
-                {menuItem.photo ? // Render item picture
-                  <img className="detailsPicture" src={picUrl + menuItem.photo}></img>
-                  : <div>No picture for item</div>
-                }
+                {
+                  newPhoto? (
+                    <img className="detailsPicture" src = {URL.createObjectURL(newPhoto)} alt="Selected Preview"/>
+                  ): menuItem && menuItem.photo ? (
+                    //Render item picture if it exists
+                    <img className="detailsPicture" src ={picUrl + menuItem.photo} alt ="Item" />
+                  ):(
+                    <div>No picture for item </div>
+                  )}
+              
                 <div className="detailsButtonRow">
-                  <button className="detailsButton">
-                    Upload Picture
-                  </button>
-                  <button className="detailsButton">
-                    Remove Picture
-                  </button>
+                <input type="file" id="file" name="file" style={{ display: 'none' }} ref={fileInputRef} onChange={handleFileChange}/>
+                <button className="detailsButton" type="button" onClick={chooseFile}>
+                  Upload File
+                </button>
+                 
                 </div>
               </div>
             </div>
 
-            <div className="detailsFlexContainer">
+
+            {/*item detail part*/}
+            <div className="detailsFlexContainer" >
               <div className="detailsItemDetails">
                 <div>
                   {menuItem.name ? // Render name
                     <h2>Curent Name: {menuItem.name}</h2>
                     : null
                   }
-                  <h2>New Name: <input type="text"></input></h2>
+                  <h2>New Name: <input type="text" id ="newName" value={newName} onChange={(e) =>setNewName(e.target.value)} /></h2>
                 </div>
                 <br />
 
@@ -107,33 +131,10 @@ const EditItem = () => {
                     <h2>Current Price: ${(menuItem.price / 100).toFixed(2)}</h2>
                     : null
                   }
-                  <h2>New Price: $ <input type="text"></input></h2>
+                  <h2>New Price: $ <input type="text" id="newPrice" value={newPrice} onChange={(e) =>setNewPrice(e.target.value)}/></h2>
                 </div>
                 <br />
 
-                {menuItem.price_chicken ? // Render chicken price if item has it
-                  <>
-                    <div>
-                      <h2>Chicken: ${(menuItem.price_chicken / 100).toFixed(2)}</h2>
-                      <h2>New Chicken: $</h2>
-                      <input type="text"></input>
-                    </div>
-                    <br />
-                  </>
-                  : null
-                }
-
-                {menuItem.price_veggie ? // Render veggie price if item has it
-                  <>
-                    <div>
-                      <h2>Veggie: ${(menuItem.price_veggie / 100).toFixed(2)}</h2>
-                      <h2>New Veggie: $ </h2>
-                      <input type="text"></input>
-                    </div>
-                    <br />
-                  </>
-                  : null
-                }
 
                 <div>
                   {menuItem.info ? // Render description
@@ -144,18 +145,15 @@ const EditItem = () => {
                     : null
                   }
                   <h2>New Description:</h2>
-                  <textarea className="detailsEditDescription"></textarea>
+                  <textarea className="detailsEditDescription" id="newDecription" value={newDescription} onChange={(e) => SetnewDescription(e.target.value)}></textarea>
                 </div>
               </div>
             </div>
             <div className="detailsButtonContainer">
-              <button className="detailsButton delete"
-              onClick={() => handleRemoveItem(menuItem._id)}>
-                DELETE ITEM
-              </button>
+             
             </div>
             <div className="detailsButtonContainer">
-              <button className="detailsButton save">
+              <button className="detailsButton save" onClick={handleSaveChange}>
                 SAVE CHANGES
               </button>
             </div>
