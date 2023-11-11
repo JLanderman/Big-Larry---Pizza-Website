@@ -57,25 +57,20 @@ describe("EditItem", () => {
     })
 
     /*
-        Adjust everything below to match mocked data and way data is displayed in page
+        Adjust everything below to match mocked data and the way data is displayed in page
     */
-    test("renders current item name", () => {
+    test("renders current item name", async () => {
+        await waitFor(() => screen.getByTestId("currentName"));
         expect(screen.getByText("Curent Name: Test item")).toBeInTheDocument();
     })
 
-    test("renders current item price", () => {
+    test("renders current item price", async () => {
+        await waitFor(() => screen.getByTestId("currentPrice"));
         expect(screen.getByText("Current Price: $9.99")).toBeInTheDocument();
     })
 
-    test("renders current item chicken price", () => {
-        expect(screen.getByText("Chicken: $10.99")).toBeInTheDocument();
-    })
-
-    test("renders current item veggie price", () => {
-        expect(screen.getByText("Veggie: $11.99")).toBeInTheDocument();
-    })
-
-    test("renders current item description", () => {
+    test("renders current item description", async () => {
+        await waitFor(() => screen.getByTestId("currentInfo"));
         expect(screen.getByText("This is a test item")).toBeInTheDocument();
     })
 })

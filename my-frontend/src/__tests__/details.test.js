@@ -57,25 +57,30 @@ describe("Details", () => {
     })
 
     /*
-        Adjust everything below to match mocked data and way data is displayed in page
+        Adjust everything below to match mocked data and the way data is displayed in page
     */
-    test("renders item name", () => {
+    test("renders item name", async () => {
+        await waitFor(() => screen.getByTestId("itemName"));
         expect(screen.getByText("Test item")).toBeInTheDocument();
     })
 
-    test("renders item price", () => {
+    test("renders item price", async () => {
+        await waitFor(() => screen.getByTestId("itemPrice"));
         expect(screen.getByText("Price: $9.99")).toBeInTheDocument();
     })
 
-    test("renders item chicken price", () => {
+    test("renders item chicken price", async () => {
+        await waitFor(() => screen.getByTestId("itemChickenPrice"));
         expect(screen.getByText("Chicken: $10.99")).toBeInTheDocument();
     })
 
-    test("renders item veggie price", () => {
+    test("renders item veggie price", async () => {
+        await waitFor(() => screen.getByTestId("itemVeggiePrice"));
         expect(screen.getByText("Veggie: $11.99")).toBeInTheDocument();
     })
 
-    test("renders item description", () => {
+    test("renders item description", async () => {
+        await waitFor(() => screen.getByTestId("itemInfo"));
         expect(screen.getByText("This is a test item")).toBeInTheDocument();
     })
 })

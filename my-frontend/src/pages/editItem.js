@@ -2,7 +2,6 @@ import React ,{ useRef }from "react";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import DataService from "../services/itemData";
-import UserService from "../services/UserData";
 import Cookies from 'js-cookie';
 
 
@@ -106,7 +105,7 @@ const EditItem = () => {
               <div className="detailsItemDetails">
                 <div>
                   {menuItem.name ? // Render name
-                    <h2>Curent Name: {menuItem.name}</h2>
+                    <h2 data-testid="currentName">Curent Name: {menuItem.name}</h2>
                     : null
                   }
                   <h2>New Name: <input type="text" id ="newName" value={newName} onChange={(e) =>setNewName(e.target.value)} /></h2>
@@ -127,7 +126,7 @@ const EditItem = () => {
                 <br />
                 <div>
                   {menuItem.price ? // Render price
-                    <h2>Current Price: ${(menuItem.price / 100).toFixed(2)}</h2>
+                    <h2 data-testid="currentPrice">Current Price: ${(menuItem.price / 100).toFixed(2)}</h2>
                     : null
                   }
                   <h2>New Price: $ <input type="text" id="newPrice" value={newPrice} onChange={(e) =>setNewPrice(e.target.value)}/></h2>
@@ -139,7 +138,7 @@ const EditItem = () => {
                   {menuItem.info ? // Render description
                     <>
                       <h2>Old Description:</h2>
-                      <p>{menuItem.info}</p>
+                      <p data-testid="currentInfo">{menuItem.info}</p>
                     </>
                     : null
                   }

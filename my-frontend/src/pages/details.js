@@ -33,7 +33,7 @@ const Details = () => {
     <div className="detailsContainer" data-testid="container">
       {menuItem && menuItem.name ? // Load menu item
         <div data-testid="itemDetails">
-          <h1 className="detailsHeader">{menuItem.name}</h1>
+          <h1 className="detailsHeader" data-testid="itemName">{menuItem.name}</h1>
           <div className="detailsGrid">
             <div className="detailsFlexContainer">
               <div className="detailsPictureContainer">
@@ -47,19 +47,19 @@ const Details = () => {
             <div className="detailsFlexContainer">
               <div className="detailsItemDetails">
                 {menuItem.price ?
-                  <h2>Price: ${(menuItem.price / 100).toFixed(2)}</h2>
+                  <h2 data-testid="itemPrice">Price: ${(menuItem.price / 100).toFixed(2)}</h2>
                   : null
                 }
                 {menuItem.price_chicken ?
-                  <h2>Chicken: ${(menuItem.price_chicken / 100).toFixed(2)}</h2>
+                  <h2 data-testid="itemChickenPrice">Chicken: ${(menuItem.price_chicken / 100).toFixed(2)}</h2>
                   : null
                 }
                 {menuItem.price_veggie ?
-                  <h2>Veggie: ${(menuItem.price_veggie / 100).toFixed(2)}</h2>
+                  <h2 data-testid="itemVeggiePrice">Veggie: ${(menuItem.price_veggie / 100).toFixed(2)}</h2>
                   : null
                 }
                 {menuItem.info ?
-                  <p>{menuItem.info}</p>
+                  <p data-testid="itemInfo">{menuItem.info}</p>
                   : <span>No description available.</span>
                 }
               </div>
