@@ -1,3 +1,4 @@
+import {decodeJwt} from 'jose';
 let allItems;
 let customToppings;
 import { ObjectId, MongoClient  } from "mongodb";
@@ -7,7 +8,7 @@ import { ObjectId, MongoClient  } from "mongodb";
 
 export default class ItemDao {
   /*
-   *   database is put into the variable item for querying
+   *   database is put into variable items for querying
    */
   static async injectDB(conn) {
     if (allItems) {
@@ -22,9 +23,19 @@ export default class ItemDao {
     customToppings = await conn.db(process.env.ITEM_NS).collection("customToppings");
   }
 
+  /*
+   *   Gets all the custom toppings
+   *   @return list of custom toppings
+   */
+
   static async getCustomToppingsCollection(){
     return customToppings;
   }
+
+  /*
+   *   Retrieves all menu items
+   *   @return list of all the menu items
+   */
 
   static async getItem() {
     let query;
@@ -46,6 +57,11 @@ export default class ItemDao {
 
     return { itemList, totalNumItem };
   }
+
+  /*
+   *   Retrieves all lunch/dinner items
+   *   @return list of all lunch/dinner menu items
+   */
 
   static async getLunch() {
     const query = { itemCategory: 'lunch/Dinner' };
@@ -88,6 +104,13 @@ export default class ItemDao {
     }
   }
   
+
+  /*
+   *   Retrieves specific item by object id
+   *   @param object id
+   *   @return item based on object id
+   */
+
   //overloading this function with a variation for getting specific MongoDB "_id"s
   static async getItem(DesiredObjectId) {
     let query;
@@ -139,6 +162,11 @@ export default class ItemDao {
     // return { lunchList, totalNumItem};
   // }
 
+  /*
+   *   Retrieves all pizza special menu items
+   *   @return list of all pizza menu items
+   */
+
   static async getPizzaSpecial() {
     const query = { itemCategory: 'pizzaSpecial' };
     const customSortField = 'Lets Customize'; // Specify the item name to move to the end
@@ -179,6 +207,11 @@ export default class ItemDao {
   
   
 
+  /*
+   *   Retrieves all combo special menu items
+   *   @return list of all combo special menu items
+   */
+
   static async getComboSpecial() {
     const query = { itemCategory: 'comboSpecial' };
     const client = new MongoClient(process.env.ITEM_DB_URI, { useUnifiedTopology: true });
@@ -205,6 +238,11 @@ export default class ItemDao {
   }
   
 
+  /*
+   *   Retrieves all special menu items
+   *   @return list of all special menu items
+   */
+
   static async getSpecialDeals() {
     let query;
     query = {itemCategory: {$eq: 'specialDeal'}}
@@ -226,9 +264,24 @@ export default class ItemDao {
     return { itemList, totalNumItem };
   }
 
+  /*
+   *   Creates new menu item based on the data recieved by the admin
+   *   @param Item info that the admin is putting into the website
+   *   @return failure if it occured
+   */
+
   // get rid of photo field
-  static async putItem(name, itemCategory, subCategory, price, description, photo){
+  static async putItem(name, itemCategory, subCategory, price, description, photo, username, token){
     console.log('itemDAO.js putItem Received data:', name, itemCategory, subCategory, price, description, photo);
+    const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
+
+    if(!token || username != tokenUsername.user.username){
+      console.error(
+        'Unauthorized User'
+      );
+      return;
+    }
+
     let query;
     if(itemCategory === 'lunch/Dinner'){
       query = {name: name, itemCategory: itemCategory, price: price};
@@ -249,7 +302,22 @@ export default class ItemDao {
     }
   }
 
-  static async putItemTwo(name, itemCategory, photo, priceLarge, priceSmall){
+  /*
+   *   Creates new menu item based on the data the admin passed
+   *   @param Item info that the admin is putting into the website
+   *   @return failure if it occured
+   */
+
+  static async putItemTwo(name, itemCategory, photo, priceLarge, priceSmall, username, token){
+    const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
+
+    if(!token || username != tokenUsername.user.username){
+      console.error(
+        'Unauthorized User'
+      );
+      return;
+    }
+
     let query;
     query = {name: name, itemCategory: itemCategory, price_large: priceLarge, price_small: priceSmall, photo: photo};
     let cursor;
@@ -259,6 +327,11 @@ export default class ItemDao {
       console.error('Unable to put item');
     }
   }
+
+  /*
+   *   Retrieves all drink items
+   *   @return list of all drink items
+   */
 
   static async getDrink(){
     let query;
@@ -281,7 +354,22 @@ export default class ItemDao {
     return {itemList, totalNumItem};
   }
 
-  static async deleteItem(_id){
+  /*
+   *   Deletes the specified menu item based on item id
+   *   @param id
+   *   @return success/failure
+   */
+
+  static async deleteItem(_id, username, token){
+    const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
+
+    if(!token || username != tokenUsername.user.username){
+      console.error(
+        'Unauthorized User'
+      );
+      return;
+    }
+
     let query;
     query = { _id: new ObjectId(_id) };    let cursor;
     try{
@@ -296,7 +384,22 @@ export default class ItemDao {
     }
   }
 
-  static async modifyItem(currentName, currentItemCategory, name, itemCategory, photo, price){
+  /*
+   *   Modifies the specified menu item based on name and category and uses new info to change the item
+   *   @param name, category of item used to identify item to be removed. All else are used as new info for item
+   *   @return failure if it occured
+   */
+
+  static async modifyItem(currentName, currentItemCategory, name, itemCategory, photo, price, username, token){
+    const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
+
+    if(!token || username != tokenUsername.user.username){
+      console.error(
+        'Unauthorized User'
+      );
+      return;
+    }
+
     let query1, query2;
     query1 = {name: currentName, itemCategory: currentItemCategory};
     query2 = {name: name, itemCategory: itemCategory, photo: photo, price: price};
@@ -308,7 +411,22 @@ export default class ItemDao {
     }
   }
 
-  static async modifyItemTwo(currentName, currentItemCategory, name, itemCategory, photo, priceLarge, priceSmall){
+  /*
+   *   Modifies the specified menu item based on name and category and uses new info to change the item
+   *   @param name, category of item used to identify item to be removed. All else are used as new info for item
+   *   @return failure if it occured
+   */
+
+  static async modifyItemTwo(currentName, currentItemCategory, name, itemCategory, photo, priceLarge, priceSmall, username, token){
+    const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
+
+    if(!token || username != tokenUsername.user.username){
+      console.error(
+        'Unauthorized User'
+      );
+      return;
+    }
+
     let query1, query2;
     query1 = {name: currentName, itemCategory: currentItemCategory};
     query2 = {name: name, itemCategory: itemCategory, photo: photo, price_large: priceLarge, price_small: priceSmall};

@@ -70,7 +70,7 @@ describe('POST pizza/user/login', () => {
 
 describe('POST pizza/user/editUser', () => { 
     it ('should change only the users username', (done) => {
-        const payload = {username: "unit_test", newUsername: "johnny", newPassword: "samspizza&more_test_do_not_change!"};
+        const payload = {username: "unit_test", newUsername: "johnny", newPassword: "samspizza&more_test_do_not_change!", token: process.env.TESTING_TOKEN_OG};
         request(app)
             .post('/pizza/user/editUser')
             .send(payload)
@@ -83,7 +83,7 @@ describe('POST pizza/user/editUser', () => {
     })
 
     it ('should change only the users password', (done) => {
-        const payload = {username: "johnny", newUsername: "johnny", newPassword: "123"};
+        const payload = {username: "johnny", newUsername: "johnny", newPassword: "123", token: process.env.TESTING_TOKEN};
         request(app)
             .post('/pizza/user/editUser')
             .send(payload)
@@ -123,7 +123,7 @@ describe('POST pizza/user/editUser', () => {
     })
 
     it ('should change both the users username and password', (done) => {
-        const payload = {username: "johnny", newUsername: "unit_test", newPassword: "samspizza&more_test_do_not_change!"};
+        const payload = {username: "johnny", newUsername: "unit_test", newPassword: "samspizza&more_test_do_not_change!", token: process.env.TESTING_TOKEN};
         request(app)
             .post('/pizza/user/editUser')
             .send(payload)

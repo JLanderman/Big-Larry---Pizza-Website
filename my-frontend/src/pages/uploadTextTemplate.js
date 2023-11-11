@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import DataService from "../services/itemData";
 import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
+import UserService from "../services/UserData";
 
 
 function TextForm() {
@@ -14,7 +15,7 @@ function TextForm() {
   const [subCategory, setSubCategory] = useState('');
   const [price, setPrice] = useState('');
   const [formattedPrice, setFormattedPrice] = useState('');
-  const token = Cookies.get('x-auth-token'); 
+  const token = Cookies.get('x-auth-token');
 
   //const { itemId } = useParams();
 
@@ -85,6 +86,9 @@ function TextForm() {
       alert('You need to be logged in to submit the form.');
       return;
     }
+
+    const user = await UserService.getUserbyToken(token);
+
     if (name === '' || (subCategory === '' && category !== 'lunch/Dinner') || price === '') {
       // Display an error message or alert the user
       alert('Please fill in all required fields before submitting.');
@@ -108,6 +112,8 @@ function TextForm() {
     formData.append('itemCategory', updatedCategory);
     formData.append('subCategory', updatedSubCategory);
     formData.append('price', price*100);
+    formData.append('user', user);
+    formData.append('token', token);
 
 
   // Send the formData to your server for processing

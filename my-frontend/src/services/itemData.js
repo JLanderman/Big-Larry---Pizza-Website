@@ -40,8 +40,8 @@ class DataService {
       //Outputs all price data from a given topping category
     }
 
-    updateCustomToppingPrice(topping, size, price){
-      return http.post(`/customToppings/update`, {topping, size, price}); 
+    updateCustomToppingPrice(topping, size, price, username, token){
+      return http.post(`/customToppings/update`, {topping, size, price, username: username, token: token}); 
       // Pass the topping, size, and price as a query parameter
       //The current toppings available are: Cheese, topping_1, topping_2, topping_3, comboVeggieAllMeat, xToppingxCheese
       //The current sizes are price_p, price_s, price_m, price_l, price_xl
@@ -60,9 +60,9 @@ class DataService {
       }
     };
 
-    deleteItem(_id){
+    deleteItem(_id, username, token){
       console.log('payload id:', _id);
-      return http.post('/allItems/deleteItem', {_id});
+      return http.post('/allItems/deleteItem', {_id, username: username, token: token});
 
     }
 
@@ -75,6 +75,8 @@ class DataService {
       const itemCategory = formData.get('itemCategory');
       const price = formData.get('price');
       const subCat = formData.get('subCategory');
+      const username = formData.get('user');
+      const token = formData.get('token');
 
       try {
         res = await http.post("/allItems/updateItem", {
@@ -84,6 +86,8 @@ class DataService {
           itemCategory,
           subCat,
           price,
+          username: username,
+          token: token
         });
 
   
@@ -110,6 +114,8 @@ class DataService {
       const subCategory = formData.get('subCategory');
       const description = formData.get('description');
       const photo = formData.get('photo');
+      const username = formData.get('user');
+      const token = formData.get('token');
 
       console.log('Name:', formData.get('name'));
       console.log('itemCategory:', formData.get('itemCategory'));
@@ -124,6 +130,8 @@ class DataService {
             price,
             description,
             photo,
+            username: username,
+            token: token
           });
 
     
@@ -170,6 +178,16 @@ class DataService {
     getAllDrink(){
         return http.get('/drink');
     }
+
+
+
+    updateItem(_id){
+      
+    }
+
+
+
+
     
 };
 

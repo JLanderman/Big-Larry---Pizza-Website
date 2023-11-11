@@ -2,6 +2,7 @@
 import React, { useState, useRef } from 'react';
 import DataService from "../services/itemData";
 import Cookies from "js-cookie";
+import UserService from "../services/UserData";
 
 
 function ItemFormLarge() {
@@ -11,9 +12,7 @@ function ItemFormLarge() {
   const [description, setDescription] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
-  const token = Cookies.get('x-auth-token'); 
-
-
+  const token = Cookies.get('x-auth-token');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +21,9 @@ function ItemFormLarge() {
       alert('You need to be logged in to submit the form.');
       return;
     }
+
+    const user = await UserService.getUserbyToken(token);
+
     if(name ==='' || category ==='' || price ==='' || description ==='' || selectedFile.name ===''){
     alert('Please fill in all required fields before submitting.');
     return;
@@ -41,6 +43,8 @@ function ItemFormLarge() {
   else{
     formData.append('photo', null);
   }
+  formData.append('user', user)
+  formData.append('token', token)
   // Send the formData to your server for processing
   //check for empty data?
 	try {

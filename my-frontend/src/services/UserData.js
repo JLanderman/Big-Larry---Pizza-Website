@@ -11,11 +11,12 @@ class UserService {
         return res;
     }
 
-    async editUserCred(username, newUsername, newPassword) {
+    async editUserCred(username, newUsername, newPassword, token) {
         const res = await http.post(`/user/editUser`, {
             username: username,
             newUsername: newUsername,
             newPassword: newPassword,
+            token: token
         });
         return res;
     }
