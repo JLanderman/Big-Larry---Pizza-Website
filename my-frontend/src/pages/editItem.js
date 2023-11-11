@@ -2,6 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import DataService from "../services/itemData";
+import UserService from "../services/UserData";
+import Cookies from 'js-cookie';
 
 
 const picUrl = process.env.REACT_APP_IMAGE_BASE_URL;
@@ -10,15 +12,17 @@ const EditItem = () => {
   let [menuItem, setMenuItem] = useState();
   const [category, setCategory] = useState('');
   let params = useParams();
+  const token = Cookies.get('x-auth-token');
 
-  const handleRemoveItem = (_id) => {
+  const handleRemoveItem = async (_id) => {
+    const user = await UserService.getUserbyToken(token);
 		const confirmation = window.confirm(`Are you sure you want to remove this item from the menu?`);
 		console.log('package id:', _id);
   
 		if (confirmation) {
 		  if (confirmation) {
 			// User confirmed, proceed with deletion
-			DataService.deleteItem(_id).then((response) => {
+			DataService.deleteItem(_id, user, token).then((response) => {
 			  if (response.status === 200) {
 				console.log('Item deleted successfully');
 				window.location.reload(); // Refresh the page

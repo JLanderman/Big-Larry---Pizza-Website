@@ -3,6 +3,13 @@ import { SignJWT, decodeJwt, jwtVerify } from 'jose';
 const maxAgeMS = 1000 * 60 * 30; // 1000 * 60 * 30 = 30 mins
 
 export default class UserController {
+
+  /*
+   *   Creates token for the admin logging in
+   *   @param user recieves the user that needs to have the token signed to
+   *   @return signed token
+   */
+
   static createToken = async (user) => { // create and return new JSON Web Token
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const alg = 'HS256';
@@ -14,6 +21,12 @@ export default class UserController {
       .sign(secret);
     return jwt;
   };
+
+  /*
+   *   Creates token for the admin logging in
+   *   @param req.body... recieves the user name and password to sign into admin part of website
+   *   @return user data
+   */
 
   static async login(req, res) {
     const username = req.body.username;
@@ -39,6 +52,12 @@ export default class UserController {
     };
   };
 
+  /*
+   *   Recieves the token from the user
+   *   @param req.body.token recieves the signed token for processing
+   *   @return username of user
+   */
+
   static async apiGetUserbyToken(req, res, next){
     try{
       let signedToken = req.body.token;
@@ -50,18 +69,26 @@ export default class UserController {
     }
   }
 
+  /*
+   *   Edits the selected user
+   *   @param req.body... recieves the current user, token, and the new username/password for authentication and changing user info
+   *   @return success/failure
+   */
+
   static async apiEditUser(req, res){
     const username = req.body.username;
     const newUsername = req.body.newUsername;
     const newPassword = req.body.newPassword;
+    const auth = req.body.token;
 
     if (!username) return res.status(400);
     if (!newUsername) return res.status(400);
     if (!newPassword) return res.status(400);
+    if(!auth)return res.status(400);
 
 
     try{
-      const checkSuccess = await UserDAO.editUserLogin(username, newUsername, newPassword); //attempt to edit user login
+      const checkSuccess = await UserDAO.editUserLogin(username, newUsername, newPassword, auth); //attempt to edit user login
       if(checkSuccess){
         return res.status(200).send("Change Success");
       }else{

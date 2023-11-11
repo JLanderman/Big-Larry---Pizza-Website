@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router";
 import { useAuth } from '../contexts/authContext';
+import UserService from "../services/UserData";
 
 import { HexColorPicker, HexColorInput } from "react-colorful";
 import { useState } from "react";
@@ -233,8 +234,9 @@ const Admin = () => {
       
       const [customPaletteName, setCustomPaletteName] = useState("Custom");
       const pushPalette = async () => {
+        const user = await UserService.getUserbyToken(token);
         console.log("pushPalette")
-        const res = await PaletteService.putPaletteFront(customPaletteName, [colorBG, colorMenuLight, colorMenu, colorMenuDark, colorText, colorTextLight, colorTextHighlight, colorLink])
+        const res = await PaletteService.putPaletteFront(customPaletteName, [colorBG, colorMenuLight, colorMenu, colorMenuDark, colorText, colorTextLight, colorTextHighlight, colorLink], user, token)
           .then((res) => {
             console.log("putPaletteFront response = " + res.data); 
           })

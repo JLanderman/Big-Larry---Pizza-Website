@@ -5,6 +5,8 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useAuth } from "../contexts/authContext";
+import UserService from "../services/UserData";
+import Cookies from 'js-cookie';
 
 const url = process.env.REACT_APP_IMAGE_BASE_URL;
 
@@ -14,14 +16,16 @@ const SpDeals = (props) => {
 	const { auth } = useAuth();
 	const navigate = useNavigate();
 
-	const handleRemoveItem = (_id) => {
+	const handleRemoveItem = async (_id) => {
+		const token = Cookies.get('x-auth-token');
+    	const user = await UserService.getUserbyToken(token);
 		const confirmation = window.confirm(`Are you sure you want to remove this item from the menu?`);
 		console.log('package id:', _id);
 
 		if (confirmation) {
 			if (confirmation) {
 				// User confirmed, proceed with deletion
-				DataService.deleteItem(_id).then((response) => {
+				DataService.deleteItem(_id, user, token).then((response) => {
 					if (response.status === 200) {
 						console.log('Item deleted successfully');
 						window.location.reload(); // Refresh the page
