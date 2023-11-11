@@ -7,6 +7,10 @@ class DataService {
         return http.get(`/items`);
     }
 
+    getItemById(id){
+        return http.get(`/items?_id=${id}`)
+    }
+
     getAllCart(){
         return http.get(`/cartItems`);
     }

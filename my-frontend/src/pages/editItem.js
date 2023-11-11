@@ -43,13 +43,9 @@ const EditItem = () => {
   }, []);
 
   const retrieveMenuItem = () => {
-    let url = process.env.REACT_APP_API_BASE_URL+`/items?_id=${params.id}`;
-    fetch(url)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setMenuItem(data[0]);
+    DataService.getItemById(params.id)
+      .then((res) => {
+        setMenuItem(res.data[0]);
       })
       .catch((e) => {
         console.log(e);
@@ -57,9 +53,9 @@ const EditItem = () => {
   };
 
   return (
-    <div className="detailsContainer" data-testid="details">
+    <div className="detailsContainer" data-testid="container">
       {menuItem && menuItem.name ? // Load menu item
-        <>
+        <div data-testid="itemDetails">
           <h1 className="detailsHeader">Modifying "{menuItem.name}"</h1>
           <div className="detailsGrid">
             <div className="detailsFlexContainer">
@@ -160,9 +156,9 @@ const EditItem = () => {
               </button>
             </div>
           </div>
-        </>
+        </div>
 
-        : <span>Loading item...</span> // No item
+        : <span>Loading item...</span > // No item
       }
     </div>
   );
