@@ -1,6 +1,11 @@
+import {decodeJwt} from 'jose';
 let savedPalettes;
 
 export default class PaletteDao {
+
+    /*
+   *   Currently saved color palettes are injected into a variable from the database
+   */
 
     static async injectDB(conn) {
         if (savedPalettes) {
@@ -8,6 +13,11 @@ export default class PaletteDao {
         }
         savedPalettes = await conn.db(process.env.ITEM_NS).collection("customPalettes");
     }
+
+    /*
+   *   Returns the current color palette of the website
+   *   @return current color paletter of website
+   */
     
     static async getCurrentPalette() {
         let query, cursor;
@@ -26,6 +36,11 @@ export default class PaletteDao {
         // console.log(`currentPalette = ${currentPalette}`)
         return { currentPalette };
     }
+
+    /*
+   *   Retrieves all color palettes saved in database
+   *   @return all saved color palettes
+   */
       
     static async getPalettes() {
         let query, cursor;
@@ -45,8 +60,21 @@ export default class PaletteDao {
         return { paletteList, totalNumPalettes };
     }
     
+    /*
+   *   Color palette is implemented onto the website and stored in database
+   *   @return fail
+   */
     
-    static async putPalette(paletteName, colorArr) {
+    static async putPalette(paletteName, colorArr, username, token) {
+        const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
+
+        if(!token || username != tokenUsername.user.username){
+        console.error(
+            'Unauthorized User'
+        );
+        return;
+        }
+
         // console.log('paletteDAO.js putPalette Received data:', paletteName, colorArr);
         let query, cursor;
         query = {name: paletteName, colorArr: colorArr};

@@ -6,6 +6,7 @@ import { useAuth } from '../contexts/authContext';
 import '../App.css';
 import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
+import UserService from "../services/UserData";
 
 
 
@@ -14,14 +15,16 @@ const Lunch = (props) => {
 
     const { auth} = useAuth(); 
 
-    const handleRemoveItem = (_id) => {
+    const handleRemoveItem = async (_id) => {
+      const token = Cookies.get('x-auth-token');
+      const user = await UserService.getUserbyToken(token);
       const confirmation = window.confirm(`Are you sure you want to remove this item from the menu?`);
       console.log('package id:', _id);
 
       if (confirmation) {
         if (confirmation) {
           // User confirmed, proceed with deletion
-          DataService.deleteItem(_id).then((response) => {
+          DataService.deleteItem(_id, user, token).then((response) => {
             if (response.status === 200) {
               console.log('Item deleted successfully');
               window.location.reload(); // Refresh the page

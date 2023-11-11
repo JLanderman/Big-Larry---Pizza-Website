@@ -12,14 +12,16 @@ class PaletteService {
     }
     
     
-    async putPaletteFront(name, colorArr) {
+    async putPaletteFront(name, colorArr, username, token) {
         let res;
         // console.log(`putPaletteFront params (${name}, ${JSON.stringify(colorArr)})`);
         
         try {
             res = await http.post("/palettes/add", {
               name,
-              colorArr
+              colorArr,
+              username: username,
+              token: token
             });
       
           // Check if the response contains a 'success' property

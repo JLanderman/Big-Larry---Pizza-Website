@@ -1,10 +1,8 @@
 import { ObjectId } from "mongodb";
 import itemDAO from "../dao/itemDAO.js";
-import AWS from "aws-sdk";
 import fs from "fs";
-AWS.config.update({region: 'us-west-1'})
-
-const s3 = new AWS.S3();
+import {decodeJwt} from 'jose';
+//If using AWS statements, make sure to v3 not v2
 
 export default class ItemController {
   /*
@@ -63,7 +61,10 @@ export default class ItemController {
     res.json(response);
   }
 
-
+  /*
+   *   item from the lunch/Dinner menu section is grabbed
+   *   @return list of lunch/dinner items and total num of lunch/dinner items
+   */
 
   static async apiGetLunch(req, res, next)
   {
@@ -91,6 +92,10 @@ export default class ItemController {
     res.json(response);
   }
 
+  /*
+   *   item from the pizza menu section is grabbed
+   *   @return list of pizza items and total num of pizza items
+   */
 
   static async apiGetPizzaSpecial(req, res, next) {
     const { itemList, totalNumItem } = await itemDAO.getPizzaSpecial();
@@ -101,6 +106,11 @@ export default class ItemController {
     res.json(response);
   }
 
+  /*
+   *   item from the comboSecials menu section is grabbed
+   *   @return list of comboSpecial items and total num of comboSpecial items
+   */
+
   static async apiGetComboSpecial(req, res, next) {
     const { itemList, totalNumItem } = await itemDAO.getComboSpecial();
     let response = {
@@ -109,6 +119,11 @@ export default class ItemController {
     };
     res.json(response);
   }
+
+  /*
+   *   item from the specialDeals menu section is grabbed
+   *   @return list of specialDeal items and total num of specialDeal items
+   */
 
   static async apiGetSpecialDeals(req, res, next) {
     const { itemList, totalNumItem } = await itemDAO.getSpecialDeals();
@@ -119,6 +134,12 @@ export default class ItemController {
     };
     res.json(response);
   }
+
+  /*
+   *   The price of the topping recieved is calculated for user to view
+   *   @param req.body recieves the users topping input
+   *   @return price of the specified topping
+   */
 
   static async apiGetToppingPrice(req, res, next) {
     const { topping } = req.body;
@@ -168,6 +189,11 @@ export default class ItemController {
     }
   }
 
+  /*
+   *   The price of all the pizza toppings are retrieved
+   *   @return price of all the toppings
+   */
+
   static async apiGetAllToppingsPrices(req, res, next) {
     try {
       const customToppings = await itemDAO.getCustomToppingsCollection();
@@ -192,9 +218,21 @@ export default class ItemController {
     }
   }
 
+  /*
+   *   Topping price is updated to a new price
+   *   @param req.body recieves the users topping, size, and price input to change to the price of the topping and the users name and token for authentication
+   *   @return json message the shows it was a success
+   */
+
   static async apiUpdateToppingPrice(req, res, next) {
-    const { topping, size, price } = req.body;
-    console.log("Received values:", req.body);
+    const { topping, size, price, username, token} = req.body;
+    const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
+    if(!token || username != tokenUsername.user.username){
+      console.error(
+        'Unauthorized User'
+      );
+      return;
+    }
   
     try {
       //Turn the dollar amount into a whole integer
@@ -228,6 +266,11 @@ export default class ItemController {
     }
   } // end apiUpdateCustomTopping
 
+   /*
+   *   Creates a new menu item for the website based on details
+   *   @param req.body... recieves the users item data that they want to put into the website and the users name and token for authentication
+   *   @return json message stating if it was a success
+   */
 
   static async apiPutItem(req, res, next){
     const name = req.body.name;
@@ -236,11 +279,13 @@ export default class ItemController {
     const price = req.body.price;
     const description = req.body.description;
     const photo =  req.body.photo;
+    const auth = req.body.token;
+    const user = req.body.username;
         // we are putting in a lunch/Dinner item without a photo
     console.log('apiPutitem: Received data:', name, itemCategory, subCategory, price, description, photo);
       try {
         // Call the itemDAO.putItem method to insert the item into MongoDB
-        await itemDAO.putItem(name, itemCategory, subCategory, price, description, photo);
+        await itemDAO.putItem(name, itemCategory, subCategory, price, description, photo, user, auth);
           res.status(201).json({ success: true, message: "Item inserted successfully" });
               } catch (error) {
         console.error("Error:", error);
@@ -269,19 +314,33 @@ export default class ItemController {
   }
   */
 
+  /*
+   *   Deletes the specified item from the website using item id
+   *   @param req.body... recieves the users name and token for authentication and id for the item
+   *   @return json success/fail message
+   */
+
   static async apiDeleteItem(req, res, next){
     const _id = req.body._id;
+    const auth = req.body.token;
+    const user = req.body.username;
     let query;
     console.log('received id:', query);
 
     try {
-      await itemDAO.deleteItem(_id);
+      await itemDAO.deleteItem(_id, user, auth);
       res.status(200).json({ success: true, message: "Item deleted successfully" });
     } catch (error) {
       console.error(`Cannot delete item: ${error}`);
       res.status(500).json({ success: false, message: "Error deleting item" });
     }
   }
+
+  /*
+   *   Modifies a selected menu item for the website based on details
+   *   @param req.body... recieves the users item data that they want to modify into the website and the users name and token for authentication
+   *   @return json message stating if it was a success
+   */
 
   static async apiModifyItem(req, res, next){
     const curName = req.body.curName;
@@ -292,13 +351,15 @@ export default class ItemController {
     const price = req.body.price;
     const priceLarge = req.body.price_large;
     const priceSmall = req.body.price_small;
+    const auth = req.body.token;
+    const user = req.body.username;
       try {
         if(!priceLarge && !priceSmall){
-          itemDAO.modifyItem(curName, curItemCat, name, itemCategory, photo, price);  //Modify item that only has one price
+          itemDAO.modifyItem(curName, curItemCat, name, itemCategory, photo, price, user, auth);  //Modify item that only has one price
           res.status(200).json({ success: true, message: "Item modified successfully with one price" });
           return res;
         }else{
-          itemDAO.modifyItemTwo(curName, curItemCat, name, itemCategory, photo, priceLarge, priceSmall); //Modify item that has two prices (large/small)
+          itemDAO.modifyItemTwo(curName, curItemCat, name, itemCategory, photo, priceLarge, priceSmall, user, auth); //Modify item that has two prices (large/small)
           res.status(200).json({ success: true, message: "Item modified successfully with two prices" });
           return res;
         }
@@ -306,6 +367,11 @@ export default class ItemController {
         console.error(`Cannot modify item, ${e}`)
       }
   }
+
+  /*
+   *   item from the drink menu section is grabbed
+   *   @return list of drink items and total num of drink items
+   */
 
   static async apiGetDrink(req, res, next)
   {

@@ -2,6 +2,8 @@ import React ,{ useRef }from "react";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import DataService from "../services/itemData";
+import UserService from "../services/UserData";
+import Cookies from 'js-cookie';
 
 
 const picUrl = process.env.REACT_APP_IMAGE_BASE_URL;
@@ -15,6 +17,7 @@ const EditItem = () => {
   const [newPhoto, setNewPhoto] = useState(null);
 
   let params = useParams();
+  const token = Cookies.get('x-auth-token');
 
     const handleSaveChange = () =>{
       const updatedData = {
