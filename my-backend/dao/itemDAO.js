@@ -211,7 +211,6 @@ export default class ItemDao {
    *   Retrieves all combo special menu items
    *   @return list of all combo special menu items
    */
-
   static async getComboSpecial() {
     const query = { itemCategory: 'comboSpecial' };
     const client = new MongoClient(process.env.ITEM_DB_URI, { useUnifiedTopology: true });
@@ -221,14 +220,30 @@ export default class ItemDao {
       const collection = client.db('samsPizza').collection('allMenuItems');
       const results = await collection.find(query).toArray();
   
-      // Sort the results based on the productNumber
-      results.sort((a, b) => {
-        const numberA = parseInt(a.name.match(/#(\d+)/)[1]);
-        const numberB = parseInt(b.name.match(/#(\d+)/)[1]);
-        return numberA - numberB;
+      // Separate items into two arrays: with and without expected format
+      const itemsWithFormat = [];
+      const itemsWithoutFormat = [];
+  
+      // Sort the results based on the presence of the expected format
+      results.forEach(item => {
+        const match = item.name.match(/#(\d+)/);
+        if (match) {
+          // Item with expected format
+          item.productNumber = parseInt(match[1]); // Add productNumber for sorting
+          itemsWithFormat.push(item);
+        } else {
+          // Item without expected format
+          itemsWithoutFormat.push(item);
+        }
       });
   
-      return { itemList: results, totalNumItem: results.length };
+      // Sort items with expected format by productNumber
+      itemsWithFormat.sort((a, b) => a.productNumber - b.productNumber);
+  
+      // Combine the two arrays
+      const finalResults = [...itemsWithFormat, ...itemsWithoutFormat];
+  
+      return { itemList: finalResults, totalNumItem: finalResults.length };
     } catch (e) {
       console.error(`Error in getComboSpecial: ${e}`);
       return { itemList: [], totalNumItem: 0 };
@@ -236,6 +251,7 @@ export default class ItemDao {
       client.close();
     }
   }
+  
   
 
   /*
@@ -291,7 +307,7 @@ export default class ItemDao {
     }
     // pizza special category
     else{
-      query = {name: name, itemCategory: itemCategory, price: price, description: description, photo: photo};
+      query = {name: name, itemCategory: itemCategory, price: price, info: description, photo: photo};
     }
     
     let cursor;
