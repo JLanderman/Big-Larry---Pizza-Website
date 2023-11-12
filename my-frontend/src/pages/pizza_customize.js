@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import DataService from "../services/itemData";
 import Cookies from "js-cookie";
+import UserService from "../services/UserData";
 
 const Pizza_customize = () => {
   const token = Cookies.get('x-auth-token');
   const [toppingPrices, setToppingPrices] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
   const [selectedToppingCategory, setSelectedToppingCategory] = useState(null);
+
 
   useEffect(() => {
     const fetchToppingPrices = async () => {
@@ -69,7 +71,8 @@ const Pizza_customize = () => {
     setPrice(priceSelect(selectedSize, selectedToppingName === "Cheese" ? 0 : 1));
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
+    const user = await UserService.getUserbyToken(token);
     const selectedSizeLabel = sizeLabels[selectedSize];
     const updatedPrice = parseFloat(price);
 
@@ -97,7 +100,9 @@ const Pizza_customize = () => {
     DataService.updateCustomToppingPrice(
       mappedToppingCategory,
       selectedSizeLabel,
-      updatedPrice
+      updatedPrice,
+      user,
+      token
     )
       .then((response) => {
         console.log("Topping updated successfully:", response);

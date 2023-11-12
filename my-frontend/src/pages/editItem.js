@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import DataService from "../services/itemData";
 import Cookies from 'js-cookie';
+import UserService from "../services/UserData";
 
 
 const picUrl = process.env.REACT_APP_IMAGE_BASE_URL;
@@ -18,7 +19,8 @@ const EditItem = () => {
   let params = useParams();
   const token = Cookies.get('x-auth-token');
 
-    const handleSaveChange = () =>{
+    const handleSaveChange = async () =>{
+      const user = await UserService.getUserbyToken(token);
       const updatedData = {
         name: newName || menuItem.name,
         itemCategory : category || menuItem.itemCategory,
@@ -28,7 +30,7 @@ const EditItem = () => {
       };
 
 
-      DataService.updateItem(menuItem._id, updatedData)
+      DataService.updateItem(menuItem._id, updatedData, user, token)
       .then((response) =>{
         if(response.status === 200)
         {
