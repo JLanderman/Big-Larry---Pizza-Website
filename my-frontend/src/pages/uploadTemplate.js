@@ -1,8 +1,9 @@
-
 import React, { useState, useRef } from 'react';
 import DataService from "../services/itemData";
 import Cookies from "js-cookie";
 import UserService from "../services/UserData";
+import pizzaGuy from '../images/Other/PizzaGuy_HQ_1.0.png';
+
 
 
 function ItemFormLarge() {
@@ -11,8 +12,19 @@ function ItemFormLarge() {
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
+  const [fileUploaded, setFileUploaded] = useState(false);
   const fileInputRef = useRef(null);
   const token = Cookies.get('x-auth-token');
+
+  const handleNameChange = (e) => setName(e.target.value);
+  const handleCategoryChange = (e) => setCategory(e.target.value);
+  const handlePriceChange = (e) => setPrice(e.target.value);
+  const handleDescriptionChange = (e) => setDescription(e.target.value);
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+    setFileUploaded(true);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,6 +38,11 @@ function ItemFormLarge() {
 
     if(name ==='' || category ==='' || price ==='' || description ==='' || selectedFile.name ===''){
     alert('Please fill in all required fields before submitting.');
+    return;
+  }
+
+  if (isNaN(price)) {
+    alert('Please enter a valid numeric value for the price.');
     return;
   }
 
@@ -46,25 +63,18 @@ function ItemFormLarge() {
   formData.append('user', user)
   formData.append('token', token)
   // Send the formData to your server for processing
-  //check for empty data?
 	try {
-	const res = await DataService.putItemFront(formData);
+	await DataService.putItemFront(formData);
 	console.log('Item uploaded successfully');
 	} catch (error) {
 	console.error('Error uploading item:', error);
 	}
 
-
-	//// THIS CODE IS FOR TESTING. IT WILL THROW THE ////
-	//// UPLOADED VALUES INTO THE CONSOLE (f12) SO YOU CAN ////
-	//// DOUBLE CHECK TO MAKE SURE THE PROPER VALUES ARE BEING READ ////
-	//// CONTROL + BACKSLASH TO UNCOMMENT ENTIRE SECTION ////
-	//
-	// console.log('Name:', formData.get('name'));
-  // console.log('Category:', formData.get('category'));
-  // console.log('Price:', formData.get('price'));
-  // console.log('Description:', formData.get('description'));
-  // console.log('File Name:', selectedFile ? selectedFile : 'N/A');
+	console.log('Name:', formData.get('name'));
+  console.log('Category:', formData.get('category'));
+  console.log('Price:', formData.get('price'));
+  console.log('Description:', formData.get('description'));
+  console.log('File Name:', selectedFile ? selectedFile : 'N/A');
 	
 
     // Reset form fields and selected file
@@ -76,43 +86,81 @@ function ItemFormLarge() {
     setPrice('');
     setDescription('');
     setSelectedFile(null);
+    setFileUploaded(false);
 	
   };
 
   return (
-    <div>
-		<div> <br></br><br></br><br></br> This is for Pizza Specials, Combo Specials, and Special Deals</div>
+    <div className="detailsContainer" data-testid="container">
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Item Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+      <h1 className="detailsHeader">Adding New Item to Menu</h1>
 
-        <select value={category} onChange={(e) => setCategory(e.target.value)}>
-          <option value="">Select an option</option>
-          <option value= "pizzaSpecial">Pizza Specialty</option>
-          <option value= "comboSpecial">Combo Specialty</option>
-          <option value= "specialDeal">Special Deal</option>
-        </select>
+        <div className="detailsGrid">
+          <div className="detailsFlexContainer">
+            <div className="detailsPictureContainer">
+              {/* Use the static image */}
+              <img className="detailsPicture" src={pizzaGuy} alt="Pizza Guy" />
+  
+              <div className="detailsButtonRow">
+                <input
+                  type="file"
+                  id="file"
+                  name="file"
+                  style={{ display: 'none' }}
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                />
+                <button className="detailsButton" type="button" onClick={() => fileInputRef.current.click()}>
+                  {fileUploaded ? 'Picture Uploaded' : 'Upload File'}
+                </button>
+              </div>
+            </div>
+          </div>
+  
+          {/* Item detail part */}
+          <div className="detailsFlexContainer">
+            <div className="detailsItemDetails">
+              {/* Add input fields for item details */}
+              <div>
+                  {<h2 data-testid="currentName">Item Name:</h2>}
+                  <h2><input type="text" placeholder="Item Name" 
+                  value={name} onChange={handleNameChange} /></h2>
+              </div>
 
-        <input
-          type="number"
-          placeholder="Price"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-        />
+              <br />
 
-        <textarea
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        ></textarea>
+                <div>
+                  <h2>Item Category:</h2>
+                  <h2>
+                  <select value={category} onChange={handleCategoryChange}>
+                    <option value="">Select an option</option>
+                    <option value= "pizzaSpecial">Pizza Specialty</option>
+                    <option value= "comboSpecial">Combo Specialty</option>
+                    <option value= "specialDeal">Special Deal</option>
+                  </select>
+                  </h2>
+                </div>
+              <br />
+              <br />
+                <div>
+                  <h2 data-testid="currentPrice">Item Price:</h2>
+                  <h2> $ <input type="text" placeholder="Price" value={price} 
+                  onChange={handlePriceChange}/></h2>
+                </div>
+              <br />
 
-        <input type="file" ref={fileInputRef} onChange={(e) => setSelectedFile(e.target.files[0])} />
-
-        <button type="submit">Submit</button>
+              <div>
+                  <h2>Item Description:</h2>
+                  <textarea className="detailsEditDescription" placeholder="Item Description"
+                  value={description} onChange={handleDescriptionChange}></textarea>
+              </div>
+  
+              <button type="submit" className="detailsButton save">
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
       </form>
     </div>
   );
