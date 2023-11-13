@@ -17,11 +17,16 @@
     justify-content: space-around;
 }
 
-.palette-presets * {
+.palette-presets *, .palette-history * {
     border-radius: 1rem;
     padding: 0 1rem;
     background-color: var(--clr-menu-dark);
     color: var(--clr-menu-light);
+}
+
+.palette-history { 
+    display: grid;
+    flex-flow: row wrap;
 }
 
 .palette-parent{
@@ -29,6 +34,7 @@
     flex-direction: row;
     gap: 10px;
     --palette-width: clamp(150px, 11vw, 200px);
+    overflow: hidden;
 }
 
 .palette-container .react-colorful{
@@ -49,8 +55,6 @@
 
 .preview-parent{
     position: relative;
-    /* width: 800px;
-    height: 450px; */
     width: 50%;
     aspect-ratio: 16 / 9;
     

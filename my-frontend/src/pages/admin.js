@@ -228,8 +228,9 @@ const Admin = () => {
         updatePreviewColors();
       }, [colorBG, colorMenuLight, colorMenu, colorMenuDark, colorText, colorTextLight, colorTextHighlight, colorLink]);
       
-      let MetaUpdate = (array) => {
+      let MetaUpdate = (array, name) => {
         paletteUpdate(array);
+        setCustomPaletteName(name);
       }
       
       const [customPaletteName, setCustomPaletteName] = useState("Custom");
@@ -243,6 +244,8 @@ const Admin = () => {
           .catch((e) => {
             console.log(e);
           });
+          
+        retrievePalettes();
       };
       
       return (<div className="palette-grandparent" data-testid="palettePicker">
@@ -297,21 +300,25 @@ const Admin = () => {
           <input type="text" value={customPaletteName} onInput={e => setCustomPaletteName(e.target.value)} className="custom-palette-name"></input>
         </div>
         <div className="palette-presets">
-          <button onClick={(e) => {MetaUpdate(crimsonPalette);   }}>Crimson</button>
-          <button onClick={(e) => {MetaUpdate(figmaPalette);     }}>Figma</button>
-          <button onClick={(e) => {MetaUpdate(pinkPalette);      }}>Pink</button>
-          <button onClick={(e) => {MetaUpdate(oceanPalette);     }}>Ocean</button>
-          <button onClick={(e) => {MetaUpdate(burgerPalette);    }}>Burger</button>
-          <button onClick={(e) => {MetaUpdate(halloweenPalette); }}>Halloween</button>
+          <button onClick={(e) => {MetaUpdate(crimsonPalette, "Crimson");     }}>Crimson</button>
+          <button onClick={(e) => {MetaUpdate(figmaPalette, "Figma");         }}>Figma</button>
+          <button onClick={(e) => {MetaUpdate(pinkPalette, "Pink");           }}>Pink</button>
+          <button onClick={(e) => {MetaUpdate(oceanPalette, "Ocean");         }}>Ocean</button>
+          <button onClick={(e) => {MetaUpdate(burgerPalette, "Burger");       }}>Burger</button>
+          <button onClick={(e) => {MetaUpdate(halloweenPalette, "Halloween"); }}>Halloween</button>
         </div>
         
+        <h3>History of Recent Palettes:</h3>
         <div className="palette-history">
           {!Array.isArray(customPalettes)
-            ? customPalettes.palettes.map((currentItem) => {
+            ? customPalettes.palettes.map((currentItem, index) => {
                 return (
                   <>
-                    <button onClick={e => MetaUpdate(currentItem.colorArr)}>
-                      {currentItem.name}
+                    <button onClick={e => MetaUpdate(currentItem.colorArr, currentItem.name)}>
+                      <div>
+                        {(index + 1) + ". "} 
+                        {currentItem.name}
+                      </div>
                     </button>
                   </>
                 );
