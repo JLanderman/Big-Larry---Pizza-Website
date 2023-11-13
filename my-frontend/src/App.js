@@ -20,6 +20,7 @@ import SpDeals from './pages/specialDeals';
 import AuthProvider from './contexts/authContext';
 import UploadTemplate from './pages/uploadTemplate';
 import UploadTextTemplate from './pages/uploadTextTemplate';
+import UploadDrinkTemplate from './pages/uploadDrinkTemplate';
 import EditItem from './pages/editItem';
 import PaletteService from "./services/paletteData"
 
@@ -87,6 +88,7 @@ function App() {
               <Route path="/ItemFormLarge" element={<UploadTemplate />} />
               <Route path="/TextForm" element={<UploadTextTemplate />} />
               <Route path="/TextForm/:id" element={<UploadTextTemplate />} />
+              <Route path="/DrinkForm/:id" element={<UploadDrinkTemplate />} />
               <Route path="/editItem/:id" element={<EditItem />} />
             </Routes>
             <Footer />
