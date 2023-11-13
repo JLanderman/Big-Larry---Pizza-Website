@@ -101,7 +101,7 @@ const Drink= (props) => {
                                     Remove
                                   </button>
                                     <h>   </h>
-                                    <Link to={`/TextForm/${currentItem._id}`}>
+                                    <Link to={`/DrinkForm/${currentItem._id}`}>
                                       <button className="border px-10 py- fs-5 rounded-4">Edit</button>
                                     </Link> 
 
@@ -132,7 +132,7 @@ const Drink= (props) => {
           {
             auth ? (
               <div>
-                <Link to="/TextForm">
+                <Link to="/DrinkForm/">
                   <button className="border px-5 py-3 fs-2 rounded-4">Add New Item</button>
                 </Link>
               </div>
