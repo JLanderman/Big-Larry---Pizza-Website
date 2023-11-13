@@ -1,5 +1,4 @@
-//This page is for the uploading/editing menu items that are text only / lack pictures
-//This means the drink menu and lunch/dinner menu items. 
+//This page is for the uploading/editing drink items.
 
 import React, { useState, useEffect } from 'react';
 import DataService from "../services/itemData";
@@ -7,15 +6,13 @@ import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
 import UserService from "../services/UserData";
 
-
-function TextForm() {
+function DrinkForm() {
   const [name, setName] = useState('');
   // eslint-disable-next-line
   const [category, setCategory] = useState('');
   const [subCategory, setSubCategory] = useState('');
   const [price, setPrice] = useState('');
   const [formattedPrice, setFormattedPrice] = useState('');
-  const [newDescription, SetnewDescription] = useState('');
   const token = Cookies.get('x-auth-token');
 
   //const { itemId } = useParams();
@@ -24,11 +21,8 @@ function TextForm() {
   let updatedSubCategory;
   let existingName;
 
-
   let [menuItem, setMenuItem] = useState();
   let params = useParams();
-
-  
   
   useEffect(() => {
     retrieveMenuItem();
@@ -43,13 +37,11 @@ function TextForm() {
       .then((data) => {
       setMenuItem(data[0]);
       console.log(menuItem);
-
       })
       .catch((e) => 
       {
         console.log(e);
       });
-      
   };
 
   const handlePriceChange = (e) => {
@@ -109,33 +101,34 @@ function TextForm() {
 
     //Create a FormData object to append form fields and file
     const formData = new FormData();
-
-    formData.append('currName', menuItem.name);
-    formData.append('currCat', menuItem.itemCategory);
-    formData.append('newName', name || menuItem.name);
-    formData.append('newCat', updatedCategory || menuItem.itemCategory);    
-    formData.append('subCategory', updatedSubCategory || menuItem.drinktype);
-    formData.append('newPrice', price || menuItem.price);
+    formData.append('name', name);
+    formData.append('itemCategory', updatedCategory);
+    formData.append('subCategory', updatedSubCategory);
+    formData.append('price', price*100);
     formData.append('user', user);
     formData.append('token', token);
-
-    
 
 
   // Send the formData to your server for processing
   try {
-    for (const value of formData.values()) {  //logging for testing
-      console.log(value);
-    }
+    console.log('Name:', formData.get('name'));
+    console.log('itemCategory:', formData.get('itemCategory'));
+    console.log('subCategory:', formData.get('subCategory'));
+    console.log('price:', formData.get('price'));
     
     if (menuItem) {
-      // if editing
-      const res = await DataService.updateItem(formData);
+      //Add neccessary values to the formdata for updating
+      formData.append('currentName', menuItem.name);
+      formData.append('currentItemCategory', menuItem.category); //this might need some work
+    
+
+      // If existingName has a value, use the updateMenuItemTextOnly API
+      const res = await DataService.updateMenuItemTextOnly(formData);
       console.log('Item updated successfully');
       // Handle success for update
     } else {
-      // If creating
-      const res = await DataService.createItem(formData);
+      // If existingName is empty, use the putItemFront API
+      const res = await DataService.putItemFront(formData);
       console.log('Item uploaded successfully');
       // Handle success for upload
     }
@@ -144,20 +137,18 @@ function TextForm() {
     // Handle the error (e.g., show an error message to the user)
   }
 
-
-
     // Reset form fields and selected file
 
-    //setName('');
-    //setCategory('');
-    //setSubCategory('');
-    //setPrice('');
+    setName('');
+    setCategory('');
+    setSubCategory('');
+    setPrice('');
 	
   };
 
   return (
-    
-    <div data-testid="textUpload">
+    <div data-testid="drinkUpload">
+      <div><h1>DRINKS</h1></div>
 		  <div> <br></br><br></br><br></br></div>
       <div className="centered-text">
           {menuItem && menuItem.name ? <h1>Currently editing "{menuItem.name}"</h1> : <h1>Adding a new menu item</h1>} 
@@ -205,7 +196,6 @@ function TextForm() {
           <h3>Price(s)</h3>
         )}
 
-
         <input
           type="text"
           placeholder="X.XX,Y.YY,Z.ZZ" 
@@ -214,10 +204,10 @@ function TextForm() {
         />
         <br></br>
         <button type="submit">{existingName ? "Update Item" : "Submit"}</button>
-
       </form>
     </div>
   );
 }
-export { TextForm }
-export default TextForm;
+
+export { DrinkForm }
+export default DrinkForm;

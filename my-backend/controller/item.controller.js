@@ -345,27 +345,34 @@ export default class ItemController {
   static async apiModifyItem(req, res, next){
     const curName = req.body.curName;
     const curItemCat = req.body.curItemCat;
-    const name = req.body.name;
-    const itemCategory = req.body.itemCategory;
-    const photo = req.body.photo;
-    const price = req.body.price;
+    const newName = req.body.newName;
+    const newItemCat = req.body.newItemCat;
+    const newSubCat = req.body.newSubCat;
+    const newPhoto = req.body.newPhoto;
+    const price = req.body.newPrice;
     const priceLarge = req.body.price_large;
     const priceSmall = req.body.price_small;
+    const Description = req.body.newDescription;
     const auth = req.body.token;
     const user = req.body.username;
-      try {
-        if(!priceLarge && !priceSmall){
-          itemDAO.modifyItem(curName, curItemCat, name, itemCategory, photo, price, user, auth);  //Modify item that only has one price
-          res.status(200).json({ success: true, message: "Item modified successfully with one price" });
-          return res;
-        }else{
-          itemDAO.modifyItemTwo(curName, curItemCat, name, itemCategory, photo, priceLarge, priceSmall, user, auth); //Modify item that has two prices (large/small)
-          res.status(200).json({ success: true, message: "Item modified successfully with two prices" });
-          return res;
-        }
-      } catch (error) {
-        console.error(`Cannot modify item, ${e}`)
-      }
+
+   /* console.log('Current Name:', curName);      //console logs for testing
+    console.log('Current itemCategory:', curItemCat);
+    console.log('New Name:', newName);
+    console.log('New itemCategory:', newItemCat);
+    console.log('newPhoto:', newPhoto);
+    console.log('newPrice:', price);
+    console.log('newPriceLarge:', priceLarge);
+    console.log('newPriceSmall:', priceSmall);
+    console.log('Description:', Description);
+  */
+    try{
+      itemDAO.modifyItem(curName, curItemCat, newName, newItemCat, newSubCat, newPhoto, price, priceLarge, priceSmall, Description, user, auth);
+      res.status(200).json({ success: true, message: "Item modified successfully with one price" });
+      return res;
+    } catch (error){
+      console.error(`Cannot modify item, ${error}`)
+    }
   }
 
   /*

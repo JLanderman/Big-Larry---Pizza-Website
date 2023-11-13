@@ -20,7 +20,26 @@ const EditItem = () => {
   const token = Cookies.get('x-auth-token');
 
     const handleSaveChange = async () =>{
+
+      if (!token) {
+        // User is not authenticated, handle accordingly (e.g., redirect to the login page or show an alert)
+        alert('You need to be logged in as an Admin to submit the form.');
+        return;
+      }
+
       const user = await UserService.getUserbyToken(token);
+      const formData = new FormData();
+      formData.append('currName', menuItem.name);
+      formData.append('currCat', menuItem.itemCategory);
+      formData.append('newName', newName || menuItem.name);
+      formData.append('newCat', category || menuItem.itemCategory);
+      formData.append('newPhoto', newPhoto || menuItem.photo);
+      formData.append('newPrice', newPrice || menuItem.price);
+      formData.append('description', newDescription === "" ? menuItem.info: newDescription)
+      formData.append('user', user);
+      formData.append('token', token);
+
+
       const updatedData = {
         name: newName || menuItem.name,
         itemCategory : category || menuItem.itemCategory,
@@ -30,19 +49,12 @@ const EditItem = () => {
       };
 
 
-      DataService.updateItem(menuItem._id, updatedData, user, token)
-      .then((response) =>{
-        if(response.status === 200)
-        {
-          console.log('Item updated sucessfully');
-        }
-        else{
-          console.error('Failed to update item');
-        }
-      })
-      .catch((error) =>{
-        console.error('Error updating the item:', error);
-      });
+      try {
+        await DataService.updateItem(formData);
+        console.log('Item uploaded successfully');
+        } catch (error) {
+        console.error('Error uploading item:', error);
+        };
     };
 
   useEffect(() => {
@@ -118,7 +130,7 @@ const EditItem = () => {
                   <h2>Current Category: {menuItem.itemCategory}</h2>
                   <h2>New Category: 
                   <select value={category} onChange={(e) => setCategory(e.target.value)}>
-                    <option value="">Select an option</option>
+                    <option value= "">Select an option</option>
                     <option value= "pizzaSpecial">Pizza Specialty</option>
                     <option value= "comboSpecial">Combo Specialty</option>
                     <option value= "specialDeal">Special Deal</option>
