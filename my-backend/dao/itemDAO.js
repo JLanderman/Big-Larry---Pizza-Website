@@ -402,11 +402,12 @@ export default class ItemDao {
 
   /*
    *   Modifies the specified menu item based on name and category and uses new info to change the item
+   *   Only works with one price or smallprice and largeprice. Not for use with drinks
    *   @param name, category of item used to identify item to be removed. All else are used as new info for item
    *   @return failure if it occured
    */
 
-  static async modifyItem(currentName, currentItemCategory, name, itemCategory, photo, price, username, token){
+  static async modifyItem(currentName, currentItemCategory, name, itemCategory, SubCat, photo, price, priceLarge, priceSmall, Description, username, token){
     const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
 
     if(!token || username != tokenUsername.user.username){
@@ -417,15 +418,44 @@ export default class ItemDao {
     }
 
     let query1, query2;
-    query1 = {name: currentName, itemCategory: currentItemCategory};
-    query2 = {name: name, itemCategory: itemCategory, photo: photo, price: price};
+    query1 = {name: currentName, itemCategory: currentItemCategory}; //this finds the correct entry
+
+    //if there is one price or array of prices
+    if(price){
+      //query2 contains the data that will overite the entry in the database
+      //this logic makes it so that the api only interats with the fields whose data it was passed
+      if(photo && Description){
+        query2 = {name: name, itemCategory: itemCategory, photo: photo, price: price, info: Description}; //photo exists, Description exists
+      }else if(photo && !Description){        
+        query2 = {name: name, itemCategory: itemCategory, photo: photo, price: price}; //photo exists, no Description
+      }else if(!photo && Description){        
+        query2 = {name: name, itemCategory: itemCategory, price: price, info: Description}; //no photo, Description exists
+      }else if(!photo && !Description && SubCat){      
+        query2 = {name: name, itemCategory: itemCategory, drinktype: SubCat, price: price}; //no photo, no Description, dubCategory exists
+      }else if(!photo && !Description && !SubCat){      
+        query2 = {name: name, itemCategory: itemCategory, price: price}; //no photo, no Description, no subCategory
+      } 
+    } else if(priceLarge && priceSmall){      //if there are two prices
+      if(photo && Description){
+        query2 = {name: name, itemCategory: itemCategory, photo: photo, price_large: priceLarge, price_small: priceSmall, info: Description}; //photo exists, Description exists
+      }else if(photo && !Description){        
+        query2 = {name: name, itemCategory: itemCategory, photo: photo, price_large: priceLarge, price_small: priceSmall}; //photo exists, no Description
+      }else if(!photo && Description){        
+        query2 = {name: name, itemCategory: itemCategory, price_large: priceLarge, price_small: priceSmall, info: Description}; //no photo, Description exists
+      }else if(!photo && !Description){      
+        query2 = {name: name, itemCategory: itemCategory, price_large: priceLarge, price_small: priceSmall}; //no photo, no Description
+    }} else{ console.log("How did this happen, there is an error in here. ")}
+    console.log("Query2: ", query2);
+       
+
     let cursor;
     try{
       cursor = await allItems.updateOne(query1, {$set: query2});  //Modify item in database based on name and category with query2
     } catch(e){
       console.error(`unable to modify item, ${e}`)
     }
-  }
+}
+
 
   /*
    *   Modifies the specified menu item based on name and category and uses new info to change the item

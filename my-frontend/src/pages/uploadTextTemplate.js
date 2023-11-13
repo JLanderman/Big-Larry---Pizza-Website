@@ -15,6 +15,7 @@ function TextForm() {
   const [subCategory, setSubCategory] = useState('');
   const [price, setPrice] = useState('');
   const [formattedPrice, setFormattedPrice] = useState('');
+  const [newDescription, SetnewDescription] = useState('');
   const token = Cookies.get('x-auth-token');
 
   //const { itemId } = useParams();
@@ -108,34 +109,33 @@ function TextForm() {
 
     //Create a FormData object to append form fields and file
     const formData = new FormData();
-    formData.append('name', name);
-    formData.append('itemCategory', updatedCategory);
-    formData.append('subCategory', updatedSubCategory);
-    formData.append('price', price*100);
+
+    formData.append('currName', menuItem.name);
+    formData.append('currCat', menuItem.itemCategory);
+    formData.append('newName', name || menuItem.name);
+    formData.append('newCat', updatedCategory || menuItem.itemCategory);    
+    formData.append('subCategory', updatedSubCategory || menuItem.drinktype);
+    formData.append('newPrice', price || menuItem.price);
     formData.append('user', user);
     formData.append('token', token);
+
+    
 
 
   // Send the formData to your server for processing
   try {
-    console.log('Name:', formData.get('name'));
-    console.log('itemCategory:', formData.get('itemCategory'));
-    console.log('subCategory:', formData.get('subCategory'));
-    console.log('price:', formData.get('price'));
+    for (const value of formData.values()) {  //logging for testing
+      console.log(value);
+    }
     
     if (menuItem) {
-      //Add neccessary values to the formdata for updating
-      formData.append('currentName', menuItem.name);
-      formData.append('currentItemCategory', menuItem.category); //this might need some work
-    
-
-      // If existingName has a value, use the updateMenuItemTextOnly API
-      const res = await DataService.updateMenuItemTextOnly(formData);
+      // if editing
+      const res = await DataService.updateItem(formData);
       console.log('Item updated successfully');
       // Handle success for update
     } else {
-      // If existingName is empty, use the putItemFront API
-      const res = await DataService.putItemFront(formData);
+      // If creating
+      const res = await DataService.createItem(formData);
       console.log('Item uploaded successfully');
       // Handle success for upload
     }
@@ -148,10 +148,10 @@ function TextForm() {
 
     // Reset form fields and selected file
 
-    setName('');
-    setCategory('');
-    setSubCategory('');
-    setPrice('');
+    //setName('');
+    //setCategory('');
+    //setSubCategory('');
+    //setPrice('');
 	
   };
 

@@ -181,8 +181,133 @@ class DataService {
 
 
 
-    updateItem(_id){
+    async updateItem(formData){
+
+      let res;
+      let newPrice;
+      const curName = formData.get('currName');  //needed for finding item in database
+      const curItemCat = formData.get('currCat');    //needed for finding item in database
+      const newName = formData.get('newName');
+      const newItemCat = formData.get('newCat');
+      const newSubCat = formData.get('subCategory');
+      const newPhoto = formData.get('newPhoto');
+      const price_large = formData.get('newPriceLarge');
+      const price_small = formData.get('newPriceSmall');
+      const username = formData.get('user');
+      const token = formData.get('token');
+      const newDescription = formData.get('description') === '' ? null: formData.get('description'); //if description is empty, set to null
+
+      if (newItemCat === "drink" && newSubCat != "Ice Cream  &  Other"){
+        newPrice = formData.get('newPrice').split(',');
+      } else {
+        newPrice = formData.get('newPrice');
+      }
+
+      console.log('Current Name:', curName);  //logs for testing
+      console.log('Current itemCategory:', curItemCat);
+      console.log('New Name:', newName);
+      console.log('New itemCategory:', newItemCat);
+      console.log('newPhoto:', newPhoto);
+      console.log('newPrice:', newPrice);
+      console.log('newPriceLarge:', price_large);
+      console.log('newPriceSmall:', price_small);
+      console.log('Description:', newDescription);
       
+      try {
+        res = await http.post("/allItems/updateItem", {      //call to api
+          curName,
+          curItemCat,
+          newName,
+          newItemCat,
+          newSubCat,
+          newPhoto,
+          newPrice,
+          price_large,
+          price_small,
+          newDescription,
+          username: username,
+          token: token
+        });
+
+  
+      // Check if the response contains a 'success' property
+      if (res.data && res.data.success) {
+        return res.data; // Return the response data
+      } else {
+        // Return an error response if 'success' is not present
+        return { success: false, message: "Item upload failed" };
+      }
+      } catch (error) {
+        console.error("Error:", error);
+        throw { success: false, message: "An error occurred while making the API request" };
+      }
+
+    }
+
+    async createItem(formData){  //still testing
+
+      let res;
+      let newPrice;
+      const curName = formData.get('currName');  //needed for finding item in database
+      const curItemCat = formData.get('currCat');    //needed for finding item in database
+      const newName = formData.get('newName');
+      const newItemCat = formData.get('newCat');
+      const newSubCat = formData.get('subCategory');
+      const newPhoto = formData.get('newPhoto');
+      const price_large = formData.get('newPriceLarge');
+      const price_small = formData.get('newPriceSmall');
+      const newDescription = formData.get('description');
+      const username = formData.get('user');
+      const token = formData.get('token');
+
+      if (newItemCat === "drink" && newSubCat != "Ice Cream  &  Other"){
+        newPrice = formData.get('newPrice').split(',');
+      } else {
+        newPrice = formData.get('newPrice');
+      }
+
+
+
+
+
+      console.log('Current Name:', curName);  //logs for testing
+      console.log('Current itemCategory:', curItemCat);
+      console.log('New Name:', newName);
+      console.log('New itemCategory:', newItemCat);
+      console.log('newPhoto:', newPhoto);
+      console.log('newPrice:', newPrice);
+      console.log('newPriceLarge:', price_large);
+      console.log('newPriceSmall:', price_small);
+      console.log('Description:', newDescription);
+      /*
+      try {
+        res = await http.post("/allItems", {      //call to api
+          curName,
+          curItemCat,
+          newName,
+          newItemCat,
+          newPhoto,
+          newPrice,
+          price_large,
+          price_small,
+          newDescription,
+          username: username,
+          token: token
+        });
+
+  
+      // Check if the response contains a 'success' property
+      if (res.data && res.data.success) {
+        return res.data; // Return the response data
+      } else {
+        // Return an error response if 'success' is not present
+        return { success: false, message: "Item upload failed" };
+      }
+      } catch (error) {
+        console.error("Error:", error);
+        throw { success: false, message: "An error occurred while making the API request" };
+      }*/
+
     }
 
 
