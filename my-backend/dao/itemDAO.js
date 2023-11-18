@@ -169,31 +169,34 @@ export default class ItemDao {
 
   static async getPizzaSpecial() {
     const query = { itemCategory: 'pizzaSpecial' };
-    const customSortField = 'Lets Customize'; // Specify the item name to move to the end
     const client = new MongoClient(process.env.ITEM_DB_URI, { useUnifiedTopology: true });
   
     try {
       await client.connect();
       const collection = client.db('samsPizza').collection('allMenuItems');
       
-      // Use the aggregation framework to add a custom sort field
-      const pipeline = [
-        { $match: query },
-        {
-          $addFields: {
-            customSortField: {
-              $cond: {
-                if: { $eq: ['$name', customSortField] },
-                then: 1, // Set a value that moves it to the end
-                else: 0,
-              },
-            },
-          },
-        },
-        { $sort: { customSortField: 1 } }, // Sort by customSortField in ascending order
-      ];
+      const results = await collection.find(query).toArray();
   
-      const results = await collection.aggregate(pipeline).toArray();
+      // Sort the results based on the custom logic
+      results.sort((a, b) => {
+        const substringOrder = ['eroni'];
+        const customSortFieldA = substringOrder.some(substring => a.name.toLowerCase().includes(substring)) ? -1 : 1;
+        const customSortFieldB = substringOrder.some(substring => b.name.toLowerCase().includes(substring)) ? -1 : 1;
+  
+        if (customSortFieldA !== customSortFieldB) {
+          return customSortFieldA - customSortFieldB;
+        }
+  
+        if (a.name.toLowerCase().includes('Lets Customize'.toLowerCase())) {
+          return 1; // Move 'Lets Customize' to the end
+        }
+        if (b.name.toLowerCase().includes('Lets Customize'.toLowerCase())) {
+          return -1; // Keep 'Lets Customize' at the end
+        }
+  
+        return 0; // No change for other items
+      });
+  
       const totalNumItem = results.length;
   
       return { itemList: results, totalNumItem };
@@ -204,7 +207,6 @@ export default class ItemDao {
       client.close();
     }
   }
-  
   
 
   /*

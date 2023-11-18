@@ -13,6 +13,7 @@ function ItemFormLarge() {
   const [description, setDescription] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileUploaded, setFileUploaded] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState(null);
   const fileInputRef = useRef(null);
   const token = Cookies.get('x-auth-token');
 
@@ -20,10 +21,16 @@ function ItemFormLarge() {
   const handleCategoryChange = (e) => setCategory(e.target.value);
   const handlePriceChange = (e) => setPrice(e.target.value);
   const handleDescriptionChange = (e) => setDescription(e.target.value);
-  const handleFileChange = (e) => {
+  const handleFileChangeText = (e) => {
     const file = e.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setUploadedImage(imageUrl);
+      setUploadedImage(imageUrl);
+    }
     setSelectedFile(file);
     setFileUploaded(true);
+
   };
 
   const handleSubmit = async (e) => {
@@ -99,8 +106,11 @@ function ItemFormLarge() {
           <div className="detailsFlexContainer">
             <div className="detailsPictureContainer">
               {/* Use the static image */}
-              <img className="detailsPicture" src={pizzaGuy} alt="Pizza Guy" />
-  
+              {uploadedImage ? (
+                <img className="detailsPicture" src={uploadedImage} alt="Uploaded" />
+              ) : (
+                <img className="detailsPicture" src={pizzaGuy} alt="Pizza Guy" />
+              )}  
               <div className="detailsButtonRow">
                 <input
                   type="file"
@@ -108,7 +118,7 @@ function ItemFormLarge() {
                   name="file"
                   style={{ display: 'none' }}
                   ref={fileInputRef}
-                  onChange={handleFileChange}
+                  onChange={handleFileChangeText}
                 />
                 <button className="detailsButton" type="button" onClick={() => fileInputRef.current.click()}>
                   {fileUploaded ? 'Picture Uploaded' : 'Upload File'}
