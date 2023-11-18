@@ -58,11 +58,11 @@ const SpDeals = (props) => {
 	return (
 		<div>
 			<h1 style={{ textAlign: 'center', paddingTop: '1%', paddingBottom: '1%', borderBottom: '1px solid black', background: 'transparent', borderColor: 'transparent' }} data-testid="specialDeals">Special Deals</h1>
-			<div className="row" style={{ width: '100%' }}>
+			<div className="row" style={{ width: '100%', paddingLeft: '2%' }}>
 				{!Array.isArray(items)
 					? items.item.map((currentItem) => {
 						return (
-							<div className="col-lg-3 pb-5" style={{ display: 'flex', flexDirection: 'column', textAlign: 'center', paddingTop: '10px', paddingBottom: '2%' }}>
+							<div key={currentItem._id} className="col-lg-3 pb-5" style={{ display: 'flex', flexDirection: 'column', textAlign: 'center', paddingTop: '10px', paddingBottom: '2%' }}>
 								<Link to={`/details/${currentItem._id}`} style={{ color: 'black', textDecoration: 'none' }}>
 									<img
 										style={{ width: 'auto', height: 225, borderRadius: '5%', objectfit: 'cover' }}

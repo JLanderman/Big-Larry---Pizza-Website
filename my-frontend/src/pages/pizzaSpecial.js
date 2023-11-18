@@ -59,7 +59,7 @@ const PizzaSp = (props) => {
 	return (
 		<div data-testid="pizzaSpecialties" >
 			<h1 style={{ textAlign: 'center', paddingTop: '1%', paddingBottom: '1%', borderBottom: '1px solid black', background: 'transparent', borderColor: 'transparent' }}>Sam's Pizza Specialties (Large Size Only)</h1>
-			<div className="row" style={{ width: '100%' }}>
+			<div className="row" style={{ width: '100%', paddingLeft: '2%' }}>
 				{!Array.isArray(items)
 					? items.item.map((currentItem) => {
 						let temp
@@ -70,7 +70,7 @@ const PizzaSp = (props) => {
 						}
 
 						return (
-							<div className="col-lg-3 pb-5" style={{ display: 'flex', flexDirection: 'column', textAlign: 'center', paddingTop: '10px', paddingBottom: '2%' }}>
+							<div key={currentItem._id} className="col-lg-3 pb-5" style={{ display: 'flex', flexDirection: 'column', textAlign: 'center', paddingTop: '10px', paddingBottom: '2%' }}>
 								<Link to={temp} style={{ color: 'black', textDecoration: 'none' }}>
 									<img
 										style={{ width: 'auto', height: 275, borderRadius: '5%', objectfit: 'cover', imageResolution: " dppx" }}

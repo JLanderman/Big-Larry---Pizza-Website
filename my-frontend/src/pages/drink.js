@@ -86,7 +86,7 @@ const Drink= (props) => {
                     <div className="row" style={{width: '100%'}}>
                     {
                     drinkByType[type].map((currentItem) =>(
-                      <div key={currentItem.id} className="col-6 fs-5 fw-normal">
+                      <div key={currentItem._id} className="col-6 fs-5 fw-normal">
                         
                           <div className="drinkText">{currentItem.name}</div>  
                         

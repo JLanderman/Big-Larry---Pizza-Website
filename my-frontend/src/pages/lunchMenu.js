@@ -66,8 +66,8 @@ const Lunch = (props) => {
               {!Array.isArray(items)
                 ? items.item.map((currentItem) => {
                     return (
-                      <>
-                      <div className="col-lg-4" key={currentItem.id}>
+                      <div key={currentItem._id} className="row px-4" style={{ width: '100%' }}>
+                      <div className="col-lg-4">
                         <div className="lunchText">
                           <h3 className="food-title">{currentItem.name}</h3>
                         </div>
@@ -89,7 +89,7 @@ const Lunch = (props) => {
                               </div>
                              : null
                             }
-                      </div><div className="col-lg-4" key={currentItem.id}>
+                      </div><div className="col-lg-4">
                           <div className="lunchText">
                             {currentItem.price_small ? (
                               <h4>Small: ${(currentItem.price_small / 100).toFixed(2)}</h4>
@@ -97,12 +97,12 @@ const Lunch = (props) => {
                               <h4>${(currentItem.price / 100).toFixed(2)}</h4>
                             )}
                           </div>
-                        </div><div className="col-lg-4" key={currentItem.id}>
+                        </div><div className="col-lg-4">
                           <div className="lunchText">
                             {currentItem.price_large && <h4>Large: ${(currentItem.price_large / 100).toFixed(2)}</h4>}
                           </div>
                         </div>
-                      </>
+                      </div>
                     );
                   })
                 : null}
