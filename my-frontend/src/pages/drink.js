@@ -100,7 +100,6 @@ const Drink= (props) => {
                                   >
                                     Remove
                                   </button>
-                                    <h>   </h>
                                     <Link to={`/DrinkForm/${currentItem._id}`}>
                                       <button className="border px-10 py- fs-5 rounded-4">Edit</button>
                                     </Link> 

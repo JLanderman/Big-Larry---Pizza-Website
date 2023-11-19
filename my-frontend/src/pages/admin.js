@@ -19,8 +19,20 @@ const Admin = () => {
     });
     
     const token = Cookies.get('x-auth-token');
+
+    let defaultPalette = [
+      '#ffffff',
+      '#ffffff',
+      '#ffffff',
+      '#ffffff',
+      
+      '#ffffff',
+      '#ffffff',
+      '#ffffff',
+      '#ffffff'
+    ]
     
-    const [currentPalette, setCurrentPalette] = useState([]);
+    const [currentPalette, setCurrentPalette] = useState({palette: [defaultPalette]});
     const getCurrentPalette = () => {
       let res = PaletteService.getLatestPalette()
         .then((res) => {
@@ -33,20 +45,22 @@ const Admin = () => {
           console.log("error in admin getCurrentPalette")
           console.log(e);
         })
-    }
+    };
     
-    
+    const [loading, setLoading] = useState(true); // State to manage loading state
     const [customPalettes, setCustomPalettes] = useState([]);
     const retrievePalettes = () => {
       console.log("retrievePalettes in admin.js")
-      let res = PaletteService.getLastTenPalettes()
+      PaletteService.getLastTenPalettes()
         .then((res) => {
           setCustomPalettes(res.data)
+          setLoading(false); // Set loading to false once data is fetched
         }).catch((e) => {
           console.log("error in admin retrievePalettes")
           console.log(e);
+          setLoading(false); // Ensure loading is set to false on error as well
         })
-    }
+    };
     
     useEffect(() => {
       retrievePalettes();
@@ -95,7 +109,7 @@ const Admin = () => {
           </div>
         </div>
       );
-    }
+    };
     
     
     const PaletteManager = () => {
@@ -209,7 +223,7 @@ const Admin = () => {
         --clr-link: ${colorLink};
           `
       );
-    }
+    };
       
       let updatePreviewColors = () => {
         let previewRoot = document.querySelector(".preview");
@@ -222,7 +236,7 @@ const Admin = () => {
         
         //logic here to push changes to db
         pushPalette();
-      }
+      };
       
       useEffect(() => {
         updatePreviewColors();
@@ -231,7 +245,7 @@ const Admin = () => {
       let MetaUpdate = (array, name) => {
         paletteUpdate(array);
         setCustomPaletteName(name);
-      }
+      };
       
       const [customPaletteName, setCustomPaletteName] = useState("Custom");
       const pushPalette = async () => {
@@ -313,17 +327,19 @@ const Admin = () => {
           {!Array.isArray(customPalettes)
             ? customPalettes.palettes.map((currentItem, index) => {
                 return (
-                  <>
-                    <button onClick={e => MetaUpdate(currentItem.colorArr, currentItem.name)}>
+                    <button key={index} onClick={e => MetaUpdate(currentItem.colorArr, currentItem.name)}>
                       <div>
                         {(index + 1) + ". "} 
                         {currentItem.name}
                       </div>
                     </button>
-                  </>
                 );
               })
-            : retrievePalettes}
+            : loading ? (
+              <p>Loading...</p> // Display a loading indicator while data is being fetched
+            ) : (
+              <p>No palettes found</p> // Or any alternate UI when customPalettes is not an array
+            )}
         </div>
       </div>);
     };
@@ -333,7 +349,7 @@ const Admin = () => {
         <PalettePreviewer />
         <PaletteManager />
     </div>
-    )
+    );
 };
 
 export { Admin };
