@@ -89,7 +89,7 @@ const styles = {
         };
 
     return(
-        <div>
+        <div data-testid="editUserWrapper">
             {error && <div style={{color: 'red'}}>{error}</div>}
             {success && <div style={{color: 'green'}}>{success}</div>}
             <form onSubmit={(e) => handleSubmit(e)} style={styles.container}>
@@ -107,7 +107,7 @@ const styles = {
                 </input>
             </div>
 
-            <div style={styles.innerContainer}>
+            <div style={styles.innerContainer} data-testid="newPasswordField">
                 <label htmlFor="newPassword">New Password</label><br />
                 <input
                 type="password"

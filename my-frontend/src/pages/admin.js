@@ -36,11 +36,11 @@ const Admin = () => {
     const getCurrentPalette = () => {
       let res = PaletteService.getLatestPalette()
         .then((res) => {
-          console.log("getCurrentPalette return = " + JSON.stringify(res.data))
+          // console.log("getCurrentPalette return = " + JSON.stringify(res.data))
           setCurrentPalette(res.data)
-          console.log(JSON.stringify(currentPalette))
-          console.log(JSON.stringify(currentPalette.palette[0].colorArr))
-          console.log(JSON.stringify(res.data.palette[0].colorArr))
+          // console.log(JSON.stringify(currentPalette))
+          // console.log(JSON.stringify(currentPalette.palette[0].colorArr))
+          // console.log(JSON.stringify(res.data.palette[0].colorArr))
         }).catch((e) => {
           console.log("error in admin getCurrentPalette")
           console.log(e);
@@ -50,7 +50,7 @@ const Admin = () => {
     const [loading, setLoading] = useState(true); // State to manage loading state
     const [customPalettes, setCustomPalettes] = useState([]);
     const retrievePalettes = () => {
-      console.log("retrievePalettes in admin.js")
+      // console.log("retrievePalettes in admin.js")
       PaletteService.getLastTenPalettes()
         .then((res) => {
           setCustomPalettes(res.data)
@@ -250,10 +250,10 @@ const Admin = () => {
       const [customPaletteName, setCustomPaletteName] = useState("Custom");
       const pushPalette = async () => {
         const user = await UserService.getUserbyToken(token);
-        console.log("pushPalette")
+        // console.log("pushPalette")
         const res = await PaletteService.putPaletteFront(customPaletteName, [colorBG, colorMenuLight, colorMenu, colorMenuDark, colorText, colorTextLight, colorTextHighlight, colorLink], user, token)
           .then((res) => {
-            console.log("putPaletteFront response = " + res.data); 
+            // console.log("putPaletteFront response = " + res.data); 
           })
           .catch((e) => {
             console.log(e);
@@ -323,16 +323,16 @@ const Admin = () => {
         </div>
         
         <h3>History of Recent Palettes:</h3>
-        <div className="palette-history">
+        <div className="palette-history" data-testid="paletteHistoryContainer">
           {!Array.isArray(customPalettes)
             ? customPalettes.palettes.map((currentItem, index) => {
                 return (
-                    <button key={index} onClick={e => MetaUpdate(currentItem.colorArr, currentItem.name)}>
-                      <div>
-                        {(index + 1) + ". "} 
-                        {currentItem.name}
-                      </div>
-                    </button>
+                  <button key={index} onClick={e => MetaUpdate(currentItem.colorArr, currentItem.name)}>
+                    <div  data-testid="paletteHistoryItem">
+                      {(index + 1) + ". "} 
+                      {currentItem.name}
+                    </div>
+                  </button>
                 );
               })
             : loading ? (
