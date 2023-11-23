@@ -58,6 +58,7 @@ export default class UserDAO {
    */
 
   static async editUserLogin(username, newUsername, newPassword, token){
+    try{
     const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
 
     if(!token || username != tokenUsername.user.username){
@@ -73,7 +74,6 @@ export default class UserDAO {
     query1 = {username: username}
     query2 = {username: newUsername, password: newPswrdHash}
 
-    try{
         await users.updateOne(query1, {$set: query2});
         return true;
     }catch(e){

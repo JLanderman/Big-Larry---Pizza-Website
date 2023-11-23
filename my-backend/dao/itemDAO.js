@@ -290,14 +290,21 @@ export default class ItemDao {
 
   // get rid of photo field
   static async putItem(name, itemCategory, subCategory, price, description, photo, username, token){
-    console.log('itemDAO.js putItem Received data:', name, itemCategory, subCategory, price, description, photo);
-    const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
 
-    if(!token || username != tokenUsername.user.username){
+    try{
+      const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
+
+      if(!token || username != tokenUsername.user.username){
+        console.error(
+          'Unauthorized User'
+        );
+        return 'Unauthorized User';
+      }
+    }catch(e){
       console.error(
-        'Unauthorized User'
+        `Unable to issue adding item, ${e}`
       );
-      return;
+      return 'Invalid Token';
     }
 
     let query;
@@ -315,6 +322,10 @@ export default class ItemDao {
     let cursor;
     try{
       cursor = await allItems.insertOne(query); //Insert items to query in database
+      const item = await allItems.find(query);
+      const displayCursor = item.limit(100).skip(0);
+      const itemList = await displayCursor.toArray();
+      return itemList[0]._id;
     } catch(e){
       console.error('Unable to put item');
     }
@@ -379,13 +390,20 @@ export default class ItemDao {
    */
 
   static async deleteItem(_id, username, token){
-    const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
+    try{
+      const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
 
-    if(!token || username != tokenUsername.user.username){
+      if(!token || username != tokenUsername.user.username){
+        console.error(
+          'Unauthorized User'
+        );
+        return 'Unauthorized User';
+      }
+    }catch(e){
       console.error(
-        'Unauthorized User'
+        `Unable to issue adding item, ${e}`
       );
-      return;
+      return 'Invalid Token';
     }
 
     let query;
@@ -396,6 +414,7 @@ export default class ItemDao {
         console.log('Item deleted successfully');
       } else {
         console.log('Item not found');
+        return 'Item not found'
       }
     } catch(e){
       console.error(`unable to delete item, ${e}`)
@@ -410,13 +429,20 @@ export default class ItemDao {
    */
 
   static async modifyItem(currentName, currentItemCategory, name, itemCategory, SubCat, photo, price, priceLarge, priceSmall, Description, username, token){
-    const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
+    try{
+      const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
 
-    if(!token || username != tokenUsername.user.username){
+      if(!token || username != tokenUsername.user.username){
+        console.error(
+          'Unauthorized User'
+        );
+        return 'Unauthorized User';
+      }
+    }catch(e){
       console.error(
-        'Unauthorized User'
+        `Unable to issue adding item, ${e}`
       );
-      return;
+      return 'Invalid Token';
     }
 
     let query1, query2;
@@ -446,17 +472,23 @@ export default class ItemDao {
         query2 = {name: name, itemCategory: itemCategory, price_large: priceLarge, price_small: priceSmall, info: Description}; //no photo, Description exists
       }else if(!photo && !Description){      
         query2 = {name: name, itemCategory: itemCategory, price_large: priceLarge, price_small: priceSmall}; //no photo, no Description
-    }} else{ console.log("How did this happen, there is an error in here. ")}
-    console.log("Query2: ", query2);
-       
-
+      }
+    } else{
+      console.log("How did this happen, there is an error in here. ")
+    }
     let cursor;
+    cursor = await allItems.find(query1).toArray();
+
     try{
-      cursor = await allItems.updateOne(query1, {$set: query2});  //Modify item in database based on name and category with query2
+      if(cursor[0] !== undefined){
+        await allItems.updateOne(query1, {$set: query2});  //Modify item in database based on name and category with query2
+      }else{
+        return 'Item not found. Cannot modify.';
+      }
     } catch(e){
       console.error(`unable to modify item, ${e}`)
     }
-}
+  }
 
 
   /*
@@ -464,7 +496,7 @@ export default class ItemDao {
    *   @param name, category of item used to identify item to be removed. All else are used as new info for item
    *   @return failure if it occured
    */
-
+/*
   static async modifyItemTwo(currentName, currentItemCategory, name, itemCategory, photo, priceLarge, priceSmall, username, token){
     const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
 
@@ -484,6 +516,6 @@ export default class ItemDao {
     } catch(e){
       console.error(`unable to modify item, ${e}`)
     }
-  }
+  }*/
 
 }

@@ -66,6 +66,7 @@ export default class UserController {
       return res;
     } catch(e) {
       console.error(`Token failed, ${e}`)
+      res.status(400).send("Token Failed")
     }
   }
 
@@ -81,10 +82,10 @@ export default class UserController {
     const newPassword = req.body.newPassword;
     const auth = req.body.token;
 
-    if (!username) return res.status(400);
-    if (!newUsername) return res.status(400);
-    if (!newPassword) return res.status(400);
-    if(!auth)return res.status(400);
+    if (!username) return res.status(400).send("No username");
+    if (!newUsername) return res.status(400).send("No username");
+    if (!newPassword) return res.status(400).send("No password");
+    if(!auth)return res.status(400).send("No Token");
 
 
     try{
@@ -92,7 +93,7 @@ export default class UserController {
       if(checkSuccess){
         return res.status(200).send("Change Success");
       }else{
-        return res.status(200).send("No Change Done");
+        return res.status(400).send("No Change Done");
       }
     }catch(e){
       console.error(`Failed to edit user in user controller, ${e}`);

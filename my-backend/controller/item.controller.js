@@ -17,7 +17,7 @@ export default class ItemController {
         console.error(
           "'GET by ObjectID' request does not contain valid ObjectID"
         );
-        return;
+        return res.status(400).send("Invalid Object ID");
       }
 
       let objID = new ObjectId(req.query._id);
@@ -143,7 +143,6 @@ export default class ItemController {
 
   static async apiGetToppingPrice(req, res, next) {
     const { topping } = req.body;
-    console.log('topping:', topping);
     try {
       // Query the 'customToppings' collection based on topping and size
       const customToppings = await itemDAO.getCustomToppingsCollection();
@@ -211,7 +210,7 @@ export default class ItemController {
         }
       }));
   
-      res.json(toppingsWithPrices);
+      res.status(200).json(toppingsWithPrices);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal server error' });
@@ -226,15 +225,29 @@ export default class ItemController {
 
   static async apiUpdateToppingPrice(req, res, next) {
     const { topping, size, price, username, token} = req.body;
-    const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
-    if(!token || username != tokenUsername.user.username){
-      console.error(
-        'Unauthorized User'
-      );
-      return;
+    if (!topping) return res.status(400).send("No topping selected");
+    if (!size) return res.status(400).send("No size selected");
+    if (!price) return res.status(400).send("No price selected");
+    if(size != 'price_p' && size != 'price_s' && size != 'price_m' && size != 'price_l' && size != 'price_xl'){
+      return res.status(400).send("No such size");
     }
-  
+    
     try {
+      try{
+        const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
+        if(!token || username != tokenUsername.user.username){
+          console.error(
+            'Unauthorized User'
+          );
+          return res.status(400).send('Unauthorized User');
+        }
+      }catch(e){
+        console.error(
+          `Unable to issue topping update, ${e}`
+        );
+        return res.status(400).send('Invalid Token');
+      }
+  
       //Turn the dollar amount into a whole integer
       const newPrice = price * 100;
       
@@ -243,7 +256,6 @@ export default class ItemController {
         topping,
       };
       updateQuery[size] = newPrice;
-      console.log(newPrice); // You can display success or error messages here
 
       const customToppings = await itemDAO.getCustomToppingsCollection();
 
@@ -281,14 +293,23 @@ export default class ItemController {
     const photo =  req.body.photo;
     const auth = req.body.token;
     const user = req.body.username;
+
+    if (!user) return res.status(400).send("No username");
+    if(!auth)return res.status(400).send("No Token");
+
         // we are putting in a lunch/Dinner item without a photo
-    console.log('apiPutitem: Received data:', name, itemCategory, subCategory, price, description, photo);
       try {
         // Call the itemDAO.putItem method to insert the item into MongoDB
-        await itemDAO.putItem(name, itemCategory, subCategory, price, description, photo, user, auth);
-          res.status(201).json({ success: true, message: "Item inserted successfully" });
-              } catch (error) {
-        console.error("Error:", error);
+        const id = await itemDAO.putItem(name, itemCategory, subCategory, price, description, photo, user, auth);
+        if(id === 'Invalid Token'){
+          res.status(400).send('Invalid Token');
+        }else if(id === 'Unauthorized User'){
+          res.status(400).send('Unauthorized User');
+        }else{
+          res.status(201).json({ success: true, message: "Item inserted successfully" , itemID: id});
+        }
+      } catch (error) {
+        console.error(`Error, ${error}`);
         res.status(500).json({ error: "An error occurred while inserting the item" });
       }
   }
@@ -324,12 +345,22 @@ export default class ItemController {
     const _id = req.body._id;
     const auth = req.body.token;
     const user = req.body.username;
-    let query;
-    console.log('received id:', query);
+
+    if (!user) return res.status(400).send("No username");
+    if(!auth)return res.status(400).send("No Token");
+    if(!_id)return res.status(400).send("No object id");
 
     try {
-      await itemDAO.deleteItem(_id, user, auth);
-      res.status(200).json({ success: true, message: "Item deleted successfully" });
+      const respond = await itemDAO.deleteItem(_id, user, auth);
+      if(respond === 'Invalid Token'){
+        res.status(400).send('Invalid Token');
+      }else if(respond === 'Unauthorized User'){
+        res.status(400).send('Unauthorized User');
+      }else if(respond === 'Item not found'){
+        res.status(400).send('Item not found');
+      }else{
+        res.status(200).json({ success: true, message: "Item deleted successfully" });
+      }
     } catch (error) {
       console.error(`Cannot delete item: ${error}`);
       res.status(500).json({ success: false, message: "Error deleting item" });
@@ -356,6 +387,12 @@ export default class ItemController {
     const auth = req.body.token;
     const user = req.body.username;
 
+    if((price && priceLarge) || (price && priceSmall) || (price && priceLarge && priceSmall)){
+      return res.status(400).send("Price error");
+    }
+    if (!user) return res.status(400).send("No username");
+    if(!auth)return res.status(400).send("No Token");
+
    /* console.log('Current Name:', curName);      //console logs for testing
     console.log('Current itemCategory:', curItemCat);
     console.log('New Name:', newName);
@@ -367,9 +404,16 @@ export default class ItemController {
     console.log('Description:', Description);
   */
     try{
-      itemDAO.modifyItem(curName, curItemCat, newName, newItemCat, newSubCat, newPhoto, price, priceLarge, priceSmall, Description, user, auth);
-      res.status(200).json({ success: true, message: "Item modified successfully with one price" });
-      return res;
+      const respond = await itemDAO.modifyItem(curName, curItemCat, newName, newItemCat, newSubCat, newPhoto, price, priceLarge, priceSmall, Description, user, auth);
+      if(respond === 'Invalid Token'){
+        res.status(400).send('Invalid Token');
+      }else if(respond === 'Unauthorized User'){
+        res.status(400).send('Unauthorized User');
+      }else if(respond === 'Item not found. Cannot modify.'){
+        res.status(400).send('Item not found. Cannot modify.');
+      }else{
+        res.status(200).json({ success: true, message: "Item modified successfully" });
+      }
     } catch (error){
       console.error(`Cannot modify item, ${error}`)
     }

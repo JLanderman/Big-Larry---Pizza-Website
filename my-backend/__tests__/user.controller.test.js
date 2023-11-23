@@ -134,6 +134,45 @@ describe('POST pizza/user/editUser', () => {
                 done();
             })
     })
+
+    it ('should not change anything without a proper token', (done) => {
+        const payload = {username: "johnny", newUsername: "unit_test", newPassword: "samspizza&more_test_do_not_change!", token: ";oaskjdhgf;lasjio;gjsa;oisd;g"};
+        request(app)
+            .post('/pizza/user/editUser')
+            .send(payload)
+            .expect(400) // OK
+            .end((err, res) => {
+                if (err) return done(err);
+                expect(res.text).to.equal("No Change Done");
+                done();
+            })
+    })
+
+    it ('should not change user info without matching username and token', (done) => {
+        const payload = {username: "unit_test", newUsername: "unit_test", newPassword: "samspizza&more_test_do_not_change!", token: process.env.TESTING_TOKEN};
+        request(app)
+            .post('/pizza/user/editUser')
+            .send(payload)
+            .expect(400) // OK
+            .end((err, res) => {
+                if (err) return done(err);
+                expect(res.text).to.equal("No Change Done");
+                done();
+            })
+    })
+
+    it ('should return error when missing user info', (done) => {
+        const payload = {username: "johnny", newUsername: "unit_test", newPassword: "samspizza&more_test_do_not_change!"};
+        request(app)
+            .post('/pizza/user/editUser')
+            .send(payload)
+            .expect(400) // OK
+            .end((err, res) => {
+                if (err) return done(err);
+                expect(res.text).to.equal("No Token");
+                done();
+            })
+    })
 })
 
 describe('POST pizza/user/retrieveToken', () => { 
@@ -146,6 +185,18 @@ describe('POST pizza/user/retrieveToken', () => {
             .end((err, res) => {
                 if (err) return done(err);
                 expect(res.text).to.equal('{"username":"johnny"}');
+                done();
+            })
+    })
+
+    it ('should return error for invalid token', (done) => {
+        const payload = {token: ";alskdjgf;lsagjd;sagas[pdgjs'a;glsk;dag"};
+        request(app)
+            .post('/pizza/user/retrieveToken')
+            .send(payload)
+            .expect(400) // OK
+            .end((err, res) => {
+                if (err) return done(err);
                 done();
             })
     })
