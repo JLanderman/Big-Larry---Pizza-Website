@@ -66,130 +66,18 @@ class DataService {
 
     }
 
-    async updateMenuItemTextOnly(formData){
-      //currentName, currentItemCategory, name, itemCategory, photo, price
-      let res;
-      const curName = formData.get('currentName');
-      const name = formData.get('name');
-      const curItemCat = formData.get('currentItemCategory');
-      const itemCategory = formData.get('itemCategory');
-      const price = formData.get('price');
-      const subCat = formData.get('subCategory');
-      const username = formData.get('user');
-      const token = formData.get('token');
-
-      try {
-        res = await http.post("/allItems/updateItem", {
-          curName,
-          curItemCat,
-          name,
-          itemCategory,
-          subCat,
-          price,
-          username: username,
-          token: token
-        });
-
-  
-      // Check if the response contains a 'success' property
-      if (res.data && res.data.success) {
-        return res.data; // Return the response data
-      } else {
-        // Return an error response if 'success' is not present
-        return { success: false, message: "Item upload failed" };
-      }
-      } catch (error) {
-        console.error("Error:", error);
-        throw { success: false, message: "An error occurred while making the API request" };
-      }
-    }
-
-
-    // works with items from textTemplate that just have name, itemCategory, price
-    async putItemFront(formData) {
-      let res;
-      const name = formData.get('name');
-      const itemCategory = formData.get('itemCategory');
-      const price = formData.get('price');
-      const subCategory = formData.get('subCategory');
-      const description = formData.get('description');
-      const photo = formData.get('photo');
-      const username = formData.get('user');
-      const token = formData.get('token');
-
-      console.log('Name:', formData.get('name'));
-      console.log('itemCategory:', formData.get('itemCategory'));
-      console.log('subCategory:', formData.get('subCategory'));
-      console.log('price:', formData.get('price'));
-      // added subCategory field
-      try {
-          res = await http.post("/allItems", {
-            name,
-            itemCategory,
-            subCategory,
-            price,
-            description,
-            photo,
-            username: username,
-            token: token
-          });
-
-    
-        // Check if the response contains a 'success' property
-        if (res.data && res.data.success) {
-          return res.data; // Return the response data
-        } else {
-          // Return an error response if 'success' is not present
-          return { success: false, message: "Item upload failed" };
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        throw { success: false, message: "An error occurred while making the API request" };
-      }
-    }
-    
-    /*
-    // works with dummy data on uploadText
-    async putItemFront(formData) {
-      const name = formData.get('name');
-      const itemCategory = formData.get('itemCategory');
-      const photo = formData.get('photo');
-      
-      try {
-        const res = await http.post("/allItems", {
-          name,
-          itemCategory,
-          photo,
-        });
-    
-        // Check if the response contains a 'success' property
-        if (res.data && res.data.success) {
-          return res.data; // Return the response data
-        } else {
-          // Return an error response if 'success' is not present
-          return { success: false, message: "Item upload failed" };
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        throw { success: false, message: "An error occurred while making the API request" };
-      }
-    }
-    */
     getAllDrink(){
         return http.get('/drink');
     }
 
-
-
     async updateItem(formData){
 
       let res;
-      let newPrice;
+      let newPrice, newSubCat;
       const curName = formData.get('currName');  //needed for finding item in database
       const curItemCat = formData.get('currCat');    //needed for finding item in database
       const newName = formData.get('newName');
       const newItemCat = formData.get('newCat');
-      const newSubCat = formData.get('subCategory');
       const newPhoto = formData.get('newPhoto');
       const price_large = formData.get('newPriceLarge');
       const price_small = formData.get('newPriceSmall');
@@ -197,12 +85,20 @@ class DataService {
       const token = formData.get('token');
       const newDescription = formData.get('description') === '' ? null: formData.get('description'); //if description is empty, set to null
 
-      if (newItemCat === "drink" && newSubCat != "Ice Cream  &  Other"){
+      //formdata  converts all entries to strings, so here we are reassigning a propper null value if necessary
+      if(formData.get('subCategory') === 'null'){
+        newSubCat = null;
+      } else {
+        newSubCat = formData.get('subCategory');
+      }
+
+      if (newItemCat === "drink" && newSubCat !== "Ice Cream  &  Other"){
         newPrice = formData.get('newPrice').split(',');
       } else {
         newPrice = formData.get('newPrice');
       }
-
+      
+      /* logs for testing
       console.log('Current Name:', curName);  //logs for testing
       console.log('Current itemCategory:', curItemCat);
       console.log('New Name:', newName);
@@ -211,7 +107,7 @@ class DataService {
       console.log('newPrice:', newPrice);
       console.log('newPriceLarge:', price_large);
       console.log('newPriceSmall:', price_small);
-      console.log('Description:', newDescription);
+      console.log('Description:', newDescription);*/
       
       try {
         res = await http.post("/allItems/updateItem", {      //call to api
@@ -247,12 +143,9 @@ class DataService {
     async createItem(formData){  //still testing
 
       let res;
-      let newPrice;
-      const curName = formData.get('currName');  //needed for finding item in database
-      const curItemCat = formData.get('currCat');    //needed for finding item in database
+      let newPrice, newSubCat;
       const newName = formData.get('newName');
       const newItemCat = formData.get('newCat');
-      const newSubCat = formData.get('subCategory');
       const newPhoto = formData.get('newPhoto');
       const price_large = formData.get('newPriceLarge');
       const price_small = formData.get('newPriceSmall');
@@ -260,32 +153,35 @@ class DataService {
       const username = formData.get('user');
       const token = formData.get('token');
 
-      if (newItemCat === "drink" && newSubCat != "Ice Cream  &  Other"){
+      //formdata  converts all entries to strings, so here we are reassigning a propper null value if necessary
+      if(formData.get('subCategory') === 'null'){
+        newSubCat = null;
+      } else {
+        newSubCat = formData.get('subCategory');
+      }
+
+      //only drinks need prices as an array, this seperates the user input into an array
+      if (newItemCat === "drink" && newSubCat !== "Ice Cream  &  Other"){
         newPrice = formData.get('newPrice').split(',');
       } else {
         newPrice = formData.get('newPrice');
       }
 
-
-
-
-
-      console.log('Current Name:', curName);  //logs for testing
-      console.log('Current itemCategory:', curItemCat);
+      /* logs for testing
       console.log('New Name:', newName);
       console.log('New itemCategory:', newItemCat);
+      console.log('New subCategory:', newSubCat);
       console.log('newPhoto:', newPhoto);
       console.log('newPrice:', newPrice);
       console.log('newPriceLarge:', price_large);
       console.log('newPriceSmall:', price_small);
-      console.log('Description:', newDescription);
-      /*
+      console.log('Description:', newDescription);*/
+      
       try {
         res = await http.post("/allItems", {      //call to api
-          curName,
-          curItemCat,
           newName,
           newItemCat,
+          newSubCat,
           newPhoto,
           newPrice,
           price_large,
@@ -306,7 +202,7 @@ class DataService {
       } catch (error) {
         console.error("Error:", error);
         throw { success: false, message: "An error occurred while making the API request" };
-      }*/
+      }
 
     }
 

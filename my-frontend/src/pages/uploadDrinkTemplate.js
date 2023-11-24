@@ -1,4 +1,4 @@
-//This page is for the uploading/editing drink items.
+//This page is for the uploading/editing drink items with text only/ no pictures.
 
 import React, { useState, useEffect } from 'react';
 import DataService from "../services/itemData";
@@ -44,7 +44,7 @@ function DrinkForm() {
       });
   };
 
-  const handlePriceChange = (e) => {
+  /*const handlePriceChange = (e) => {
     const newValue = e.target.value;
 
     // Use a regular expression to match the expected format "x.xx, y.yy, z.zz"
@@ -57,7 +57,7 @@ function DrinkForm() {
       // Otherwise, set an empty value (or handle it differently)
       setFormattedPrice('');
     }
-  };
+  };*/
   
   const formatPrice = (price) => {
     return price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1, ');
@@ -88,54 +88,59 @@ function DrinkForm() {
       return; // Exit the function without further processing
     }
     
+    
+
+    //Create a FormData object to append form fields and file
+    const formData = new FormData();
+
     //lunch/Dinner has no subcategory, but is a category itself. 
     if (subCategory === 'lunch/Dinner'){
       updatedCategory = 'lunch/Dinner';
-      updatedSubCategory = '';
+      updatedSubCategory = null;          //set subcategory to null so api doesnt try to insert it
     }
     //if a drink was selected, set drink to be the category
     else if(subCategory !== ''){
       updatedCategory = 'drink';
       updatedSubCategory = subCategory;
-    }
+    } 
 
-    //Create a FormData object to append form fields and file
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('itemCategory', updatedCategory);
+    formData.append('newName', name);
+    formData.append('newCat', updatedCategory);
     formData.append('subCategory', updatedSubCategory);
-    formData.append('price', price*100);
+    formData.append('newPrice', price); //input prices with the decimal
     formData.append('user', user);
     formData.append('token', token);
+
+    
 
 
   // Send the formData to your server for processing
   try {
-    console.log('Name:', formData.get('name'));
-    console.log('itemCategory:', formData.get('itemCategory'));
-    console.log('subCategory:', formData.get('subCategory'));
-    console.log('price:', formData.get('price'));
+    
+    for (const value of formData.values()) {  //logging for testing
+      console.log(value);
+    }
     
     if (menuItem) {
-      //Add neccessary values to the formdata for updating
-      formData.append('currentName', menuItem.name);
-      formData.append('currentItemCategory', menuItem.category); //this might need some work
-    
+      // if editing
+      formData.append('currName', menuItem.name);        //only append these if editings
+      formData.append('currCat', menuItem.itemCategory); //api uses them to find item in database
 
-      // If existingName has a value, use the updateMenuItemTextOnly API
-      const res = await DataService.updateMenuItemTextOnly(formData);
-      console.log('Item updated successfully');
-      // Handle success for update
+      const res = await DataService.updateItem(formData);
+      console.log('Item updated successfully'); // Handle success for update
+      
     } else {
-      // If existingName is empty, use the putItemFront API
-      const res = await DataService.putItemFront(formData);
-      console.log('Item uploaded successfully');
-      // Handle success for upload
+      // If creating
+      const res = await DataService.createItem(formData);
+      console.log('Item uploaded successfully'); // Handle success for upload
+      
     }
   } catch (error) {
-    console.error('Error uploading/updating item:', error);
     // Handle the error (e.g., show an error message to the user)
+    console.error('Error uploading/updating item:', error);    
   }
+
+
 
     // Reset form fields and selected file
 
@@ -190,7 +195,8 @@ function DrinkForm() {
               ? menuItem.price 
               : Array.isArray(menuItem.price)
               ? formatPriceArray(menuItem.price)
-              : menuItem.price / 100}
+              : menuItem.price //drinks are stored with decimals
+            } 
           </h3>
         ) : (
           <h3>Price(s)</h3>

@@ -39,18 +39,8 @@ const EditItem = () => {
       formData.append('user', user);
       formData.append('token', token);
 
-
-      const updatedData = {
-        name: newName || menuItem.name,
-        itemCategory : category || menuItem.itemCategory,
-        price: newPrice || menuItem.price,
-        info: newDescription ||  menuItem.info,
-        photo: newPhoto || menuItem.photo
-      };
-
-
       try {
-        await DataService.updateItem(formData);
+        await DataService.updateItem(formData); //call to the api
         console.log('Item uploaded successfully');
         } catch (error) {
         console.error('Error uploading item:', error);

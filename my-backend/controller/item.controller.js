@@ -285,22 +285,25 @@ export default class ItemController {
    */
 
   static async apiPutItem(req, res, next){
-    const name = req.body.name;
-    const itemCategory = req.body.itemCategory;
-    const subCategory = req.body.subCategory;
-    const price = req.body.price;
-    const description = req.body.description;
-    const photo =  req.body.photo;
-    const auth = req.body.token;
+    const name = req.body.newName;
+    const itemCategory = req.body.newItemCat;
+    const subCategory = req.body.newSubCat;
+    const price = req.body.newPrice;
+    const priceLarge = req.body.price_large;
+    const priceSmall = req.body.price_small;
+    const description = req.body.newDescription;
+    const photo =  req.body.newPhoto;
     const user = req.body.username;
+    const auth = req.body.token;
 
     if (!user) return res.status(400).send("No username");
     if(!auth)return res.status(400).send("No Token");
 
         // we are putting in a lunch/Dinner item without a photo
+      console.log('apiPutitem: Received data:', name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo);
       try {
         // Call the itemDAO.putItem method to insert the item into MongoDB
-        const id = await itemDAO.putItem(name, itemCategory, subCategory, price, description, photo, user, auth);
+        const id = await itemDAO.putItem(name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo, user, auth);
         if(id === 'Invalid Token'){
           res.status(400).send('Invalid Token');
         }else if(id === 'Unauthorized User'){
@@ -384,8 +387,8 @@ export default class ItemController {
     const priceLarge = req.body.price_large;
     const priceSmall = req.body.price_small;
     const Description = req.body.newDescription;
-    const auth = req.body.token;
     const user = req.body.username;
+    const auth = req.body.token;
 
     if((price && priceLarge) || (price && priceSmall) || (price && priceLarge && priceSmall)){
       return res.status(400).send("Price error");

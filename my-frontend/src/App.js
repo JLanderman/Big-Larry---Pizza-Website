@@ -88,6 +88,7 @@ function App() {
               <Route path="/ItemFormLarge" element={<UploadTemplate />} />
               <Route path="/TextForm" element={<UploadTextTemplate />} />
               <Route path="/TextForm/:id" element={<UploadTextTemplate />} />
+              <Route path="/DrinkForm" element={<UploadDrinkTemplate />} />
               <Route path="/DrinkForm/:id" element={<UploadDrinkTemplate />} />
               <Route path="/editItem/:id" element={<EditItem />} />
             </Routes>
