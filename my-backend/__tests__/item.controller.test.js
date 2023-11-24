@@ -254,7 +254,7 @@ describe('ItemController', () => {
         });
     });
 
-    it('should not update for missing topping info', (done) => {
+    it('should not update for missing topping name', (done) => {
       const payload = {size: "price_p", price: "4.99", username: "unit_test", token: process.env.TESTING_TOKEN_OG}
       request(app)
         .post('/pizza/customToppings/update')
@@ -280,11 +280,63 @@ describe('ItemController', () => {
         });
     });
 
+    it('should not update when missing price', (done) => {
+      const payload = {topping: "mystery", size: "small", username: "unit_test", token: process.env.TESTING_TOKEN_OG}
+      request(app)
+        .post('/pizza/customToppings/update')
+        .send(payload)
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.text).to.equal('No price selected')
+          done();
+        });
+    });
+
+    it('should not update when missing size', (done) => {
+      const payload = {topping: "mystery", price: "5.99", username: "unit_test", token: process.env.TESTING_TOKEN_OG}
+      request(app)
+        .post('/pizza/customToppings/update')
+        .send(payload)
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.text).to.equal('No size selected')
+          done();
+        });
+    });
+
+    it('should not update when missing token', (done) => {
+      const payload = {topping: "mystery", size: "small", price: "5.99", username: "unit_test"}
+      request(app)
+        .post('/pizza/customToppings/update')
+        .send(payload)
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.text).to.equal('No Token')
+          done();
+        });
+    });
+
+    it('should not update when missing username', (done) => {
+      const payload = {topping: "mystery", size: "small", price: "5.99", token: process.env.TESTING_TOKEN_OG}
+      request(app)
+        .post('/pizza/customToppings/update')
+        .send(payload)
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.text).to.equal('No User')
+          done();
+        });
+    });
+
   }) // end updateToppingPrice
 
   describe('apiPutItem', () => {
     it('should add item to database', (done) => {
-      const payload = {name: 'testFood', itemCategory: 'lunch/Dinner', photo: 'random.png', price: 666, username: "unit_test", token: process.env.TESTING_TOKEN_OG}
+      const payload = {newName: 'testFood', newItemCat: 'lunch/Dinner', newPhoto: 'random.png', newPrice: 666, username: "unit_test", token: process.env.TESTING_TOKEN_OG}
       request(app)
         .post('/pizza/allItems')
         .send(payload)
@@ -298,7 +350,7 @@ describe('ItemController', () => {
     });
 
     it('should add item with two prices to database', (done) => {
-      const payload = {name: 'testFood1', itemCategory: 'lunch/Dinner', photo: 'random.png', price_large: 666, price_small: 333, username: "unit_test", token: process.env.TESTING_TOKEN_OG}
+      const payload = {newName: 'testFood1', newItemCat: 'lunch/Dinner', newPhoto: 'random.png', price_large: 666, price_small: 333, username: "unit_test", token: process.env.TESTING_TOKEN_OG}
       request(app)
         .post('/pizza/allItems')
         .send(payload)
@@ -320,6 +372,19 @@ describe('ItemController', () => {
         .end((err, res) => {
           if (err) return done(err);
           expect(res.text).to.equal("No Token")
+          done();
+        });
+    });
+
+    it('should not add item without user', (done) => {
+      const payload = {name: 'testFood', itemCategory: 'lunch/Dinner', photo: 'random.png', price: 666, token: process.env.TESTING_TOKEN_OG}
+      request(app)
+        .post('/pizza/allItems')
+        .send(payload)
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.text).to.equal("No username")
           done();
         });
     });
@@ -388,6 +453,19 @@ describe('ItemController', () => {
         .end((err, res) => {
           if (err) return done(err);
           expect(res.text).to.equal("No username")
+          done();
+        });
+    });
+
+    it('should not modify item with no token recieved', (done) => {
+      const payload = {curName: 'testFood1', curItemCat: 'lunch/Dinner', newName: 'testFood3', newItemCat: 'lunch/Dinner', newPhoto: 'random2.png', price_large: 777, price_small: 666, username: "unit_test"}
+      request(app)
+        .post('/pizza/allItems/updateItem')
+        .send(payload)
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.text).to.equal("No Token")
           done();
         });
     });
@@ -546,6 +624,32 @@ describe('ItemController', () => {
         .end((err, res) => {
           if (err) return done(err);
           expect(res.body.message).to.equal("Error deleting item")
+          done();
+        });
+    });
+
+    it('should not delete item with no user', (done) => {
+      const payload = {_id: addItemTwo, token: "a;lsdkjhg;aslgjlk;sdsds"}
+      request(app)
+        .post('/pizza/allItems/deleteItem')
+        .send(payload)
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.text).to.equal("No username")
+          done();
+        });
+    });
+
+    it('should not delete item with no _id', (done) => {
+      const payload = {username: "unit_test", token: "a;lsdkjhg;aslgjlk;sdsds"}
+      request(app)
+        .post('/pizza/allItems/deleteItem')
+        .send(payload)
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.text).to.equal("No object id")
           done();
         });
     });

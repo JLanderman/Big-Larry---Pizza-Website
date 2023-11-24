@@ -228,6 +228,8 @@ export default class ItemController {
     if (!topping) return res.status(400).send("No topping selected");
     if (!size) return res.status(400).send("No size selected");
     if (!price) return res.status(400).send("No price selected");
+    if (!username) return res.status(400).send("No User");
+    if (!token) return res.status(400).send("No Token");
     if(size != 'price_p' && size != 'price_s' && size != 'price_m' && size != 'price_l' && size != 'price_xl'){
       return res.status(400).send("No such size");
     }
@@ -349,7 +351,7 @@ export default class ItemController {
     const auth = req.body.token;
     const user = req.body.username;
 
-    if (!user) return res.status(400).send("No username");
+    if (!user)return res.status(400).send("No username");
     if(!auth)return res.status(400).send("No Token");
     if(!_id)return res.status(400).send("No object id");
 

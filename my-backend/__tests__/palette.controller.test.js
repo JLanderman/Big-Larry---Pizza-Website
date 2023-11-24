@@ -93,6 +93,45 @@ describe('POST pizza/palettes/add', () => {
             })
     })
 
+    it('should not update with missing color palette', (done) => {
+        const payload = {name: "Original", username: "unit_test", token: ';lskdjg;lasjgl;dsajg;jsda;ljg;'}
+        request(app)
+            .post('/pizza/palettes/add')
+            .send(payload)
+            .expect(400)
+            .end((err, res) => {``
+                if (err) return done(err);
+                expect(res.text).to.equal("No color chosen");
+                done();
+            })
+    })
+
+    it('should not update with missing user', (done) => {
+        const payload = {name: "Original", colorArr: ['#ebb67b', '#fffbd3','#6353d8', '#5121a3','#130e2c', '#ceb4f7','#feff9b', '#d35eff'],  token: ';lskdjg;lasjgl;dsajg;jsda;ljg;'}
+        request(app)
+            .post('/pizza/palettes/add')
+            .send(payload)
+            .expect(400)
+            .end((err, res) => {``
+                if (err) return done(err);
+                expect(res.text).to.equal("No user");
+                done();
+            })
+    })
+
+    it('should not update with missing token', (done) => {
+        const payload = {name: "Original", colorArr: ['#ebb67b', '#fffbd3','#6353d8', '#5121a3','#130e2c', '#ceb4f7','#feff9b', '#d35eff'], username: "unit_test"}
+        request(app)
+            .post('/pizza/palettes/add')
+            .send(payload)
+            .expect(400)
+            .end((err, res) => {``
+                if (err) return done(err);
+                expect(res.text).to.equal("No Token");
+                done();
+            })
+    })
+
     it('should not update palette with not enough colors set', (done) => {
         const payload = {name: "something", colorArr: ['#ebb67b', '#fffbd3','#6353d8', '#5121a3','#130e2c', '#ceb4f7','#feff9b'], username: "Johnny", token: process.env.TESTING_TOKEN_OG}
         request(app)

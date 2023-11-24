@@ -87,13 +87,16 @@ export default class UserController {
     if (!newPassword) return res.status(400).send("No password");
     if(!auth)return res.status(400).send("No Token");
 
-
     try{
       const checkSuccess = await UserDAO.editUserLogin(username, newUsername, newPassword, auth); //attempt to edit user login
-      if(checkSuccess){
-        return res.status(200).send("Change Success");
+      if(checkSuccess === "Unauthorized User"){
+        res.status(400).send("Unauthorized User");
+      }else if(checkSuccess === "Invalid Token"){
+        res.status(400).send("Invalid Token");
+      }else if(checkSuccess === "Change Success"){
+        res.status(200).send("Change Success");
       }else{
-        return res.status(400).send("No Change Done");
+        res.status(400).send("Change Error");
       }
     }catch(e){
       console.error(`Failed to edit user in user controller, ${e}`);

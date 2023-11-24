@@ -143,7 +143,7 @@ describe('POST pizza/user/editUser', () => {
             .expect(400) // OK
             .end((err, res) => {
                 if (err) return done(err);
-                expect(res.text).to.equal("No Change Done");
+                expect(res.text).to.equal("Invalid Token");
                 done();
             })
     })
@@ -156,12 +156,12 @@ describe('POST pizza/user/editUser', () => {
             .expect(400) // OK
             .end((err, res) => {
                 if (err) return done(err);
-                expect(res.text).to.equal("No Change Done");
+                expect(res.text).to.equal("Unauthorized User");
                 done();
             })
     })
 
-    it ('should return error when missing user info', (done) => {
+    it ('should return error when missing token', (done) => {
         const payload = {username: "johnny", newUsername: "unit_test", newPassword: "samspizza&more_test_do_not_change!"};
         request(app)
             .post('/pizza/user/editUser')
@@ -170,6 +170,45 @@ describe('POST pizza/user/editUser', () => {
             .end((err, res) => {
                 if (err) return done(err);
                 expect(res.text).to.equal("No Token");
+                done();
+            })
+    })
+
+    it ('should not change user info without username', (done) => {
+        const payload = {newUsername: "unit_test", newPassword: "samspizza&more_test_do_not_change!", token: process.env.TESTING_TOKEN};
+        request(app)
+            .post('/pizza/user/editUser')
+            .send(payload)
+            .expect(400) // OK
+            .end((err, res) => {
+                if (err) return done(err);
+                expect(res.text).to.equal("No username");
+                done();
+            })
+    })
+
+    it ('should not change user info without new username', (done) => {
+        const payload = {username: "unit_test", newPassword: "samspizza&more_test_do_not_change!", token: process.env.TESTING_TOKEN};
+        request(app)
+            .post('/pizza/user/editUser')
+            .send(payload)
+            .expect(400) // OK
+            .end((err, res) => {
+                if (err) return done(err);
+                expect(res.text).to.equal("No username");
+                done();
+            })
+    })
+
+    it ('should not change user info without new password', (done) => {
+        const payload = {username: "unit_test", newUsername: "unit_test", token: process.env.TESTING_TOKEN};
+        request(app)
+            .post('/pizza/user/editUser')
+            .send(payload)
+            .expect(400) // OK
+            .end((err, res) => {
+                if (err) return done(err);
+                expect(res.text).to.equal("No password");
                 done();
             })
     })
