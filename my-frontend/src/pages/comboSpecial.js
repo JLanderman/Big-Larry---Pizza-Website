@@ -62,13 +62,15 @@ const ComboSp = (props) => {
 				{!Array.isArray(items)
 					? items.item.map((currentItem) => {
 						return (
-							<div key={currentItem._id} className="col-lg-3 pb-5" data-testid="comboMenuItem" style={{ display: 'flex', flexDirection: 'column', textAlign: 'center', paddingTop: '10px', paddingBottom: '2%' }}>
-								<Link to={`/details/${currentItem._id}`} style={{ color: 'black', textDecoration: 'none' }}>
-									<img
-										style={{ width: 'auto', height: 225, borderRadius: '20%', objectfit: 'cover' }}
-										src={url + currentItem.photo}
-										alt={"Photo of " + currentItem.name}
-									/>
+							<div key={currentItem._id} className="col-sm-6 col-md-4 col-lg-3 pb-5" data-testid="comboMenuItem" style={{ display: 'flex', flexDirection: 'column', textAlign: 'center', paddingTop: '10px', paddingBottom: '2%' }}>
+								<Link to={`/details/${currentItem._id}`} style={{ color: 'black', textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+									<div style={{ width: 'min(100%, 225px)', height: 225, aspectRatio: 'initial', borderRadius: '5%', objectfit: 'scale down', justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
+										<img
+											style={{  width: 'auto',  maxWidth: 'min(100%, 225px)', maxHeight: 225, aspectRatio: 'initial', borderRadius: '5%', objectfit: 'cover' }}
+											src={url + currentItem.photo}
+											alt={"Photo of " + currentItem.name}
+										/>
+									</div>
 									<p style={{ paddingTop: '5%', textAlign: 'center', fontSize: 25 }}>
 										{currentItem.name}
 										<br />
