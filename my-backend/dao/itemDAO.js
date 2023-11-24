@@ -283,14 +283,17 @@ export default class ItemDao {
   }
 
   /*
-   *   Creates new menu item based on the data recieved by the admin
+   *   Creates new menu item based on the data recieved from the admin
+   *   Necessary information: name, itemCatagory, and some form of price
+   *   Price can be int32 or array, or small and large price may be used
+   *   Api adapts to info given, will only add what is passed to it into the database
    *   @param Item info that the admin is putting into the website
    *   @return failure if it occured
    */
 
   // get rid of photo field
-  static async putItem(name, itemCategory, subCategory, price, description, photo, username, token){
-
+  static async putItem(name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo, username, token){
+    console.log('itemDAO.js putItem Received data:', name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo);
     try{
       const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
 
@@ -307,17 +310,33 @@ export default class ItemDao {
       return 'Invalid Token';
     }
 
-    let query;
-    if(itemCategory === 'lunch/Dinner'){
-      query = {name: name, itemCategory: itemCategory, price: price};
+    let query= {name: name, itemCategory: itemCategory}; //always have a name and category
+    let query2; //used to append new things to the query, allows for easier logic
+
+    //check if new item has a sub category and add if it does appends it
+    if(subCategory !== null){
+      query2 = Object.assign({}, query, {drinktype: subCategory});   //appends subCategory to query and store it into a new query
+      query = query2;
     }
-    else if(itemCategory === 'drink'){
-      query = {name: name, itemCategory: itemCategory, subCategory: subCategory, price: price};
+
+    //check for one price or two price variables
+    if(price){
+      query2 = Object.assign({}, query, {price: price});
+      query = query2;
+    } else if(priceLarge && priceSmall){
+      query2 = Object.assign({}, query, {price_large: priceLarge, price_small: priceSmall});
+      query = query2;
+    } else{ console.log("Error: There was no price passed to api, all new items need a price. ")}
+
+    if(description){
+      query2 = Object.assign({}, query, {info: description});
+      query = query2;
     }
-    // pizza special category
-    else{
-      query = {name: name, itemCategory: itemCategory, price: price, info: description, photo: photo};
+    if(photo){
+      query2 = Object.assign({}, query, {photo: photo});
+      query = query2;
     }
+    console.log("Create New Item Insert Query: ", query); //console output for everything the api is attempting to insert/update
     
     let cursor;
     try{
@@ -329,14 +348,15 @@ export default class ItemDao {
     } catch(e){
       console.error('Unable to put item');
     }
+    
   }
 
-  /*
+  /*   Removed, above function can handle everything
    *   Creates new menu item based on the data the admin passed
    *   @param Item info that the admin is putting into the website
    *   @return failure if it occured
    */
-
+  /*
   static async putItemTwo(name, itemCategory, photo, priceLarge, priceSmall, username, token){
     const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
 
@@ -355,7 +375,7 @@ export default class ItemDao {
     } catch(e){
       console.error('Unable to put item');
     }
-  }
+  }*/
 
   /*
    *   Retrieves all drink items
@@ -423,7 +443,9 @@ export default class ItemDao {
 
   /*
    *   Modifies the specified menu item based on name and category and uses new info to change the item
-   *   Only works with one price or smallprice and largeprice. Not for use with drinks
+   *   Necessary information: current and new name, current and new itemCatagory, and some form of price
+   *   Price can be int32 or array, or small and large price may be used
+   *   Api adapts to info given, will only add what is passed to it into the database
    *   @param name, category of item used to identify item to be removed. All else are used as new info for item
    *   @return failure if it occured
    */
@@ -445,37 +467,36 @@ export default class ItemDao {
       return 'Invalid Token';
     }
 
-    let query1, query2;
+    let query1, query2, query3;
     query1 = {name: currentName, itemCategory: currentItemCategory}; //this finds the correct entry
-
-    //if there is one price or array of prices
-    if(price){
-      //query2 contains the data that will overite the entry in the database
-      //this logic makes it so that the api only interats with the fields whose data it was passed
-      if(photo && Description){
-        query2 = {name: name, itemCategory: itemCategory, photo: photo, price: price, info: Description}; //photo exists, Description exists
-      }else if(photo && !Description){        
-        query2 = {name: name, itemCategory: itemCategory, photo: photo, price: price}; //photo exists, no Description
-      }else if(!photo && Description){        
-        query2 = {name: name, itemCategory: itemCategory, price: price, info: Description}; //no photo, Description exists
-      }else if(!photo && !Description && SubCat){      
-        query2 = {name: name, itemCategory: itemCategory, drinktype: SubCat, price: price}; //no photo, no Description, dubCategory exists
-      }else if(!photo && !Description && !SubCat){      
-        query2 = {name: name, itemCategory: itemCategory, price: price}; //no photo, no Description, no subCategory
-      } 
-    } else if(priceLarge && priceSmall){      //if there are two prices
-      if(photo && Description){
-        query2 = {name: name, itemCategory: itemCategory, photo: photo, price_large: priceLarge, price_small: priceSmall, info: Description}; //photo exists, Description exists
-      }else if(photo && !Description){        
-        query2 = {name: name, itemCategory: itemCategory, photo: photo, price_large: priceLarge, price_small: priceSmall}; //photo exists, no Description
-      }else if(!photo && Description){        
-        query2 = {name: name, itemCategory: itemCategory, price_large: priceLarge, price_small: priceSmall, info: Description}; //no photo, Description exists
-      }else if(!photo && !Description){      
-        query2 = {name: name, itemCategory: itemCategory, price_large: priceLarge, price_small: priceSmall}; //no photo, no Description
-      }
-    } else{
-      console.log("How did this happen, there is an error in here. ")
+    query2 = {name: name, itemCategory: itemCategory} //always has new name and new item category
+    
+    //check if new item has a sub category and add if it does append it to query2
+    if(SubCat !== null){
+      query3 = Object.assign({}, query2, {drinktype: SubCat});   //appends new element to query2
+      query2 = query3;
     }
+
+    //appends the price(s) to the query
+    if(price){
+      query3 = Object.assign({}, query2, {price: price});
+      query2 = query3;
+    } else if(priceLarge && priceSmall){
+      query3 = Object.assign({}, query2, {price_large: priceLarge, price_small: priceSmall});
+      query2 = query3;
+    } else{ console.log("Error: There was no price passed to api, all new items need a price. ")}
+
+    if(Description){
+      query3 = Object.assign({}, query2, {info: Description});
+      query2 = query3;
+    }
+    if(photo){
+      query3 = Object.assign({}, query2, {photo: photo});
+      query2 = query3;
+    }
+    console.log("Update Existing Item Query: ", query2); //console output for everything the api is attempting to insert/update
+       
+
     let cursor;
     cursor = await allItems.find(query1).toArray();
 
@@ -491,12 +512,12 @@ export default class ItemDao {
   }
 
 
-  /*
+  /*   Removed, above function can handle everything
    *   Modifies the specified menu item based on name and category and uses new info to change the item
    *   @param name, category of item used to identify item to be removed. All else are used as new info for item
    *   @return failure if it occured
    */
-/*
+  /*  
   static async modifyItemTwo(currentName, currentItemCategory, name, itemCategory, photo, priceLarge, priceSmall, username, token){
     const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
 

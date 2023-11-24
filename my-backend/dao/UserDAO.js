@@ -59,13 +59,28 @@ export default class UserDAO {
 
   static async editUserLogin(username, newUsername, newPassword, token){
     try{
-    const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
+      const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
 
-    if(!token || username != tokenUsername.user.username){
+      if(!token || username != tokenUsername.user.username){
+        console.error(
+          'Unauthorized User'
+        );
+        return 'Unauthorized User';
+      }
+    }catch(e){
       console.error(
-        'Unauthorized User'
+        `Unable to issue adding item, ${e}`
       );
-      return false;
+      return 'Invalid Token';
+    }
+
+    const curUser = await users.findOne({username: username});
+    if(!newUsername){
+      newUsername = curUser.username;
+    }
+
+    if(!newPassword){
+      newPassword = curUser.password;
     }
 
     const newPswrdHash = await UserDAO.hashUser(newPassword)
@@ -74,13 +89,15 @@ export default class UserDAO {
     query1 = {username: username}
     query2 = {username: newUsername, password: newPswrdHash}
 
+    try{
+
         await users.updateOne(query1, {$set: query2});
-        return true;
+        return 'Change Success';
     }catch(e){
       console.error(
         `Unable to issue user edit, ${e}`
       );
-      return;
+      return true;
     }
   }
 }

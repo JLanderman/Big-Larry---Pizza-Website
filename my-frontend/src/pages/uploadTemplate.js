@@ -43,7 +43,7 @@ function ItemFormLarge() {
 
     const user = await UserService.getUserbyToken(token);
 
-    if(name ==='' || category ==='' || price ==='' || description ==='' || selectedFile.name ===''){
+    if(name ==='' || category ==='' || price ==='' || description ==='' || selectedFile ===null){
     alert('Please fill in all required fields before submitting.');
     return;
   }
@@ -55,23 +55,23 @@ function ItemFormLarge() {
 
   // Create a FormData object to append form fields and file
   const formData = new FormData();
-  formData.append('name', name);
-  formData.append('itemCategory', category);
-  formData.append('price', price*100);
+  formData.append('newName', name);
+  formData.append('newCat', category);
+  formData.append('newPrice', price*100);
   formData.append('description', description);
   //formData.append('image', selectedFile);
   // just use filename for now
   if (selectedFile) {
-    formData.append('photo', selectedFile.name);
+    formData.append('newPhoto', selectedFile.name);
   }
   else{
-    formData.append('photo', null);
+    formData.append('newPhoto', null);
   }
   formData.append('user', user)
   formData.append('token', token)
   // Send the formData to your server for processing
 	try {
-	await DataService.putItemFront(formData);
+	await DataService.createItem(formData);
 	console.log('Item uploaded successfully');
 	} catch (error) {
 	console.error('Error uploading item:', error);

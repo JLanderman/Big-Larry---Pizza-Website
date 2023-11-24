@@ -1,5 +1,5 @@
 //This page is for the uploading/editing menu items that are text only / lack pictures
-//This means the drink menu and lunch/dinner menu items. 
+//Drinks have their own page
 
 import React, { useState, useEffect } from 'react';
 import DataService from "../services/itemData";
@@ -51,7 +51,8 @@ function TextForm() {
       });
       
   };
-
+  
+  /*
   const handlePriceChange = (e) => {
     const newValue = e.target.value;
 
@@ -65,7 +66,7 @@ function TextForm() {
       // Otherwise, set an empty value (or handle it differently)
       setFormattedPrice('');
     }
-  };
+  };*/
   
   const formatPrice = (price) => {
     return price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1, ');
@@ -96,26 +97,26 @@ function TextForm() {
       return; // Exit the function without further processing
     }
     
+    
+
+    //Create a FormData object to append form fields and file
+    const formData = new FormData();
+
     //lunch/Dinner has no subcategory, but is a category itself. 
     if (subCategory === 'lunch/Dinner'){
       updatedCategory = 'lunch/Dinner';
-      updatedSubCategory = '';
+      updatedSubCategory = null;
     }
     //if a drink was selected, set drink to be the category
     else if(subCategory !== ''){
       updatedCategory = 'drink';
       updatedSubCategory = subCategory;
-    }
+    } 
 
-    //Create a FormData object to append form fields and file
-    const formData = new FormData();
-
-    formData.append('currName', menuItem.name);
-    formData.append('currCat', menuItem.itemCategory);
-    formData.append('newName', name || menuItem.name);
-    formData.append('newCat', updatedCategory || menuItem.itemCategory);    
-    formData.append('subCategory', updatedSubCategory || menuItem.drinktype);
-    formData.append('newPrice', price || menuItem.price);
+    formData.append('newName', name);
+    formData.append('newCat', updatedCategory);
+    formData.append('subCategory', updatedSubCategory);
+    formData.append('newPrice', price*100); //input price with the decimal, this handles that
     formData.append('user', user);
     formData.append('token', token);
 
@@ -124,34 +125,38 @@ function TextForm() {
 
   // Send the formData to your server for processing
   try {
+    
     for (const value of formData.values()) {  //logging for testing
       console.log(value);
     }
     
     if (menuItem) {
       // if editing
+      formData.append('currName', menuItem.name);        //only append these if editings
+      formData.append('currCat', menuItem.itemCategory); //api uses them to find item in database
+
       const res = await DataService.updateItem(formData);
-      console.log('Item updated successfully');
-      // Handle success for update
+      console.log('Item updated successfully'); // Handle success for update
+      
     } else {
       // If creating
       const res = await DataService.createItem(formData);
-      console.log('Item uploaded successfully');
-      // Handle success for upload
+      console.log('Item uploaded successfully'); // Handle success for upload
+      
     }
   } catch (error) {
-    console.error('Error uploading/updating item:', error);
     // Handle the error (e.g., show an error message to the user)
+    console.error('Error uploading/updating item:', error);    
   }
 
 
 
     // Reset form fields and selected file
 
-    //setName('');
-    //setCategory('');
-    //setSubCategory('');
-    //setPrice('');
+    setName('');
+    setCategory('');
+    setSubCategory('');
+    setPrice('');
 	
   };
 
