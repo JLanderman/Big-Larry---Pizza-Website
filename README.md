@@ -63,7 +63,7 @@ To run tests, navigate to "/my-frontend" and type `npm run test`
 - bvelasco@csus.edu
 ### Jared Landerman
 - jaredlanderman@csus.edu
-### Jeffery Taylor
+### Jeffrey Taylor
 - jktaylor@csus.edu
 ### Jeremiah Kerzic
 - jkerzic@csus.edu
