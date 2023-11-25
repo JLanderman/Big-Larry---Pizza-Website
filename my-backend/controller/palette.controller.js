@@ -49,7 +49,7 @@ export default class paletteController {
     if (!colorArr) return res.status(400).send("No color chosen");
     if (!user) return res.status(400).send("No user");
     if(!auth)return res.status(400).send("No Token");
-    if (colorArr.length !== 8) res.status(400).send('Color Palette too short')
+    if (colorArr.length !== 8)return res.status(400).send('Color Palette too short');
     // console.log('apiPutPalette: Received data:', name, colorArr);
     let cursor;
       try {
