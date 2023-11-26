@@ -36,31 +36,6 @@ export default class ItemController {
     res.json(response);
   }
 
-  static async apiGetCart(req, res, next) {
-    if (req.query._id != null) {
-      if (!req.query._id.match(/^[0-9a-fA-F]{24}$/)) {
-        console.error(
-          "'GET by ObjectID' request does not contain valid ObjectID"
-        );
-        return;
-      }
-
-      let objID = new ObjectId(req.query._id);
-
-      const { cartList } = await itemDAO.getCart(objID);
-      let response = cartList;
-      res.json(response);
-      return;
-    }
-
-    const { cartList, totalNumItem } = await itemDAO.getCart();
-    let response = {
-      item: cartList,
-      total_results: totalNumItem,
-    };
-    res.json(response);
-  }
-
   /*
    *   item from the lunch/Dinner menu section is grabbed
    *   @return list of lunch/dinner items and total num of lunch/dinner items

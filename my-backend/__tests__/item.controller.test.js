@@ -12,7 +12,7 @@ let addItemTwo;
 describe('ItemController', () => {
   // Sample ObjectID for testing
   const validObjectId = '6504e390896626f733ef4b97';
-  const lunchValidObjectId = '65069a157e453614c411737f'
+  const lunchValidObjectId = '6504d9390f360c171b83d567'
   describe('apiGetItem', () => {
     it('should return a valid item for a valid ObjectID', (done) => {
         request(app)
@@ -66,6 +66,7 @@ describe('ItemController', () => {
           if (lunchItems && lunchItems.length > 0) {
             const lunchItem = lunchItems[0]; // Assuming you expect a single lunch item
             expect(lunchItem).to.be.an('object');
+            expect(lunchItem.name).to.be.equal('Hamburger');
             // Add more assertions based on your data structure
           } else {
             done(new Error('No lunch item found in the response.'));
@@ -88,6 +89,8 @@ describe('ItemController', () => {
   
           if (items && items.length > 0) {
             // If there are items in the response, it's a success
+            expect(items).to.be.an('array');
+            expect(items.length >= 1).to.be.true;
             done();
           } else {
             done(new Error('No pizza special items found in the response.'));
@@ -107,6 +110,8 @@ describe('ItemController', () => {
   
           if (items && items.length > 0) {
             // If there are items in the response, it's a success
+            expect(items).to.be.an('array');
+            expect(items.length >= 1).to.be.true;
             done();
           } else {
             done(new Error('No combo special items found in the response.'));
@@ -126,6 +131,8 @@ describe('ItemController', () => {
   
           if (items && items.length > 0) {
             // If there are items in the response, it's a success
+            expect(items).to.be.an('array');
+            expect(items.length >= 1).to.be.true;
             done();
           } else {
             done(new Error('No special deal items found in the response.'));
@@ -141,7 +148,8 @@ describe('ItemController', () => {
         .expect(200)
         .end((err, res) => {
           if (err) return done(err);
-          expect(res.body).to.be.an('object')
+          expect(res.body.item).to.be.an('array')
+          expect(res.body.item.length >= 1).to.be.true;
             done();
         });
     });
