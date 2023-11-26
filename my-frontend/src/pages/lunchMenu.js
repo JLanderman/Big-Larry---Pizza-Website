@@ -62,27 +62,27 @@ const Lunch = (props) => {
           }
           </div>
           <div>
-            <div className="row px-4" data-testid="lunchItem" style={{width: '100%'}}>
+            <div className="row" data-testid="lunchItem" style={{width: '100%'}}>
               {!Array.isArray(items)
                 ? items.item.map((currentItem) => {
                     return (
-                      <div key={currentItem._id} className="row px-4" style={{ width: '100%' }}>
+                      <div key={currentItem._id} className="row pb-3" style={{ width: '100%' }}>
                       <div className="col-lg-4">
                         <div className="lunchText">
                           <h3 className="food-title">{currentItem.name}</h3>
                         </div>
                             {auth
                               ?                              
-                              <div >
+                              <div className="lunchText pt-1">
                                   <div style={{ display: 'flex', gap: '3px' }}>   
                                     <button
-                                    className="border px-10 py- fs-5 rounded-4"
+                                    className="border px-3 py- fs-5 rounded-4"
                                     onClick={() => handleRemoveItem(currentItem._id)}
                                   >
                                     Remove
                                   </button>
                                     <Link to={`/TextForm/${currentItem._id}`}>
-                                      <button className="border px-10 py- fs-5 rounded-4">Edit</button>
+                                      <button className="border px-3 py- fs-5 rounded-4">Edit</button>
                                     </Link> 
 
                                   </div>
