@@ -60,7 +60,7 @@ describe('POST pizza/palettes/add', () => {
             .post('/pizza/palettes/add')
             .send(payload)
             .expect(400)
-            .end((err, res) => {``
+            .end((err, res) => {
                 if (err) return done(err);
                 expect(res.text).to.equal("Invalid Token");
                 done();
@@ -99,7 +99,7 @@ describe('POST pizza/palettes/add', () => {
             .post('/pizza/palettes/add')
             .send(payload)
             .expect(400)
-            .end((err, res) => {``
+            .end((err, res) => {
                 if (err) return done(err);
                 expect(res.text).to.equal("No color chosen");
                 done();
@@ -112,7 +112,7 @@ describe('POST pizza/palettes/add', () => {
             .post('/pizza/palettes/add')
             .send(payload)
             .expect(400)
-            .end((err, res) => {``
+            .end((err, res) => {
                 if (err) return done(err);
                 expect(res.text).to.equal("No user");
                 done();
@@ -125,7 +125,7 @@ describe('POST pizza/palettes/add', () => {
             .post('/pizza/palettes/add')
             .send(payload)
             .expect(400)
-            .end((err, res) => {``
+            .end((err, res) => {
                 if (err) return done(err);
                 expect(res.text).to.equal("No Token");
                 done();

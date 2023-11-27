@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "mocha '__tests__/**/*.js' --require esm",
+    "test": "c8 mocha test-setup.js '__tests__/**/*.js' --require esm",
     "start": "node server",
     "dev": "nodemon server"
   },
@@ -16,6 +16,7 @@
     "argon2": "^0.31.1",
     "aws": "^0.0.3-2",
     "aws-sdk": "^2.1494.0",
+    "c8": "^8.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "esm": "^3.2.25",

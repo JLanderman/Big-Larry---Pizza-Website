@@ -15,6 +15,15 @@ const EditItem = () => {
   const [newPrice, setNewPrice] = useState("");
   const [newDescription, SetnewDescription] = useState("");
   const [newPhoto, setNewPhoto] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  let base64String;
+  let reader = new FileReader();
+  reader.onload = function () {
+    base64String = reader.result;    
+    base64String.toString();
+    console.log(base64String);
+  }
 
   let params = useParams();
   const token = Cookies.get('x-auth-token');
@@ -26,22 +35,25 @@ const EditItem = () => {
         alert('You need to be logged in as an Admin to submit the form.');
         return;
       }
-
+      reader.readAsDataURL(selectedFile);
       const user = await UserService.getUserbyToken(token);
       const formData = new FormData();
       formData.append('currName', menuItem.name);
       formData.append('currCat', menuItem.itemCategory);
       formData.append('newName', newName || menuItem.name);
       formData.append('newCat', category || menuItem.itemCategory);
-      formData.append('newPhoto', newPhoto || menuItem.photo);
       formData.append('newPrice', newPrice || menuItem.price);
       formData.append('description', newDescription === "" ? menuItem.info: newDescription)
       formData.append('user', user);
       formData.append('token', token);
 
       try {
-        await DataService.updateItem(formData); //call to the api
-        console.log('Item uploaded successfully');
+        setTimeout(function(){
+          const photoName = selectedFile.name;
+          formData.append('newPhoto', photoName || menuItem.photo);
+          DataService.updateItem(formData, base64String); //call to the api
+          console.log('Item uploaded successfully');
+        },50);
         } catch (error) {
         console.error('Error uploading item:', error);
         };
@@ -71,7 +83,7 @@ const EditItem = () => {
     const file = event.target.files[0];
     // You can perform any file-related logic here
     console.log('Selected file:', file);
-
+    setSelectedFile(file);
     setNewPhoto(file);
   };
 

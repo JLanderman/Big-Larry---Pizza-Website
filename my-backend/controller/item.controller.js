@@ -36,31 +36,6 @@ export default class ItemController {
     res.json(response);
   }
 
-  static async apiGetCart(req, res, next) {
-    if (req.query._id != null) {
-      if (!req.query._id.match(/^[0-9a-fA-F]{24}$/)) {
-        console.error(
-          "'GET by ObjectID' request does not contain valid ObjectID"
-        );
-        return;
-      }
-
-      let objID = new ObjectId(req.query._id);
-
-      const { cartList } = await itemDAO.getCart(objID);
-      let response = cartList;
-      res.json(response);
-      return;
-    }
-
-    const { cartList, totalNumItem } = await itemDAO.getCart();
-    let response = {
-      item: cartList,
-      total_results: totalNumItem,
-    };
-    res.json(response);
-  }
-
   /*
    *   item from the lunch/Dinner menu section is grabbed
    *   @return list of lunch/dinner items and total num of lunch/dinner items
@@ -295,6 +270,7 @@ export default class ItemController {
     const priceSmall = req.body.price_small;
     const description = req.body.newDescription;
     const photo =  req.body.newPhoto;
+    const photoData = req.body.newPhotoData;
     const user = req.body.username;
     const auth = req.body.token;
 
@@ -305,7 +281,7 @@ export default class ItemController {
       console.log('apiPutitem: Received data:', name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo);
       try {
         // Call the itemDAO.putItem method to insert the item into MongoDB
-        const id = await itemDAO.putItem(name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo, user, auth);
+        const id = await itemDAO.putItem(name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo, photoData, user, auth);
         if(id === 'Invalid Token'){
           res.status(400).send('Invalid Token');
         }else if(id === 'Unauthorized User'){
@@ -385,6 +361,7 @@ export default class ItemController {
     const newItemCat = req.body.newItemCat;
     const newSubCat = req.body.newSubCat;
     const newPhoto = req.body.newPhoto;
+    const photoData = req.body.newPhotoData;
     const price = req.body.newPrice;
     const priceLarge = req.body.price_large;
     const priceSmall = req.body.price_small;
@@ -409,7 +386,7 @@ export default class ItemController {
     console.log('Description:', Description);
   */
     try{
-      const respond = await itemDAO.modifyItem(curName, curItemCat, newName, newItemCat, newSubCat, newPhoto, price, priceLarge, priceSmall, Description, user, auth);
+      const respond = await itemDAO.modifyItem(curName, curItemCat, newName, newItemCat, newSubCat, newPhoto, photoData, price, priceLarge, priceSmall, Description, user, auth);
       if(respond === 'Invalid Token'){
         res.status(400).send('Invalid Token');
       }else if(respond === 'Unauthorized User'){
