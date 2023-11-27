@@ -295,18 +295,21 @@ export default class ItemDao {
   // get rid of photo field
   static async putItem(name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo, photoData, username, token){
     console.log('itemDAO.js putItem Received data:', name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo);
-    const newPhotoData = photoData.replace(/^data:image\/\w+;base64,/, "");
-    const imageData = new Buffer.from(newPhotoData, 'base64');
-    const type = photoData.split(';')[0].split('/')[1];
-    const image = photo;
 
-    const params = {
-      Bucket: process.env.S3_BUCKET,
-      Key: `${image}`,
-      Body: imageData,
-      ACL: 'public-read',
-      ContentEncoding: 'base64',
-      ContentType: `image/${type}`
+    if(photoData){
+      const newPhotoData = photoData.replace(/^data:image\/\w+;base64,/, "");
+      const imageData = new Buffer.from(newPhotoData, 'base64');
+      const type = photoData.split(';')[0].split('/')[1];
+      const image = photo;
+
+      const params = {
+        Bucket: process.env.S3_BUCKET,
+        Key: `${image}`,
+        Body: imageData,
+        ACL: 'public-read',
+        ContentEncoding: 'base64',
+        ContentType: `image/${type}`
+      }
     }
 
     try{
@@ -359,7 +362,9 @@ export default class ItemDao {
       const item = await allItems.find(query);
       const displayCursor = item.limit(100).skip(0);
       const itemList = await displayCursor.toArray();
-      cursor = await s3.upload(params).promise();
+      if(photoData){
+        cursor = await s3.upload(params).promise();
+      }
       return itemList[0]._id;
     } catch(e){
       console.error('Unable to put item');
