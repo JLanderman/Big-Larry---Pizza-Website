@@ -145,6 +145,13 @@
   align-items: flex-start; /* Align items to the left within the column */
   max-width: 15%;
 }
+.aboutColumnPictures2{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align items to the left within the column */
+  max-width: 50%;
+  min-height: 400px;
+}
 
 .deliveryStyle,
 .doorDashStyle,
@@ -178,6 +185,7 @@
   flex-direction: column;
   max-width: 35%;
   align-items: flex-start;
+  border: '2px solid black';
 }
 
 .addressStyle {
