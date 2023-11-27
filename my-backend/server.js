@@ -22,15 +22,32 @@ app.get("/", (req, res) => {
 app.use('/pizza', pizzaRouter)
 
 const MongoClient = mongodb.MongoClient;
+let dbClient; // Used to close connection after tests
 
 MongoClient.connect(process.env.ITEM_DB_URI, {
   wtimeoutMS: 2500,
 }).then(async (client) => {
+  dbClient = client;
   await itemDao.injectDB(client);
   await UserDAO.injectDB(client);
   await PaletteDao.injectDB(client);
 });
 
-app.listen(5000, () => { console.log("Server started on port 5000") }) //api needs to run on a different port than the front end
+// API needs to run on a different port than the front end
+let server = app.listen(5000, () => { console.log("Server started on port 5000") })
+
+// Used to close all connections after tests have run
+export const closeServerAndDB = () => {
+  if (dbClient){
+    dbClient.close(() => {
+      console.log("Database connection closed successfully.");
+    });
+  };
+  if (server){
+    server.close(() => {
+      console.log("Server closed successfully.");
+    });
+  };
+};
 
 export default app
