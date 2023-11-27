@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "mocha '__tests__/**/*.js' --require esm",
+    "test": "c8 mocha test-setup.js '__tests__/**/*.js' --require esm",
     "start": "node server",
     "dev": "nodemon server"
   },
