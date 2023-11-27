@@ -34,8 +34,8 @@ MongoClient.connect(process.env.ITEM_DB_URI, {
   await PaletteDao.injectDB(client);
 });
 
-//api needs to run on a different port than the front end
-let server = app.listen(5000, () => { console.log("Server started on port 5000") });
+// API needs to run on a different port than the front end
+let server = app.listen(5000, () => { console.log("Server started on port 5000") })
 
 // Used to close all connections after tests have run
 export const closeServerAndDB = () => {
