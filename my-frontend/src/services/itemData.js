@@ -140,13 +140,14 @@ class DataService {
 
     }
 
-    async createItem(formData){  //still testing
+    async createItem(formData, base64String){  //still testing
 
       let res;
       let newPrice, newSubCat;
       const newName = formData.get('newName');
       const newItemCat = formData.get('newCat');
       const newPhoto = formData.get('newPhoto');
+      const newPhotoData = base64String;
       const price_large = formData.get('newPriceLarge');
       const price_small = formData.get('newPriceSmall');
       const newDescription = formData.get('description');
@@ -183,6 +184,7 @@ class DataService {
           newItemCat,
           newSubCat,
           newPhoto,
+          newPhotoData,
           newPrice,
           price_large,
           price_small,

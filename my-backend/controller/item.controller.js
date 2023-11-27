@@ -270,6 +270,7 @@ export default class ItemController {
     const priceSmall = req.body.price_small;
     const description = req.body.newDescription;
     const photo =  req.body.newPhoto;
+    const photoData = req.body.newPhotoData;
     const user = req.body.username;
     const auth = req.body.token;
 
@@ -280,7 +281,7 @@ export default class ItemController {
       console.log('apiPutitem: Received data:', name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo);
       try {
         // Call the itemDAO.putItem method to insert the item into MongoDB
-        const id = await itemDAO.putItem(name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo, user, auth);
+        const id = await itemDAO.putItem(name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo, photoData, user, auth);
         if(id === 'Invalid Token'){
           res.status(400).send('Invalid Token');
         }else if(id === 'Unauthorized User'){

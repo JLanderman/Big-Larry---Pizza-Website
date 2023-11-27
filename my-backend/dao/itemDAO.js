@@ -3,8 +3,9 @@ let allItems;
 let customToppings;
 import { ObjectId, MongoClient  } from "mongodb";
 //import MongoClient from "../server";
-
-
+import AWS from 'aws-sdk';
+AWS.config.update({accessKeyID: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, region: process.env.AWS_REGION});
+const s3 = new AWS.S3();
 
 export default class ItemDao {
   /*
@@ -292,8 +293,22 @@ export default class ItemDao {
    */
 
   // get rid of photo field
-  static async putItem(name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo, username, token){
+  static async putItem(name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo, photoData, username, token){
     console.log('itemDAO.js putItem Received data:', name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo);
+    const newPhotoData = photoData.replace(/^data:image\/\w+;base64,/, "");
+    const imageData = new Buffer.from(newPhotoData, 'base64');
+    const type = photoData.split(';')[0].split('/')[1];
+    const image = photo;
+
+    const params = {
+      Bucket: process.env.S3_BUCKET,
+      Key: `${image}`,
+      Body: imageData,
+      ACL: 'public-read',
+      ContentEncoding: 'base64',
+      ContentType: `image/${type}`
+    }
+
     try{
       const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
 
@@ -340,10 +355,11 @@ export default class ItemDao {
     
     let cursor;
     try{
-      cursor = await allItems.insertOne(query); //Insert items to query in database
+      await allItems.insertOne(query); //Insert items to query in database
       const item = await allItems.find(query);
       const displayCursor = item.limit(100).skip(0);
       const itemList = await displayCursor.toArray();
+      cursor = await s3.upload(params).promise();
       return itemList[0]._id;
     } catch(e){
       console.error('Unable to put item');
@@ -427,8 +443,19 @@ export default class ItemDao {
     }
 
     let query;
-    query = { _id: new ObjectId(_id) };    let cursor;
+    query = { _id: new ObjectId(_id) };
+    let cursor;
+
+    const image = await allItems.find(query).toArray();
+    const deleteImage = image[0].photo;
+
+    const params = {
+      Bucket: process.env.S3_BUCKET,
+      Key: `${deleteImage}`
+    }
+
     try{
+      await s3.deleteObject(params).promise();
       cursor = await allItems.deleteOne(query); //Delete item in database based on query
       if (cursor.deletedCount === 1) {
         console.log('Item deleted successfully');

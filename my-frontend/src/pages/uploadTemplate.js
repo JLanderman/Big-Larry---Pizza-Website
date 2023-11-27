@@ -4,8 +4,6 @@ import Cookies from "js-cookie";
 import UserService from "../services/UserData";
 import pizzaGuy from '../images/Other/PizzaGuy_HQ_1.0.png';
 
-
-
 function ItemFormLarge() {
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
@@ -16,6 +14,13 @@ function ItemFormLarge() {
   const [uploadedImage, setUploadedImage] = useState(null);
   const fileInputRef = useRef(null);
   const token = Cookies.get('x-auth-token');
+  let base64String;
+  let reader = new FileReader();
+  reader.onload = function () {
+    base64String = reader.result;    
+    base64String.toString();
+    console.log(base64String);
+  }
 
   const handleNameChange = (e) => setName(e.target.value);
   const handleCategoryChange = (e) => setCategory(e.target.value);
@@ -63,16 +68,23 @@ function ItemFormLarge() {
   // just use filename for now
   if (selectedFile) {
     formData.append('newPhoto', selectedFile.name);
+    reader.readAsDataURL(selectedFile);
   }
   else{
     formData.append('newPhoto', null);
   }
+
   formData.append('user', user)
   formData.append('token', token)
   // Send the formData to your server for processing
 	try {
-	await DataService.createItem(formData);
-	console.log('Item uploaded successfully');
+    if(selectedFile){
+      setTimeout(function(){
+        DataService.createItem(formData, base64String);
+        console.log('Item uploaded successfully');
+      },10);
+    }
+    console.log('Item uploaded successfully');
 	} catch (error) {
 	console.error('Error uploading item:', error);
 	}
