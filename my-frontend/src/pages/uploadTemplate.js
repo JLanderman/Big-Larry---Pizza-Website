@@ -82,7 +82,7 @@ function ItemFormLarge() {
       setTimeout(function(){
         DataService.createItem(formData, base64String);
         console.log('Item uploaded successfully');
-      },10);
+      },50);
     }
     console.log('Item uploaded successfully');
 	} catch (error) {
