@@ -122,7 +122,7 @@ const Login = () => {
         else navigate('/');
       }
     } catch (e) {
-      console.error(`handleSubmit failed in login.js, ${e}`);
+      console.error(e);
     };
 
     setBadLogin(true); // unsuccessful login
@@ -166,7 +166,7 @@ const Login = () => {
           <b>Sign-In</b>
         </button>
         {badLogin
-          ? <div
+          ? <div data-testid="badLogin"
             className="text-danger"
             style={styles.centerText}>
             The username or password is incorrect.
