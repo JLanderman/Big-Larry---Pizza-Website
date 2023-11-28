@@ -33,7 +33,6 @@
 
 /**************HOME PAGE**************/
 .homeHeader {
-  /* font-family: 'Raleway', sans-serif; */
   font-size: 4rem;
   font-weight: var(--bold-weight);
 }
@@ -53,8 +52,8 @@
 .homeTextContainer{
   padding-left: 2em;
   padding-bottom: 2em;
-  justify-content: flex-end; /* Align the content to the bottom */
-  align-items: center; /* Center items horizontally */
+  justify-content: flex-end; 
+  align-items: center;
   text-align: center;
 }
 
@@ -77,8 +76,8 @@
   padding-right: 1em;
   font-size: 2.75rem;
   font-weight: var(--light-weight);
-  justify-content: center; /* Center items vertically */
-  align-items: center; /* Center items horizontally */
+  justify-content: center;
+  align-items: center; 
 }
 
 @media (max-width: 1190px){
@@ -107,13 +106,13 @@
     width: 100vw;
   }
   .homePizzaColumn{
-    text-align: center; /* Center the text horizontally */
-    padding: 1em; /* Adjust padding as needed */
+    text-align: center;
+    padding: 1em;
     font-size: 6vw;
     width: 100vw;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center the items vertically */
+    align-items: center; 
   }
   .homePhoneNumber{
     font-size: 6vw;
@@ -145,51 +144,56 @@
   align-items: flex-start; /* Align items to the left within the column */
   max-width: 15%;
 }
-.aboutColumnPictures2{
+
+.aboutColumnMap{
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Align items to the left within the column */
-  max-width: 50%;
-  min-height: 400px;
+  align-items: flex-end;
+  padding: auto;
+  width: 70%;
+  border: 0px solid black; 
+}
+.aboutColumnMap iframe {
+  width: 80%;
+  height: 50vh;
 }
 
 .deliveryStyle,
 .doorDashStyle,
 .pickUpStyle {
-  max-width: 100%; /* Allow images to take the full width of their container */
+  max-width: 100%; 
   padding: 5%;
 }
 
 .aboutColumnCenter {
-  max-width: 80%; /* Adjust the max-width to your preference */
-  margin: 0 auto; /* Center the content horizontally */
+  max-width: 80%; 
+  margin: 0 auto; 
 }
 
 
 .aboutHeader {
   font-size: 3rem;
   font-weight: var(--bold-weight);
-  padding-top: 1em; /* Adjust the padding as needed */
+  padding-top: 1em; 
   text-align: center;
 }
 
 .aboutText {
   font-size: 2rem;
   font-weight: var(--medium-weight);
-  padding: 1em; /* Adjust the padding as needed */
-  text-align: left; /* Center the text in the second row */
+  padding: 1em;
+  text-align: left; 
 }
 
 .aboutColumnAddress{
   flex:1;
   flex-direction: column;
-  max-width: 35%;
+  min-width: 30%;
   align-items: flex-start;
-  border: '2px solid black';
 }
 
 .addressStyle {
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   font-weight: var(--medium-weight);
   color: red;
   z-index: 2;
@@ -197,6 +201,7 @@
   padding-right: 1em;
   padding-top: 1em;
   align-self: flex-end;
+  white-space: pre-line; /* Preserve line breaks */
 }
 
 .textContainer {
@@ -245,9 +250,19 @@
   .deliveryStyle,
   .doorDashStyle,
   .pickUpStyle {
-    max-width: none; /* Allow images to take the full width of their container */
+    max-width: none;
     width: 100%;
-}
+  }
+  
+  .aboutColumnMap{
+    width: 100vw;
+    align-items: center;
+  }
+  .aboutColumnMap iframe {
+    width: 90%;
+    height: 60vh;
+  }
+
 }
 
 
