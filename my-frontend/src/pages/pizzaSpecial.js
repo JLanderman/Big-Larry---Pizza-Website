@@ -21,23 +21,21 @@ const PizzaSp = (props) => {
 		const token = Cookies.get('x-auth-token');
     	const user = await UserService.getUserbyToken(token);
 		const confirmation = window.confirm(`Are you sure you want to remove this item from the menu?`);
-		console.log('package id:', _id);
 
 		if (confirmation) {
-			if (confirmation) {
-				// User confirmed, proceed with deletion
-				DataService.deleteItem(_id, user, token).then((response) => {
-					if (response.status === 200) {
-						console.log('Item deleted successfully');
-						window.location.reload(); // Refresh the page
-					} else {
-						console.error('Failed to delete item');
-					}
-				})
-					.catch((error) => {
-						console.error('Error deleting item:', error);
-					}); // Call your deleteItem function with the _id
-			}
+			// User confirmed, proceed with deletion
+			DataService.deleteItem(_id, user, token)
+			.then((response) => {
+				if (response.status === 200) {
+					console.log('Item deleted successfully');
+					window.location.reload(); // Refresh the page
+				} else {
+					console.error('Failed to delete item');
+				}
+			})
+			.catch((error) => {
+				console.error('Error deleting item:', error);
+			}); // Call your deleteItem function with the _id
 		}
 	};
 
@@ -52,7 +50,7 @@ const PizzaSp = (props) => {
 				setItems(response.data);
 			})
 			.catch((e) => {
-				console.log(e);
+				console.error(e);
 			});
 	};
 
@@ -70,7 +68,7 @@ const PizzaSp = (props) => {
 						}
 
 						return (
-							<div key={currentItem._id} className="col-sm-6 col-md-4 col-lg-3 pb-5" style={{ display: 'flex', flexDirection: 'column', textAlign: 'center', paddingTop: '10px', paddingBottom: '2%' }}>
+							<div data-testid={`testItem${currentItem._id}`} key={currentItem._id} className="col-sm-6 col-md-4 col-lg-3 pb-5" style={{ display: 'flex', flexDirection: 'column', textAlign: 'center', paddingTop: '10px', paddingBottom: '2%' }}>
 								<Link to={temp} style={{ color: 'black', textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
 								<div style={{ width: 'min(100%, 225px)', height: 225, aspectRatio: 'initial', borderRadius: '5%', objectfit: 'scale down', justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
 										<img
@@ -86,14 +84,14 @@ const PizzaSp = (props) => {
 									</p>
 								</Link>
 								{auth && (currentItem.name !== 'Lets Customize') ?
-									<div style={{ display: 'flex', justifyContent: 'center', gap: '3px' }}>
-										<button
+									<div style={{ display: 'flex', justifyContent: 'center', gap: '3px' }} data-testid={`authTestItem${currentItem._id}`}>
+										<button data-testid={`removeTestItem${currentItem._id}`} // Remove item
 											className="border px-10 py- fs-3 rounded-4"
 											onClick={() => handleRemoveItem(currentItem._id)}
 										>
 											Remove
 										</button>
-										<button // Redirect to edit page
+										<button data-testid={`editTestItem${currentItem._id}`} // Redirect to edit page
 											className="border px-10 py- fs-3 rounded-4"
 											onClick={(e) => navigate(`/editItem/${currentItem._id}`)}>
 											Edit
