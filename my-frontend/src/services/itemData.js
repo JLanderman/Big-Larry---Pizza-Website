@@ -70,7 +70,7 @@ class DataService {
         return http.get('/drink');
     }
 
-    async updateItem(formData){
+    async updateItem(formData, base64String){
 
       let res;
       let newPrice, newSubCat;
@@ -79,6 +79,7 @@ class DataService {
       const newName = formData.get('newName');
       const newItemCat = formData.get('newCat');
       const newPhoto = formData.get('newPhoto');
+      const newPhotoData = base64String;
       const price_large = formData.get('newPriceLarge');
       const price_small = formData.get('newPriceSmall');
       const username = formData.get('user');
@@ -117,6 +118,7 @@ class DataService {
           newItemCat,
           newSubCat,
           newPhoto,
+          newPhotoData,
           newPrice,
           price_large,
           price_small,

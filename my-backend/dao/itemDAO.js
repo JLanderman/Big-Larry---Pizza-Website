@@ -295,18 +295,21 @@ export default class ItemDao {
   // get rid of photo field
   static async putItem(name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo, photoData, username, token){
     console.log('itemDAO.js putItem Received data:', name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo);
-    const newPhotoData = photoData.replace(/^data:image\/\w+;base64,/, "");
-    const imageData = new Buffer.from(newPhotoData, 'base64');
-    const type = photoData.split(';')[0].split('/')[1];
-    const image = photo;
+    let params;
+    if(photoData){
+      const newPhotoData = photoData.replace(/^data:image\/\w+;base64,/, "");
+      const imageData = new Buffer.from(newPhotoData, 'base64');
+      const type = photoData.split(';')[0].split('/')[1];
+      const image = photo;
 
-    const params = {
-      Bucket: process.env.S3_BUCKET,
-      Key: `${image}`,
-      Body: imageData,
-      ACL: 'public-read',
-      ContentEncoding: 'base64',
-      ContentType: `image/${type}`
+      params = {
+        Bucket: process.env.S3_BUCKET,
+        Key: `${image}`,
+        Body: imageData,
+        ACL: 'public-read',
+        ContentEncoding: 'base64',
+        ContentType: `image/${type}`
+      }
     }
 
     try{
@@ -359,7 +362,9 @@ export default class ItemDao {
       const item = await allItems.find(query);
       const displayCursor = item.limit(100).skip(0);
       const itemList = await displayCursor.toArray();
-      cursor = await s3.upload(params).promise();
+      if(photoData){
+        cursor = await s3.upload(params).promise();
+      }
       return itemList[0]._id;
     } catch(e){
       console.error('Unable to put item');
@@ -477,7 +482,24 @@ export default class ItemDao {
    *   @return failure if it occured
    */
 
-  static async modifyItem(currentName, currentItemCategory, name, itemCategory, SubCat, photo, price, priceLarge, priceSmall, Description, username, token){
+  static async modifyItem(currentName, currentItemCategory, name, itemCategory, SubCat, photo, photoData, price, priceLarge, priceSmall, Description, username, token){
+    let params;
+    if(photoData){
+      const newPhotoData = photoData.replace(/^data:image\/\w+;base64,/, "");
+      const imageData = new Buffer.from(newPhotoData, 'base64');
+      const type = photoData.split(';')[0].split('/')[1];
+      const image = photo;
+
+      params = {
+        Bucket: process.env.S3_BUCKET,
+        Key: `${image}`,
+        Body: imageData,
+        ACL: 'public-read',
+        ContentEncoding: 'base64',
+        ContentType: `image/${type}`
+      }
+    }
+
     try{
       const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
 
@@ -523,12 +545,20 @@ export default class ItemDao {
     }
     console.log("Update Existing Item Query: ", query2); //console output for everything the api is attempting to insert/update
        
-
     let cursor;
     cursor = await allItems.find(query1).toArray();
 
+    const paramsDelete = {
+      Bucket: process.env.S3_BUCKET,
+      Key: `${cursor[0].photo}`
+    }
+
     try{
       if(cursor[0] !== undefined){
+        if(photoData){
+          await s3.deleteObject(paramsDelete).promise();
+          await s3.upload(params).promise();
+        }
         await allItems.updateOne(query1, {$set: query2});  //Modify item in database based on name and category with query2
       }else{
         return 'Item not found. Cannot modify.';

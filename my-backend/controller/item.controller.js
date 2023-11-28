@@ -361,6 +361,7 @@ export default class ItemController {
     const newItemCat = req.body.newItemCat;
     const newSubCat = req.body.newSubCat;
     const newPhoto = req.body.newPhoto;
+    const photoData = req.body.newPhotoData;
     const price = req.body.newPrice;
     const priceLarge = req.body.price_large;
     const priceSmall = req.body.price_small;
@@ -385,7 +386,7 @@ export default class ItemController {
     console.log('Description:', Description);
   */
     try{
-      const respond = await itemDAO.modifyItem(curName, curItemCat, newName, newItemCat, newSubCat, newPhoto, price, priceLarge, priceSmall, Description, user, auth);
+      const respond = await itemDAO.modifyItem(curName, curItemCat, newName, newItemCat, newSubCat, newPhoto, photoData, price, priceLarge, priceSmall, Description, user, auth);
       if(respond === 'Invalid Token'){
         res.status(400).send('Invalid Token');
       }else if(respond === 'Unauthorized User'){
