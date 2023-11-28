@@ -36,7 +36,7 @@ const AuthProvider = ({ children, initialState }) => {
             setLoggedIn(initialState.loggedIn || false);
             setAuth(initialState.loggedIn || false);
         }
-    }, [initialState]);
+    }, []);
 
     const value = { // makes values visible to children
         auth,
