@@ -33,17 +33,17 @@ function HamburgerMenu({ onClick }) {
     };
 
   return (
-    <div className={`hamburger-menu ${menuOpen ? 'open' : ''}`}>
+    <div data-testid="hamburger-menu" className={`hamburger-menu${menuOpen ? ' open' : ''}`}>
       <input type="checkbox" id="menu-toggle" />
       <label htmlFor="menu-toggle" className="menu-icon" onClick={toggleMenu}>
-        <Bars />
+        <Bars data-testid="menu-toggle"/>
       </label>
-      <ul className={`menu ${menuOpen ? 'open' : ''}`} >
+      <ul data-testid="menu" className={`menu${menuOpen ? ' open' : ''}`} >
         <li><NavLink to="/about" onClick={closeMenu}><div className='hamburgerMenuItemText'>ABOUT</div></NavLink></li>
         <li><NavLink to="/mainmenu" data-testid="menuLinkHamburgerMenu" onClick={closeMenu}><div className='hamburgerMenuItemText'>MENU</div></NavLink></li>
         <li>{loggedIn
-            ? <NavLink to="/" onClick={() => { logout() ; closeMenu(); }} ><div className='hamburgerMenuItemText'>LOG OUT</div></NavLink>
-            : <NavLink to="/login" onClick={closeMenu}><div className='hamburgerMenuItemText'>SIGN IN</div></NavLink>
+            ? <NavLink to="/" data-testid="hamburgerLogout" onClick={() => { logout() ; closeMenu(); }} ><div className='hamburgerMenuItemText'>LOG OUT</div></NavLink>
+            : <NavLink to="/login" data-testid="hamburgerSignIn" onClick={closeMenu}><div className='hamburgerMenuItemText'>SIGN IN</div></NavLink>
           }</li>
       </ul>
     </div>

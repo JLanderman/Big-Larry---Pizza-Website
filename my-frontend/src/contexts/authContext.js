@@ -11,11 +11,11 @@ const AuthContext = createContext({
 
 export const useAuth = () => useContext(AuthContext); // used by children
 
-const AuthProvider = ({ children }) => {
+const AuthProvider = ({ children, initialState }) => {
     const [auth, setAuth] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
 
-    useEffect(() => { // set initial auth status based on presence of token
+    useEffect(() => { // Set initial auth status based on presence of token
         const jwt = Cookies.get('x-auth-token');
 
         if (jwt){
@@ -30,7 +30,13 @@ const AuthProvider = ({ children }) => {
                 if (claims.user.isAdmin && claims.user.isAdmin == true) setAuth(true);
             }
         };
-    });
+
+        // Initializes context with values. Used for testing.
+        if (initialState){
+            setLoggedIn(initialState.loggedIn || false);
+            setAuth(initialState.loggedIn || false);
+        }
+    }, [initialState]);
 
     const value = { // makes values visible to children
         auth,
