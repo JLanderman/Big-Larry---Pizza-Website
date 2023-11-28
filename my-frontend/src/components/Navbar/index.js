@@ -15,25 +15,20 @@ const Navbar = () => {
   const { auth, setAuth, loggedIn, setLoggedIn } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Add state for menu visibility
 
-  const toggleMenu = () => {
-    console.log("In toggleMenu")
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   return (
     <>
       <Nav data-testid="navbar">
         <NavLink to="/">
           SAM'S PIZZA & MORE
         </NavLink>
-        <HamburgerMenu onClick={toggleMenu} />
+        <HamburgerMenu />
         <NavMenu>
           {auth
-            ? <NavLink to="/admin">ADMIN</NavLink>
+            ? <NavLink to="/admin" data-testid="adminLink">ADMIN</NavLink>
             : null
           }
           {auth
-            ? <NavLink to="/admin/editUserCred">Edit Username/Password</NavLink>
+            ? <NavLink to="/admin/editUserCred" data-testid="editCredLink">Edit Username/Password</NavLink>
             : null
           }
           <NavLink to="/about">

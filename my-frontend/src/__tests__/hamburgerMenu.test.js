@@ -31,12 +31,14 @@ describe("HamburgerMenu", () =>{
     });
 
     it("renders the sign in link", () =>{
+        // Render logged out state
         render(<BrowserRouter><HamburgerMenu/></BrowserRouter>);
         const link = screen.getByTestId("hamburgerSignIn");
         expect(link).toBeInTheDocument();
     })
 
     it("renders the log out link", () =>{
+        // Render logged in state
         render(<BrowserRouter><AuthProvider initialState={loggedInState}>
             <HamburgerMenu/></AuthProvider></BrowserRouter>);
 
