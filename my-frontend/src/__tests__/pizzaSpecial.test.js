@@ -32,7 +32,6 @@ const mockResponse = {
                 price: 1800,
                 photo: 'special_pizza_2.jpg',
             },
-
         ],
     },
 };
@@ -64,7 +63,7 @@ describe("Pizza Specialties", () => {
         });
 
         // Test results
-        const pizzaSp = screen.getByTestId("pizzaSpecialties");
+        const pizzaSp = screen.getByTestId("pizzaSpecials");
         expect(pizzaSp).toBeInTheDocument();
         expect(screen.getByTestId("testItem0")).toBeInTheDocument();
         expect(screen.getByTestId("testItem1")).toBeInTheDocument();

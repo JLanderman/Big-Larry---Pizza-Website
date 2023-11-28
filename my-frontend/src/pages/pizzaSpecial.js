@@ -55,7 +55,7 @@ const PizzaSp = (props) => {
 	};
 
 	return (
-		<div data-testid="pizzaSpecialties" >
+		<div data-testid="pizzaSpecials" >
 			<h1 style={{ textAlign: 'center', paddingTop: '1%', paddingBottom: '1%', borderBottom: '1px solid black', background: 'transparent', borderColor: 'transparent' }}>Sam's Pizza Specialties (Large Size Only)</h1>
 			<div className="row" style={{ width: '100%', paddingLeft: '2%' }}>
 				{!Array.isArray(items)
