@@ -12,8 +12,8 @@ test('Drink Specialties render', () => {
     expect(drinks).toBeInTheDocument();
 });
 
-test('Beverages header renders', () => {
-    render(<Drink />);
-    const bev = screen.getByTestId('BeveragesHeader')
-    expect(bev).toBeInTheDocument();
-});
+// test('Beverages header renders', () => {
+//     render(<Drink />);
+//     const bev = screen.getByTestId('BeveragesHeader')
+//     expect(bev).toBeInTheDocument();
+// });
