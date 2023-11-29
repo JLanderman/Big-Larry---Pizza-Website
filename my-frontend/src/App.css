@@ -396,8 +396,15 @@
   display: flex;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
+  
 
 }
+.checkbox-container {
+  display: flex; /* Or use display: inline-flex; */
+  align-items: center; /* Align vertically */
+  margin-bottom: 10px; /* Adjust as needed */
+}
+
 
 
 /*********** Details ***********/
