@@ -539,13 +539,6 @@
 }
 
 /* *****DRINKS***** */
-.drinksContainer{
-  /* background-color: #c01111; */
-  /* display: flex; */
-  /* align-items: center;
-  flex-direction: column; */
-  /* padding-left: 10%; */
-}
 .drinkText{
   color:var(--clr-txt);
 }

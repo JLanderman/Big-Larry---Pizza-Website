@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import DataService from "../services/itemData";
 import Cookies from "js-cookie";
 import UserService from "../services/UserData";
+import { useAuth } from '../contexts/authContext';
 
 const Pizza_customize = () => {
   const token = Cookies.get('x-auth-token');
   const [toppingPrices, setToppingPrices] = useState([]);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [selectedToppingCategory, setSelectedToppingCategory] = useState(null);
+  const { auth } = useAuth();
 
 
   useEffect(() => {
@@ -19,10 +20,10 @@ const Pizza_customize = () => {
         console.error("Error fetching topping prices:", error);
       }
     };
-
+  
     fetchToppingPrices();
-    setIsAdmin(true); // Temporarily set isAdmin to true for testing
   }, [token]);
+  
 
   const sizeList = ["P", "S", "M", "L", "XL"];
   const sizeLabels = ["price_p", "price_s", "price_m", "price_l", "price_xl"];
@@ -47,10 +48,6 @@ const Pizza_customize = () => {
   const [selectedTopping, setSelectedTopping] = useState([]);
   const [price, setPrice] = useState(priceSelect(selectedSize, selectedTopping.length));
 
-  const handleSizeClick = (index) => {
-    setSelectedSize(index);
-    setPrice(priceSelect(index, selectedTopping.length));
-  };
 
   const handleToppingClick = (index) => {
     const selectedToppingName = toppingList[index];
@@ -131,7 +128,7 @@ const Pizza_customize = () => {
   }
 
   const renderUpdateForm = () => {
-    if (isAdmin) {
+    if (auth) {
       return (
         <div>
           <h2 style={{ color: "red" }}>Update Topping Price</h2>
@@ -177,9 +174,9 @@ const Pizza_customize = () => {
           </div>
         </div>
       </div>
-      <div className="toppingButtonsCustom" style={{ maxWidth: "80%", minWidth: "610px", display: "flex", flexWrap: "wrap" }}>
+      <div className="pageContainer" style={{ maxWidth: "80%", minWidth: "610px", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "10px" }}>
         {toppingList.map((size, index) => (
-          <span key={index} className="pizzaToppingButtonCustom" onClick={() => handleToppingClick(index)} style={{ fontSize: "24px", margin: "5px", whiteSpace: "nowrap" }}>
+          <span key={index} className="pizzaToppingButtonCustom" onClick={() => handleToppingClick(index)} style={{ fontSize: "24px", whiteSpace: "nowrap" }}>
             {size}
           </span>
         ))}
