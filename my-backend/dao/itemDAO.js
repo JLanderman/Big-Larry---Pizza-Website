@@ -3,9 +3,9 @@ let allItems;
 let customToppings;
 import { ObjectId, MongoClient  } from "mongodb";
 //import MongoClient from "../server";
-import AWS from 'aws-sdk';
-AWS.config.update({accessKeyID: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, region: process.env.AWS_REGION});
-const s3 = new AWS.S3();
+import {S3Client, PutObjectCommand, DeleteObjectCommand} from "@aws-sdk/client-s3";
+const s3 = new S3Client({region: process.env.AWS_REGION});
+s3.config.credentials = {accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY}
 
 export default class ItemDao {
   /*
@@ -352,7 +352,12 @@ export default class ItemDao {
       const displayCursor = item.limit(100).skip(0);
       const itemList = await displayCursor.toArray();
       if(photoData){
-        cursor = await s3.upload(params).promise();
+        const commandPut = new PutObjectCommand(params);
+        try{
+          cursor = await s3.send(commandPut);
+        }catch(e){
+          console.error(`Error in getComboSpecial: ${e}`)
+        }
       }
       return itemList[0]._id;
     } catch(e){
@@ -435,10 +440,8 @@ export default class ItemDao {
     let cursor;
 
     try{
-
-      cursor = await allItems.deleteOne(query); //Delete item in database based on query
-      if (cursor.deletedCount === 1) {
-        const image = await allItems.find(query).toArray();
+      const image = await allItems.find(query).toArray();
+      if(image){
         const deleteImage = image[0].photo;
 
         const params = {
@@ -446,12 +449,18 @@ export default class ItemDao {
           Key: `${deleteImage}`
         }
 
-        await s3.deleteObject(params).promise();
+        const commandDelete = new DeleteObjectCommand(params);
+        await s3.send(commandDelete);
+      }
+
+      cursor = await allItems.deleteOne(query); //Delete item in database based on query
+      if (cursor.deletedCount === 1) {
+        return 'Item deleted successfully'
       } else {
         return 'Item not found'
       }
     } catch(e){
-      return `unable to delete item, ${e}`;
+      return e;
     }
   }
 
@@ -530,8 +539,10 @@ export default class ItemDao {
             Bucket: process.env.S3_BUCKET,
             Key: `${cursor[0].photo}`
           }
-          await s3.deleteObject(paramsDelete).promise();
-          await s3.upload(params).promise();
+          const commandDelete = new DeleteObjectCommand(paramsDelete);
+          const commandPut = new PutObjectCommand(params);
+          await s3.send(commandDelete);
+          await s3.send(commandPut);
         }
         await allItems.updateOne(query1, {$set: query2});  //Modify item in database based on name and category with query2
       }else{

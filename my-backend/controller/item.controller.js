@@ -328,8 +328,10 @@ export default class ItemController {
         res.status(400).send('Unauthorized User');
       }else if(respond === 'Item not found'){
         res.status(400).send('Item not found');
-      }else{
+      }else if(respond === 'Item deleted successfully'){
         res.status(200).json({ success: true, message: "Item deleted successfully" });
+      }else{
+        res.status(400).send('Item not found');
       }
     } catch (error) {
       res.status(500).json({ success: false, message: "Error deleting item" });
