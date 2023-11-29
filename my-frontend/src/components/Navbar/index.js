@@ -1,19 +1,11 @@
 import React, { useState } from "react";
 import { Nav, NavLink, Bars, NavMenu } from "./NavbarElements";
-import searchSvg from '../../images/Other/searchIcon.svg';
 import { useAuth } from '../../contexts/authContext';
-import Cookies from 'js-cookie';
 import HamburgerMenu from "../HamburgerMenu";
 
-const SearchStyle = {
-  width: '2.5rem',
-  height: 'auto',
-  zIndex: 0,
-}
-/* currently listOrderManager linked here, will change as is integrated with admin login */
+
 const Navbar = () => {
-  const { auth, setAuth, loggedIn, setLoggedIn } = useAuth();
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // Add state for menu visibility
+  const { auth} = useAuth();
 
   return (
     <>

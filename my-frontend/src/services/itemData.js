@@ -137,7 +137,7 @@ class DataService {
       }
       } catch (error) {
         console.error("Error:", error);
-        throw { success: false, message: "An error occurred while making the API request" };
+        throw new Error("An error occurred while making the API request");
       }
 
     }
@@ -205,7 +205,7 @@ class DataService {
       }
       } catch (error) {
         console.error("Error:", error);
-        throw { success: false, message: "An error occurred while making the API request" };
+        throw new Error("An error occurred while making the API request");
       }
 
     }
@@ -215,5 +215,5 @@ class DataService {
 
     
 };
-
-export default new DataService();
+const dataServiceInstance = new DataService();
+export default dataServiceInstance;

@@ -2,7 +2,6 @@ import React from 'react';
 import delivery from '../images/Other/delivery.png';
 import pickUp from '../images/Other/pickUp.png';
 import doorDash from '../images/Other/doordash.png';
-import storeFront from '../images/Other/SamsPizzaStorefront.jpg';
 import '../App.css';
 import { addressNewLine, zipCode } from '../data/global';
 
@@ -23,6 +22,7 @@ const About = () => {
 					</div>
 					<div className='aboutColumnMap'>
 						<iframe
+						    title="Map of Sam's Pizza Location" // Add a descriptive and unique title here
 							src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d201307.39219125203!2d-121.61092758178711!3d37.96713979021768!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80900d97b50e941b%3A0xb3c866d49e7af7e!2sSam&#39;s%20Pizza!5e0!3m2!1sen!2sus!4v1701041068882!5m2!1sen!2sus"
 							allowFullScreen=""
 							loading="lazy"

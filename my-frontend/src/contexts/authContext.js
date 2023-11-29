@@ -27,7 +27,7 @@ const AuthProvider = ({ children, initialState }) => {
                 Cookies.remove('x-auth-token');
             } else { // currently logged in
                 setLoggedIn(true);
-                if (claims.user.isAdmin && claims.user.isAdmin == true) setAuth(true);
+                if (claims.user.isAdmin && claims.user.isAdmin === true) setAuth(true);
             }
         };
 
@@ -36,7 +36,7 @@ const AuthProvider = ({ children, initialState }) => {
             setLoggedIn(initialState.loggedIn || false);
             setAuth(initialState.loggedIn || false);
         }
-    }, []);
+    }, [initialState]);
 
     const value = { // makes values visible to children
         auth,

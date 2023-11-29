@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import '../App.css';
 import UserService from "../services/UserData";
 import Cookies from 'js-cookie';
+// eslint-disable-next-line
 
 
 const Drink= (props) => {
@@ -55,13 +56,13 @@ const Drink= (props) => {
       };
 
     const drinkByType = {};
-    if(!Array.isArray(items)){
-      items.item.map((currentItem => {
-        if(!drinkByType[currentItem.drinktype]){
+    if (!Array.isArray(items)) {
+      items.item.forEach((currentItem) => {
+        if (!drinkByType[currentItem.drinktype]) {
           drinkByType[currentItem.drinktype] = [];
         }
         drinkByType[currentItem.drinktype].push(currentItem);
-      }))
+      });
     }
     return (
 
@@ -114,9 +115,9 @@ const Drink= (props) => {
                   }
                   </div>
                   <div>
-                      {drinkByType[type][0].price.length == 1 ? (<p className="drinkPrice"> ${drinkByType[type][0].price[0]}</p>): ('')}
-                      {drinkByType[type][0].price.length == 2 ? (<p className="drinkPrice">Small: ${drinkByType[type][0].price[0]} &nbsp;&nbsp;&nbsp; Large: ${drinkByType[type][0].price[1]}</p>): ('')}
-                      {drinkByType[type][0].price.length == 3 ? (<p className="drinkPrice"> Small: ${drinkByType[type][0].price[0]}   &nbsp;&nbsp;&nbsp; Medium: ${drinkByType[type][0].price[1]} &nbsp;&nbsp;&nbsp; Large: ${drinkByType[type][0].price[2]}</p>): ('')}
+                      {drinkByType[type][0].price.length === 1 ? (<p className="drinkPrice"> ${drinkByType[type][0].price[0]}</p>): ('')}
+                      {drinkByType[type][0].price.length === 2 ? (<p className="drinkPrice">Small: ${drinkByType[type][0].price[0]} &nbsp;&nbsp;&nbsp; Large: ${drinkByType[type][0].price[1]}</p>): ('')}
+                      {drinkByType[type][0].price.length === 3 ? (<p className="drinkPrice"> Small: ${drinkByType[type][0].price[0]}   &nbsp;&nbsp;&nbsp; Medium: ${drinkByType[type][0].price[1]} &nbsp;&nbsp;&nbsp; Large: ${drinkByType[type][0].price[2]}</p>): ('')}
                 
                       
                   </div>

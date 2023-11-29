@@ -91,9 +91,9 @@ const MainMenu = () => {
   return (
     <div className="mainMenuContainer" data-testid="mainMenu">
       <div className="mainMenuHeader">
-        <img src={downArrow} className="mainMenuDownArrow" alt='downArrow-image' />
+        <img src={downArrow} className="mainMenuDownArrow" alt='downArrow' />
         <span>CHECK OUT OUR MENU</span>
-        <img src={downArrow} className="mainMenuDownArrow" alt='downArrow-image' />
+        <img src={downArrow} className="mainMenuDownArrow" alt='downArrow' />
       </div>
       <div className="mainMenuSubmenuGrid" >
         <SubmenuButton onClick={() => navigate('/lunchMenu')}>LUNCH & DINNER</SubmenuButton>
@@ -106,17 +106,17 @@ const MainMenu = () => {
         <picture>
           <source type="image/webp" srcSet={hotwings_webp} />
           <source type="image/png" srcSet={hotwings} />
-          <img src={hotwings} className="mainMenuPicture" alt='hotwings-image' />
+          <img src={hotwings} className="mainMenuPicture" alt='hotwings' />
         </picture>
         <picture>
           <source type="image/webp" srcSet={taco_webp} />
           <source type="image/png" srcSet={taco} />
-          <img src={taco} className="mainMenuPicture" alt='taco-image' />
+          <img src={taco} className="mainMenuPicture" alt='taco' />
         </picture>
         <picture>
           <source type="image/webp" srcSet={icecream_webp} />
           <source type="image/png" srcSet={icecream} />
-          <img src={icecream} className="mainMenuPicture" alt='icecream-image' />
+          <img src={icecream} className="mainMenuPicture" alt='icecream' />
         </picture>
       </div>
     </div>

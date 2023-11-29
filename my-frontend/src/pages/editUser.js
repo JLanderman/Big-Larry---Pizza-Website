@@ -77,6 +77,7 @@ const styles = {
             const user = await UserService.getUserbyToken(token);
             console.log('check user recieved')
             console.log(user)
+            // eslint-disable-next-line
             const res = await UserService.editUserCred(user, newUsername,newPassword, token);
             setSuccess(true);
             //message display sucessful

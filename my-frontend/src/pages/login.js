@@ -77,16 +77,6 @@ const styles = {
   },
 }
 
-const Link = styled.a`
-color: var(--clr-link);
-alignItems: center;
-cursor: pointer;
-&:hover {
-  opacity: 60%;
-	text-decoration: underline;
-}
-`;
-
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -102,7 +92,7 @@ const Login = () => {
     event.preventDefault();
     try {
       const res = await UserService.login(username, password); // await login result
-      if (res.status == 200) { // successful login
+      if (res.status === 200) { // successful login
         const token = res.data.token;
         const claims = decodeJwt(token);
         const expiration = new Date(claims.exp);
@@ -179,7 +169,7 @@ const Login = () => {
         <picture>
           <source type="image/webp" srcSet={pizzaSlice} /*pictures are chosen in order*/ />
           <source type="image/png" srcSet={pizzaSlicePNG} />
-          <img src={pizzaSlice} style={styles.picture} alt='pizzaSlice-image' />
+          <img src={pizzaSlice} style={styles.picture} alt='pizzaSlice' />
         </picture>
       </div>
     </div>

@@ -61,7 +61,7 @@ const EditItem = () => {
 
   useEffect(() => {
     retrieveMenuItem();
-  }, []);
+  }, [params.id]);
 
   const retrieveMenuItem = () => {
     DataService.getItemById(params.id)

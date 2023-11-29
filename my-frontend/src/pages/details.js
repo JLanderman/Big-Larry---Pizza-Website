@@ -14,7 +14,8 @@ const Details = () => {
   // const handleSizeClick = (index) => {
   //   setSelectedSize(index);
   // };
-
+    
+// eslint-disable-next-line
   useEffect(() => {
     retrieveMenuItem();
   }, []);
@@ -38,7 +39,7 @@ const Details = () => {
             <div className="detailsFlexContainer">
               <div className="detailsPictureContainer">
                 {menuItem.photo ?
-                  <img className="detailsPicture" src={picUrl + menuItem.photo}></img>
+                  <img className="detailsPicture" src={picUrl + menuItem.photo} alt=""></img>
                   : <div>No picture for item</div>
                 }
               </div>

@@ -31,9 +31,11 @@ const Admin = () => {
       '#ffffff',
       '#ffffff'
     ]
-    
+
+    // eslint-disable-next-line
     const [currentPalette, setCurrentPalette] = useState({palette: [defaultPalette]});
     const getCurrentPalette = () => {
+      // eslint-disable-next-line
       let res = PaletteService.getLatestPalette()
         .then((res) => {
           // console.log("getCurrentPalette return = " + JSON.stringify(res.data))
@@ -237,7 +239,8 @@ const Admin = () => {
         //logic here to push changes to db
         pushPalette();
       };
-      
+
+      // eslint-disable-next-line
       useEffect(() => {
         updatePreviewColors();
       }, [colorBG, colorMenuLight, colorMenu, colorMenuDark, colorText, colorTextLight, colorTextHighlight, colorLink]);
@@ -251,6 +254,7 @@ const Admin = () => {
       const pushPalette = async () => {
         const user = await UserService.getUserbyToken(token);
         // console.log("pushPalette")
+        // eslint-disable-next-line
         const res = await PaletteService.putPaletteFront(customPaletteName, [colorBG, colorMenuLight, colorMenu, colorMenuDark, colorText, colorTextLight, colorTextHighlight, colorLink], user, token)
           .then((res) => {
             // console.log("putPaletteFront response = " + res.data); 

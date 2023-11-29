@@ -33,11 +33,11 @@ class PaletteService {
           }
         } catch (error) {
           console.error("Error:", error);
-          throw { success: false, message: "An error occurred while making the API request" };
+          throw new Error("An error occurred while making the API request");
         }
       }
     
     
 };
-
-export default new PaletteService();
+const paletteServiceInstance = new PaletteService();
+export default paletteServiceInstance;

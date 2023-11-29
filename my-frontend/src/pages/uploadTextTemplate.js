@@ -22,6 +22,7 @@ function TextForm() {
   let [menuItem, setMenuItem] = useState();
   let params = useParams();
   
+  // eslint-disable-next-line
   useEffect(() => {
       retrieveMenuItem();
   }, [params.id]);
@@ -129,11 +130,13 @@ function TextForm() {
       formData.append('currName', menuItem.name);        //only append these if editings
       formData.append('currCat', menuItem.itemCategory); //api uses them to find item in database
 
+      // eslint-disable-next-line
       const res = await DataService.updateItem(formData);
       console.log('Item updated successfully'); // Handle success for update
       
     } else {
       // If creating
+      // eslint-disable-next-line
       const res = await DataService.createItem(formData);
       console.log('Item uploaded successfully'); // Handle success for upload
       

@@ -24,7 +24,7 @@ import UploadDrinkTemplate from './pages/uploadDrinkTemplate';
 import EditItem from './pages/editItem';
 import PaletteService from "./services/paletteData"
 
-
+// eslint-disable-next-line
 let res = PaletteService.getLatestPalette()
   .then((res) => {
     console.log("getCurrentPalette return = " + JSON.stringify(res.data))

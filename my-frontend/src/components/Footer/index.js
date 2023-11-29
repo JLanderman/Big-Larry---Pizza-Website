@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import { phoneNum, address } from "../../data/global";
 
 const Footer = () => {
-  const { auth, setAuth, loggedIn, setLoggedIn } = useAuth();
+  const {setAuth, loggedIn, setLoggedIn } = useAuth();
   const logout = () => {
     Cookies.remove('x-auth-token');
     setAuth(false);
