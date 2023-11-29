@@ -62,15 +62,9 @@ export default class UserDAO {
       const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
 
       if(!token || username != tokenUsername.user.username){
-        console.error(
-          'Unauthorized User'
-        );
         return 'Unauthorized User';
       }
     }catch(e){
-      console.error(
-        `Unable to issue adding item, ${e}`
-      );
       return 'Invalid Token';
     }
 

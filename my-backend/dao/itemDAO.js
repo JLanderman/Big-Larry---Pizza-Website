@@ -270,9 +270,6 @@ export default class ItemDao {
     try {
       cursor = await allItems.find(query);
     } catch (e) {
-      console.error(
-        `Unable to issue the getItem() find command in itemDAO.js, ${e}`
-      );
       return { itemList: [], totalNumItem: 0 };
     }
 
@@ -294,7 +291,6 @@ export default class ItemDao {
 
   // get rid of photo field
   static async putItem(name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo, photoData, username, token){
-    console.log('itemDAO.js putItem Received data:', name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo);
     let params;
     if(photoData){
       const newPhotoData = photoData.replace(/^data:image\/\w+;base64,/, "");
@@ -316,15 +312,9 @@ export default class ItemDao {
       const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
 
       if(!token || username != tokenUsername.user.username){
-        console.error(
-          'Unauthorized User'
-        );
         return 'Unauthorized User';
       }
     }catch(e){
-      console.error(
-        `Unable to issue adding item, ${e}`
-      );
       return 'Invalid Token';
     }
 
@@ -354,7 +344,6 @@ export default class ItemDao {
       query2 = Object.assign({}, query, {photo: photo});
       query = query2;
     }
-    console.log("Create New Item Insert Query: ", query); //console output for everything the api is attempting to insert/update
     
     let cursor;
     try{
@@ -367,7 +356,7 @@ export default class ItemDao {
       }
       return itemList[0]._id;
     } catch(e){
-      console.error('Unable to put item');
+      return 'Unable to put item';
     }
     
   }
@@ -435,15 +424,9 @@ export default class ItemDao {
       const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
 
       if(!token || username != tokenUsername.user.username){
-        console.error(
-          'Unauthorized User'
-        );
         return 'Unauthorized User';
       }
     }catch(e){
-      console.error(
-        `Unable to issue adding item, ${e}`
-      );
       return 'Invalid Token';
     }
 
@@ -451,25 +434,24 @@ export default class ItemDao {
     query = { _id: new ObjectId(_id) };
     let cursor;
 
-    const image = await allItems.find(query).toArray();
-    const deleteImage = image[0].photo;
-
-    const params = {
-      Bucket: process.env.S3_BUCKET,
-      Key: `${deleteImage}`
-    }
-
     try{
-      await s3.deleteObject(params).promise();
+
       cursor = await allItems.deleteOne(query); //Delete item in database based on query
       if (cursor.deletedCount === 1) {
-        console.log('Item deleted successfully');
+        const image = await allItems.find(query).toArray();
+        const deleteImage = image[0].photo;
+
+        const params = {
+          Bucket: process.env.S3_BUCKET,
+          Key: `${deleteImage}`
+        }
+
+        await s3.deleteObject(params).promise();
       } else {
-        console.log('Item not found');
         return 'Item not found'
       }
     } catch(e){
-      console.error(`unable to delete item, ${e}`)
+      return `unable to delete item, ${e}`;
     }
   }
 
@@ -504,15 +486,9 @@ export default class ItemDao {
       const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
 
       if(!token || username != tokenUsername.user.username){
-        console.error(
-          'Unauthorized User'
-        );
         return 'Unauthorized User';
       }
     }catch(e){
-      console.error(
-        `Unable to issue adding item, ${e}`
-      );
       return 'Invalid Token';
     }
 
@@ -543,19 +519,17 @@ export default class ItemDao {
       query3 = Object.assign({}, query2, {photo: photo});
       query2 = query3;
     }
-    console.log("Update Existing Item Query: ", query2); //console output for everything the api is attempting to insert/update
-       
+    
     let cursor;
-    cursor = await allItems.find(query1).toArray();
-
-    const paramsDelete = {
-      Bucket: process.env.S3_BUCKET,
-      Key: `${cursor[0].photo}`
-    }
 
     try{
+      cursor = await allItems.find(query1).toArray();
       if(cursor[0] !== undefined){
         if(photoData){
+          const paramsDelete = {
+            Bucket: process.env.S3_BUCKET,
+            Key: `${cursor[0].photo}`
+          }
           await s3.deleteObject(paramsDelete).promise();
           await s3.upload(params).promise();
         }

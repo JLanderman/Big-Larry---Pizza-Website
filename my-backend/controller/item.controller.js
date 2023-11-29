@@ -14,9 +14,6 @@ export default class ItemController {
 
       // v check to ensure this is a valid ObjectID
       if (!req.query._id.match(/^[0-9a-fA-F]{24}$/)) {
-        console.error(
-          "'GET by ObjectID' request does not contain valid ObjectID"
-        );
         return res.status(400).send("Invalid Object ID");
       }
 
@@ -213,15 +210,9 @@ export default class ItemController {
       try{
         const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
         if(!token || username != tokenUsername.user.username){
-          console.error(
-            'Unauthorized User'
-          );
           return res.status(400).send('Unauthorized User');
         }
       }catch(e){
-        console.error(
-          `Unable to issue topping update, ${e}`
-        );
         return res.status(400).send('Invalid Token');
       }
   
@@ -277,8 +268,6 @@ export default class ItemController {
     if (!user) return res.status(400).send("No username");
     if(!auth)return res.status(400).send("No Token");
 
-        // we are putting in a lunch/Dinner item without a photo
-      console.log('apiPutitem: Received data:', name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo);
       try {
         // Call the itemDAO.putItem method to insert the item into MongoDB
         const id = await itemDAO.putItem(name, itemCategory, subCategory, price, priceLarge, priceSmall, description, photo, photoData, user, auth);
@@ -343,7 +332,6 @@ export default class ItemController {
         res.status(200).json({ success: true, message: "Item deleted successfully" });
       }
     } catch (error) {
-      console.error(`Cannot delete item: ${error}`);
       res.status(500).json({ success: false, message: "Error deleting item" });
     }
   }

@@ -65,7 +65,6 @@ export default class UserController {
       res.status(200).json({username: verified.user.username});
       return res;
     } catch(e) {
-      console.error(`Token failed, ${e}`)
       res.status(400).send("Token Failed")
     }
   }
