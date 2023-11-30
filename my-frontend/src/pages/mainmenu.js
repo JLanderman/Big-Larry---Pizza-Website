@@ -96,11 +96,11 @@ const MainMenu = () => {
         <img src={downArrow} className="mainMenuDownArrow" alt='downArrow' />
       </div>
       <div className="mainMenuSubmenuGrid" >
-        <SubmenuButton onClick={() => navigate('/lunchMenu')}>LUNCH & DINNER</SubmenuButton>
-        <SubmenuButton onClick={() => navigate('/drink')}>DRINK SPECIALTIES</SubmenuButton>
-        <SubmenuButton onClick={() => navigate('/pizzaSpecial')}>PIZZA SPECIALTIES</SubmenuButton>
-        <SubmenuButton onClick={() => navigate('/comboSpecial')}>COMBO SPECIALTIES</SubmenuButton>
-        <SubmenuButton onClick={() => navigate('/specialDeals')}>SPECIAL DEALS</SubmenuButton>
+        <SubmenuButton data-testid="navLunch" onClick={() => navigate('/lunchMenu')}>LUNCH & DINNER</SubmenuButton>
+        <SubmenuButton data-testid="navDrink" onClick={() => navigate('/drink')}>DRINK SPECIALTIES</SubmenuButton>
+        <SubmenuButton data-testid="navPizza" onClick={() => navigate('/pizzaSpecial')}>PIZZA SPECIALTIES</SubmenuButton>
+        <SubmenuButton data-testid="navCombo" onClick={() => navigate('/comboSpecial')}>COMBO SPECIALTIES</SubmenuButton>
+        <SubmenuButton data-testid="navSpecial" onClick={() => navigate('/specialDeals')}>SPECIAL DEALS</SubmenuButton>
       </div>
       <div className="mainMenuPictureGrid">
         <picture>
