@@ -283,27 +283,6 @@ export default class ItemController {
         res.status(500).json({ error: "An error occurred while inserting the item" });
       }
   }
-  
-  /*static async apiPutItem(req, res, next){
-    const name = req.body.name;
-    const itemCategory = req.body.itemCategory;
-    const photo = req.body.photo;
-
-    if (!name) return res.status(400);
-    if (!itemCategory) return res.status(400);
-    if (!photo) return res.status(400);
-
-    //const fileData = fs.readFileSync(photo);
-
-    const params = {
-      Bucket: 'testingschoolproject',
-      //Key: photo,
-      //Body: fileData
-    };
-    //await s3.putObject(params).promise();
-      await itemDAO.putItem(name, itemCategory, photo);
-  }
-  */
 
   /*
    *   Deletes the specified item from the website using item id
