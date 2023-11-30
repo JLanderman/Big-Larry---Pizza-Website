@@ -15,7 +15,8 @@ describe("HamburgerMenu", () =>{
     }
 
     it("can be toggled", () =>{
-        render(<BrowserRouter><HamburgerMenu/></BrowserRouter>);
+        const onClickMock = jest.fn();
+        render(<BrowserRouter><HamburgerMenu onClick={onClickMock}/></BrowserRouter>);
 
         // Check for normal style
         const HM = screen.getByTestId("hamburger-menu");
@@ -28,6 +29,7 @@ describe("HamburgerMenu", () =>{
         fireEvent.click(toggleButton);
         expect(HM).toHaveClass("hamburger-menu open");
         expect(menu).toHaveClass("menu open");
+        expect(onClickMock).toHaveBeenCalled();
     });
 
     it("renders the sign in link", () =>{
@@ -48,8 +50,9 @@ describe("HamburgerMenu", () =>{
 
     it("logs the user out", () =>{
         // Setup
+        const onClickMock = jest.fn();
         render(<BrowserRouter><AuthProvider initialState={loggedInState}>
-            <HamburgerMenu/></AuthProvider></BrowserRouter>);
+            <HamburgerMenu onClick={onClickMock}/></AuthProvider></BrowserRouter>);
         Cookies.set('x-auth-token', 'test');
         
         // Logout
@@ -59,5 +62,6 @@ describe("HamburgerMenu", () =>{
         // Check result
         const cookie = Cookies.get('x-auth-token');
         expect(cookie).toBe(undefined);
+        expect(onClickMock).toHaveBeenCalled();
     });
 });

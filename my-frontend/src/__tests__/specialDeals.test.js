@@ -38,6 +38,13 @@ const mockResponse = {
     },
 };
 
+// Navigation mocks
+const mockNavigate = jest.fn();
+jest.mock('react-router', () => ({
+    ...jest.requireActual('react-router'),
+    useNavigate: () => mockNavigate,
+}));
+
 beforeEach(() =>{
     DataService.getSpecialDeals.mockResolvedValue(mockResponse);
     UserService.getUserbyToken.mockResolvedValue({ username: 'testUser' });
@@ -96,11 +103,9 @@ describe("Combo Specialties", () => {
         Cookies.get.mockReturnValue('testToken');
         const consoleLog = jest.spyOn(console, 'log').mockImplementation(() => { });
 
-        // Spy on window.confirm
+        // Spy on window
         const confirmSpy = jest.spyOn(window, "confirm");
         confirmSpy.mockReturnValue(true);
-
-        // Spy on window.location.reload
         const reloadSpy = jest.fn();
         Object.defineProperty(window, 'location', {
             value: { reload: reloadSpy },
@@ -190,5 +195,14 @@ describe("Combo Specialties", () => {
 
         // Restore implementations
         consoleError.mockRestore();
+    })
+
+    test("can navigate to edit page", async () => {
+        await act(async () => { // Wait for dynamic renders
+            render(<BrowserRouter><AuthProvider initialState={loggedIn}><SpDeals/></AuthProvider></BrowserRouter>);
+        });
+        const nav = screen.getByTestId("editTestItem1");
+        fireEvent.click(nav);
+        expect(mockNavigate).toHaveBeenCalledWith('/editItem/1');
     })
 })
