@@ -32,8 +32,7 @@ class PaletteService {
             return { success: false, message: "Palette upload failed" };
           }
         } catch (error) {
-          console.error("Error:", error);
-          throw new Error("An error occurred while making the API request");
+          console.error(error);
         }
       }
     
