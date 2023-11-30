@@ -1,11 +1,13 @@
 import { React, useState, useEffect } from "react";
-import { render, screen, cleanup, waitFor } from '@testing-library/react';
+import { render, screen, cleanup, waitFor, fireEvent } from '@testing-library/react';
 import UserService from "../services/UserData";
 import EditUser from "../pages/editUser";
 import { BrowserRouter } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 // Mock services
 jest.mock("../services/UserData.js");
+jest.mock("js-cookie");
 
 beforeEach(async () => {
     // Mock response from UserService
@@ -46,41 +48,67 @@ describe("EditUser", () => {
         expect(newPasswordField).toBeInTheDocument();
     })
 
-    // test("renders an item details container", () => {
-    //     const itemDetails = screen.getByTestId("itemDetails");
-    //     expect(itemDetails).toBeInTheDocument();
-    // })
+    test("sets error when passwords do not match", async () => {
+        // Setup and submit mismatching passwords
+        const form = screen.getByTestId("editUserForm");
+        const newPassword = screen.getByTestId("newPassword");
+        const confirmPassword = screen.getByTestId("confirmPassword");
+        fireEvent.change(newPassword, { target: { value: 'testPassword' } });
+        fireEvent.change(confirmPassword, { target: { value: 'differentPassword' } });
+        fireEvent.submit(form);
+        
+        await waitFor(async () => { // Wait for error
+            expect(screen.getByTestId("editUserError")).toBeInTheDocument();
+        })
+    })
 
-    // test("handles error in retrieveMenuItem()", async () => {
-    //     DataService.getItemById.mockRejectedValue(new Error('Mocked error'));
+    test("sets success when user credentials are updated", async () => {
+        // Mocks
+        Cookies.get.mockReturnValue('testToken');
+        UserService.getUserbyToken.mockResolvedValue({ });
+        UserService.editUserCred.mockResolvedValue({ username: 'testUser' });
+        
+        // Setup credentials
+        const form = screen.getByTestId("editUserForm");
+        const newUsername = screen.getByTestId("newUsername");
+        const newPassword = screen.getByTestId("newPassword");
+        const confirmPassword = screen.getByTestId("confirmPassword");
 
-    //     // Empty mock implementation prevents console from getting cluttered by the error message
-    //     const consoleLog = jest.spyOn(console, 'log').mockImplementation(() => { });
+        // Submit form
+        fireEvent.change(newUsername, { target: {value: 'testUsername' } });
+        fireEvent.change(newPassword, { target: { value: 'testPassword' } });
+        fireEvent.change(confirmPassword, { target: { value: 'testPassword' } });
+        fireEvent.submit(form);
+        
+        await waitFor(async () => { // Wait for success
+            expect(screen.getByTestId("editUserSuccess")).toBeInTheDocument();
+        })
+    })
 
-    //     render(<EditItem />);
+    test("handles error in handleSubmit", async () => {
+        // Mocks
+        Cookies.get.mockReturnValue('testToken');
+        const consoleError = jest.spyOn(console, "error").mockImplementation(() => { });
+        const mockError = new Error("Mock error");
+        UserService.getUserbyToken.mockRejectedValue(mockError);
+        
+        // Setup credentials
+        const form = screen.getByTestId("editUserForm");
+        const newUsername = screen.getByTestId("newUsername");
+        const newPassword = screen.getByTestId("newPassword");
+        const confirmPassword = screen.getByTestId("confirmPassword");
 
-    //     await waitFor(() => { // Wait for error to print to console
-    //         expect(consoleLog).toHaveBeenCalledWith(expect.objectContaining({ message: 'Mocked error' }));
-    //     })
+        // Submit form
+        fireEvent.change(newUsername, { target: {value: 'testUsername' } });
+        fireEvent.change(newPassword, { target: { value: 'testPassword' } });
+        fireEvent.change(confirmPassword, { target: { value: 'testPassword' } });
+        fireEvent.submit(form);
+        
+        await waitFor(async () => { // Wait for error
+            expect(screen.getByTestId("editUserSuccess")).toBeInTheDocument();
+            expect(consoleError).toHaveBeenCalledWith(`handleSubmit failed in editUser.js, ${mockError}`)
+        })
 
-    //     consoleLog.mockRestore(); // Restore original log implementation
-    // })
-
-    // /*
-    //     Adjust everything below to match mocked data and the way data is displayed in page
-    // */
-    // test("renders current item name", async () => {
-    //     await waitFor(() => screen.getByTestId("currentName"));
-    //     expect(screen.getByText("Curent Name: Test item")).toBeInTheDocument();
-    // })
-
-    // test("renders current item price", async () => {
-    //     await waitFor(() => screen.getByTestId("currentPrice"));
-    //     expect(screen.getByText("Current Price: $9.99")).toBeInTheDocument();
-    // })
-
-    // test("renders current item description", async () => {
-    //     await waitFor(() => screen.getByTestId("currentInfo"));
-    //     expect(screen.getByText("This is a test item")).toBeInTheDocument();
-    // })
+        consoleError.mockRestore();
+    })
 })

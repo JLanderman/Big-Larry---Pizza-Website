@@ -75,8 +75,6 @@ const styles = {
           try {
             const token = Cookies.get('x-auth-token');
             const user = await UserService.getUserbyToken(token);
-            console.log('check user recieved')
-            console.log(user)
             // eslint-disable-next-line
             const res = await UserService.editUserCred(user, newUsername,newPassword, token);
             setSuccess(true);
@@ -91,15 +89,15 @@ const styles = {
 
     return(
         <div data-testid="editUserWrapper">
-            {error && <div style={{color: 'red'}}>{error}</div>}
-            {success && <div style={{color: 'green'}}>{success}</div>}
-            <form onSubmit={(e) => handleSubmit(e)} style={styles.container}>
+            {error && <div data-testid="editUserError" style={{color: 'red'}}>{error}</div>}
+            {success && <div data-testid="editUserSuccess" style={{color: 'green'}}>{success}</div>}
+            <form data-testid="editUserForm" onSubmit={(e) => handleSubmit(e)} style={styles.container}>
             <div style={{justifyContent: 'center', paddingLeft:'40%', paddingTop:'2%', paddingBottom:'3%'}}>
             </div>
 
             <div style={styles.innerContainer}>
                 <label htmlFor="newUsername" style={styles.text}>New Username</label><br />
-                <input
+                <input data-testid="newUsername"
                 className="square rounded-pill"
                 id="newUsername"
                 autoComplete="off"
@@ -110,7 +108,7 @@ const styles = {
 
             <div style={styles.innerContainer} data-testid="newPasswordField">
                 <label htmlFor="newPassword">New Password</label><br />
-                <input
+                <input data-testid="newPassword"
                 type="password"
                 className="square rounded-pill"
                 id="newPassword"
@@ -122,7 +120,7 @@ const styles = {
  
             <div style = {styles.innerContainer}>
               <label htmlFor="confirmPassword">Confirm Password</label> <br />
-              <input
+              <input data-testid="confirmPassword"
               type ="password"
               className="square rounded-pill"
               id ='confirmPassword'
