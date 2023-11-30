@@ -11,6 +11,7 @@ beforeEach(async () => {
     DataService.getItemById.mockResolvedValue({
         data: [{
             _id: "5555555555555555555555",
+            itemCategory: "testCategory",
             name: "Test item",
             price: "999", // No decimals
             price_chicken: "1099",

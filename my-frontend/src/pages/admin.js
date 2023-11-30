@@ -36,7 +36,7 @@ const Admin = () => {
     const [currentPalette, setCurrentPalette] = useState({palette: [defaultPalette]});
     const getCurrentPalette = () => {
       // eslint-disable-next-line
-      let res = PaletteService.getLatestPalette()
+      PaletteService.getLatestPalette()
         .then((res) => {
           // console.log("getCurrentPalette return = " + JSON.stringify(res.data))
           setCurrentPalette(res.data)
@@ -44,8 +44,7 @@ const Admin = () => {
           // console.log(JSON.stringify(currentPalette.palette[0].colorArr))
           // console.log(JSON.stringify(res.data.palette[0].colorArr))
         }).catch((e) => {
-          console.log("error in admin getCurrentPalette")
-          console.log(e);
+          console.error(e);
         })
     };
     
@@ -58,8 +57,7 @@ const Admin = () => {
           setCustomPalettes(res.data)
           setLoading(false); // Set loading to false once data is fetched
         }).catch((e) => {
-          console.log("error in admin retrievePalettes")
-          console.log(e);
+          console.error(e);
           setLoading(false); // Ensure loading is set to false on error as well
         })
     };
@@ -260,7 +258,7 @@ const Admin = () => {
             // console.log("putPaletteFront response = " + res.data); 
           })
           .catch((e) => {
-            console.log(e);
+            console.error(e);
           });
           
         retrievePalettes();
@@ -272,58 +270,58 @@ const Admin = () => {
           
           <div className="palette-container">
             Background
-            <HexColorPicker color={colorBG} onChange={(e) => {setColorBG(e); updatePreviewColors();}} />
-            <HexColorInput color={colorBG} onChange={(e) => {setColorBG(e); updatePreviewColors();}} />
+            <HexColorPicker color={colorBG} onChange={(e) => {setColorBG(e); updatePreviewColors();}} data-testid="backgroundPicker"/>
+            <HexColorInput color={colorBG} onChange={(e) => {setColorBG(e); updatePreviewColors();}} data-testid="backgroundInput"/>
           </div>
           <div className="palette-container">
             Menu (Light)
-            <HexColorPicker color={colorMenuLight} onChange={(e) => {setColorMenuLight(e); updatePreviewColors();}} />
-            <HexColorInput color={colorMenuLight} onChange={(e) => {setColorMenuLight(e); updatePreviewColors();}} />
+            <HexColorPicker color={colorMenuLight} onChange={(e) => {setColorMenuLight(e); updatePreviewColors();}} data-testid="menuLightPicker"/>
+            <HexColorInput color={colorMenuLight} onChange={(e) => {setColorMenuLight(e); updatePreviewColors();}} data-testid="menuLightInput"/>
           </div>
           <div className="palette-container">
             Menu (Main)
-            <HexColorPicker color={colorMenu} onChange={(e) => {setColorMenu(e); updatePreviewColors();}} />
-            <HexColorInput color={colorMenu} onChange={(e) => {setColorMenu(e); updatePreviewColors();}} />
+            <HexColorPicker color={colorMenu} onChange={(e) => {setColorMenu(e); updatePreviewColors();}} data-testid="menuPicker"/>
+            <HexColorInput color={colorMenu} onChange={(e) => {setColorMenu(e); updatePreviewColors();}} data-testid="menuInput"/>
           </div>
           <div className="palette-container">
             Menu (Dark)
-            <HexColorPicker color={colorMenuDark} onChange={(e) => {setColorMenuDark(e); updatePreviewColors();}} />
-            <HexColorInput color={colorMenuDark} onChange={(e) => {setColorMenuDark(e); updatePreviewColors();}} />
+            <HexColorPicker color={colorMenuDark} onChange={(e) => {setColorMenuDark(e); updatePreviewColors();}} data-testid="menuDarkPicker"/>
+            <HexColorInput color={colorMenuDark} onChange={(e) => {setColorMenuDark(e); updatePreviewColors();}} data-testid="menuDarkInput"/>
           </div>
         </div>
         <div className="palette-parent">
           <div className="palette-container">
             Text (Main)
-            <HexColorPicker color={colorText} onChange={(e) => {setColorText(e); updatePreviewColors();}} />
-            <HexColorInput color={colorText} onChange={(e) => {setColorText(e); updatePreviewColors();}} />
+            <HexColorPicker color={colorText} onChange={(e) => {setColorText(e); updatePreviewColors();}} data-testid="textPicker"/>
+            <HexColorInput color={colorText} onChange={(e) => {setColorText(e); updatePreviewColors();}} data-testid="textInput"/>
           </div>
           <div className="palette-container">
             Text (light)
-            <HexColorPicker color={colorTextLight} onChange={(e) => {setColorTextLight(e); updatePreviewColors();}} />
-            <HexColorInput color={colorTextLight} onChange={(e) => {setColorTextLight(e); updatePreviewColors();}} />
+            <HexColorPicker color={colorTextLight} onChange={(e) => {setColorTextLight(e); updatePreviewColors();}} data-testid="textLightPicker"/>
+            <HexColorInput color={colorTextLight} onChange={(e) => {setColorTextLight(e); updatePreviewColors();}} data-testid="textLightInput"/>
           </div>
           <div className="palette-container">
             Text (Highlighted)
-            <HexColorPicker color={colorTextHighlight} onChange={(e) => {setColorTextHighlight(e); updatePreviewColors();}} />
-            <HexColorInput color={colorTextHighlight} onChange={(e) => {setColorTextHighlight(e); updatePreviewColors();}} />
+            <HexColorPicker color={colorTextHighlight} onChange={(e) => {setColorTextHighlight(e); updatePreviewColors();}} data-testid="textHLPicker"/>
+            <HexColorInput color={colorTextHighlight} onChange={(e) => {setColorTextHighlight(e); updatePreviewColors();}} data-testid="textHLInput"/>
           </div>
           <div className="palette-container">
             Text (Link)
-            <HexColorPicker color={colorLink} onChange={(e) => {setColorLink(e); updatePreviewColors();}} />
-            <HexColorInput color={colorLink} onChange={(e) => {setColorLink(e); updatePreviewColors();}} />
+            <HexColorPicker color={colorLink} onChange={(e) => {setColorLink(e); updatePreviewColors();}} data-testid="textLinkPicker"/>
+            <HexColorInput color={colorLink} onChange={(e) => {setColorLink(e); updatePreviewColors();}} data-testid="textLinkInput"/>
           </div>
         </div>
         <div>
-          <button className="custom-palette-apply" onClick={updateRootColors}>Apply changes to site</button>
-          <input type="text" value={customPaletteName} onInput={e => setCustomPaletteName(e.target.value)} className="custom-palette-name"></input>
+          <button className="custom-palette-apply" onClick={updateRootColors} data-testid="applyPalette">Apply changes to site</button>
+          <input type="text" value={customPaletteName} onInput={e => setCustomPaletteName(e.target.value)} className="custom-palette-name" data-testid="namePalette"></input>
         </div>
         <div className="palette-presets">
-          <button onClick={(e) => {MetaUpdate(crimsonPalette, "Crimson");     }}>Crimson</button>
-          <button onClick={(e) => {MetaUpdate(figmaPalette, "Figma");         }}>Figma</button>
-          <button onClick={(e) => {MetaUpdate(pinkPalette, "Pink");           }}>Pink</button>
-          <button onClick={(e) => {MetaUpdate(oceanPalette, "Ocean");         }}>Ocean</button>
-          <button onClick={(e) => {MetaUpdate(burgerPalette, "Burger");       }}>Burger</button>
-          <button onClick={(e) => {MetaUpdate(halloweenPalette, "Halloween"); }}>Halloween</button>
+          <button onClick={(e) => {MetaUpdate(crimsonPalette, "Crimson");     }} data-testid="crimsonPreset">Crimson</button>
+          <button onClick={(e) => {MetaUpdate(figmaPalette, "Figma");         }} data-testid="figmaPreset">Figma</button>
+          <button onClick={(e) => {MetaUpdate(pinkPalette, "Pink");           }} data-testid="pinkPreset">Pink</button>
+          <button onClick={(e) => {MetaUpdate(oceanPalette, "Ocean");         }} data-testid="oceanPreset">Ocean</button>
+          <button onClick={(e) => {MetaUpdate(burgerPalette, "Burger");       }} data-testid="burgerPreset">Burger</button>
+          <button onClick={(e) => {MetaUpdate(halloweenPalette, "Halloween"); }} data-testid="halloweenPreset">Halloween</button>
         </div>
         
         <h3>History of Recent Palettes:</h3>
@@ -332,7 +330,7 @@ const Admin = () => {
             ? customPalettes.palettes.map((currentItem, index) => {
                 return (
                   <button key={index} onClick={e => MetaUpdate(currentItem.colorArr, currentItem.name)}>
-                    <div  data-testid="paletteHistoryItem">
+                    <div data-testid="paletteHistoryItem">
                       {(index + 1) + ". "} 
                       {currentItem.name}
                     </div>
