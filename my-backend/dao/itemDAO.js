@@ -133,36 +133,6 @@ export default class ItemDao {
     return { itemList, totalNumItem };
   }
 
-
-  // Removed: The overloaded function for getting lunch items by ID.
-  // This breaks the normal lunch display code.
-  // If you need a specific item by ID, consider using the overloaded get item function above since they're all in the same collection.
-  // You can probably remove this if it doesn't break anything.
-
-  // static async getLunch(DesiredObjectId)
-  // {
-    // let query;
-    // let cursor;
-
-    // try{
-    //   cursor = await allItems.find(DesiredObjectId);
-    //   console.log('check2',allItems)
-    // }catch(e)
-    // {
-    //   console.error(
-    //     `Unable to issue the getLunchItem find command in lunchDAO.js, ${e}`
-    //   );
-    //   return {lunchList: [] , totalNumItem: 0}
-    // }
-    // console.log('check1',allItems)
-    // const displayCursor = cursor.limit(100).skip(0);
-    // const lunchList = await displayCursor.toArray();
-    // const totalNumItem = await allItems.countDocuments(query);
-    // console.log('check3',lunchList)
-    // console.log('check4',totalNumItem)
-    // return { lunchList, totalNumItem};
-  // }
-
   /*
    *   Retrieves all pizza special menu items
    *   @return list of all pizza menu items
@@ -366,32 +336,6 @@ export default class ItemDao {
     
   }
 
-  /*   Removed, above function can handle everything
-   *   Creates new menu item based on the data the admin passed
-   *   @param Item info that the admin is putting into the website
-   *   @return failure if it occured
-   */
-  /*
-  static async putItemTwo(name, itemCategory, photo, priceLarge, priceSmall, username, token){
-    const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
-
-    if(!token || username != tokenUsername.user.username){
-      console.error(
-        'Unauthorized User'
-      );
-      return;
-    }
-
-    let query;
-    query = {name: name, itemCategory: itemCategory, price_large: priceLarge, price_small: priceSmall, photo: photo};
-    let cursor;
-    try{
-      cursor = await allItems.insertOne(query); //Insert items to query in database
-    } catch(e){
-      console.error('Unable to put item');
-    }
-  }*/
-
   /*
    *   Retrieves all drink items
    *   @return list of all drink items
@@ -552,33 +496,5 @@ export default class ItemDao {
       console.error(`unable to modify item, ${e}`)
     }
   }
-
-
-  /*   Removed, above function can handle everything
-   *   Modifies the specified menu item based on name and category and uses new info to change the item
-   *   @param name, category of item used to identify item to be removed. All else are used as new info for item
-   *   @return failure if it occured
-   */
-  /*  
-  static async modifyItemTwo(currentName, currentItemCategory, name, itemCategory, photo, priceLarge, priceSmall, username, token){
-    const tokenUsername = await decodeJwt(token, process.env.JWT_SECRET);
-
-    if(!token || username != tokenUsername.user.username){
-      console.error(
-        'Unauthorized User'
-      );
-      return;
-    }
-
-    let query1, query2;
-    query1 = {name: currentName, itemCategory: currentItemCategory};
-    query2 = {name: name, itemCategory: itemCategory, photo: photo, price_large: priceLarge, price_small: priceSmall};
-    let cursor;
-    try{
-      cursor = await allItems.updateOne(query1, {$set: query2});  //Modify item in database based on name and category with query2
-    } catch(e){
-      console.error(`unable to modify item, ${e}`)
-    }
-  }*/
 
 }

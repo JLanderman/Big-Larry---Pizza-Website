@@ -9,7 +9,6 @@ import { Home } from "./pages";
 import Login from "./pages/login";
 import EditUserCred from "./pages/editUser";
 import MainMenu from './pages/mainmenu';
-import Menu from "./pages/menu";
 import Details from "./pages/details";
 import PizzaCustomize from './pages/pizza_customize'
 import Lunch from './pages/lunchMenu';
@@ -77,7 +76,6 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/admin/editUserCred" element={<EditUserCred />} />
               <Route path="/mainmenu" element={<MainMenu />} />
-              <Route path="/menu" element={<Menu />} />
               <Route path="/comboSpecial" element={<ComboSp />} />
               <Route path="/pizzaSpecial" element={<PizzaSp />} />
               <Route path="/specialDeals" element={<SpDeals />} />
