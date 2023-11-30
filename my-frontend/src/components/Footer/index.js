@@ -28,7 +28,7 @@ const Footer = () => {
         </Div>
         <Div>
           {loggedIn
-            ? <NavLink to="/" onClick={() => { logout() }}>LOG OUT</NavLink>
+            ? <NavLink to="/" onClick={() => { logout() }} data-testid="logout">LOG OUT</NavLink>
             : <NavLink to="/login">SIGN IN</NavLink>
           }
         </Div>
