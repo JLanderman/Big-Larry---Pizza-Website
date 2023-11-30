@@ -144,8 +144,8 @@ const Pizza_customize = () => {
             </select>
           </div>
           <div>
-            <label>Select Size:</label>
-            <select onChange={(e) => setSelectedSize(parseInt(e.target.value))} value={selectedSize || ''}>
+            <label>Select size:</label>
+            <select onChange={(e) => setSelectedSize(parseInt(e.target.value))} value={selectedSize !== null ? selectedSize : ''}>
               <option value="" disabled>Select Size</option>
               {displaySizeLabels.map((label, index) => (
                 <option key={index} value={index}>

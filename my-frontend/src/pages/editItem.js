@@ -87,6 +87,16 @@ const EditItem = () => {
     setNewPhoto(file);
   };
 
+
+  function splitText(text)
+  {
+    let firstChar = text.charAt(0).toUpperCase();
+    const split = text.substring(1).split(/(?=[A-Z])/);
+    let textResult = firstChar + split.join(" ");
+
+    return textResult;
+  }
+
   return (
     <div className="detailsContainer" data-testid="container">
       {menuItem && menuItem.name ? // Load menu item
@@ -129,7 +139,7 @@ const EditItem = () => {
                 <br />
 
                 <div>
-                  <h2>Current Category: {menuItem.itemCategory}</h2>
+                  <h2>Current Category: {splitText(menuItem.itemCategory)}</h2>
                   <h2>New Category: 
                   <select value={category} onChange={(e) => setCategory(e.target.value)}>
                     <option value= "">Select an option</option>
