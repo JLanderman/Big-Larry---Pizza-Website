@@ -30,6 +30,7 @@ function DrinkForm() {
   // eslint-disable-next-line
   useEffect(() => {
     retrieveMenuItem();
+  // eslint-disable-next-line
   }, [params.id]);
   
   const retrieveMenuItem = () => {

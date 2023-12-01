@@ -1,6 +1,5 @@
 import { React, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import styled from "styled-components";
 import UserService from "../services/UserData";
 import { decodeJwt } from 'jose';
 import Cookies from "js-cookie";
