@@ -208,4 +208,14 @@ describe("Pizza Specialties", () => {
         fireEvent.click(nav);
         expect(mockNavigate).toHaveBeenCalledWith('/editItem/1');
     })
+
+    test("can navigate to the add new item page", async () => {
+        await act(async () => { // Wait for dynamic renders
+            render(<BrowserRouter><AuthProvider initialState={loggedIn}><PizzaSp/></AuthProvider></BrowserRouter>);
+        });
+        const nav = screen.getByTestId("addItemButton");
+        fireEvent.click(nav);
+        expect(mockNavigate).toHaveBeenCalledWith('/ItemFormLarge/');
+    })
+    
 })

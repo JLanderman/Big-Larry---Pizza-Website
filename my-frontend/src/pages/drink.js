@@ -3,17 +3,17 @@ import React, { useEffect } from "react";
 import DataService from "../services/itemData";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useNavigate } from "react-router";
 import { useAuth } from '../contexts/authContext';
 import { Link } from 'react-router-dom';
 import '../App.css';
 import UserService from "../services/UserData";
 import Cookies from 'js-cookie';
-// eslint-disable-next-line
 
 
 const Drink= (props) => {
     const [items, setItems] = useState([]);
-
+    const navigate = useNavigate();
     const { auth} = useAuth();
     const token = Cookies.get('x-auth-token');
 
@@ -51,7 +51,7 @@ const Drink= (props) => {
           setItems(response.data); 
         })
         .catch((e) => {
-          console.log(e);
+          console.error(e);
         });
       };
 
@@ -89,7 +89,7 @@ const Drink= (props) => {
                     drinkByType[type].map((currentItem) =>(
                       <div key={currentItem._id} className="col-6 fs-5 fw-normal">
                         
-                          <div className="drinkText">{currentItem.name}</div>  
+                          <div className="drinkText" data-testid={currentItem.name} >{currentItem.name} </div>  
                         
                               {auth
                                 ?                              
@@ -98,12 +98,14 @@ const Drink= (props) => {
                                   <button
                                     className="border px-10 py- fs-5 rounded-4"
                                     onClick={() => handleRemoveItem(currentItem._id)}
-                                  >
+                                    data-testid={`remove-${currentItem._id}`}                                  >
                                     Remove
                                   </button>
-                                    <Link to={`/DrinkForm/${currentItem._id}`}>
-                                      <button className="border px-10 py- fs-5 rounded-4">Edit</button>
-                                    </Link> 
+                                      <button className="border px-10 py- fs-5 rounded-4"
+                                      data-testid={`edit-${currentItem._id}`}
+                                      onClick={(e) => navigate(`/DrinkForm/${currentItem._id}`)}>
+                                      Edit
+                                  </button>
 
                                   </div>
                                 </div>
@@ -132,9 +134,10 @@ const Drink= (props) => {
           {
             auth ? (
               <div>
-                <Link to="/DrinkForm/">
-                  <button className="border px-5 py-3 fs-2 rounded-4">Add New Item</button>
-                </Link>
+                  <button className="border px-5 py-3 fs-2 rounded-4" data-testid="addItemButton" 
+                  onClick={(e) => navigate(`/DrinkForm/`)}>
+                    Add New Item
+                  </button>
               </div>
             ) : null
           }

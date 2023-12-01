@@ -103,9 +103,10 @@ const SpDeals = (props) => {
 				<div className="d-flex justify-content-end pe-5 pt-5">{
 					auth ? (
 						<div>
-							<Link to="/ItemFormLarge">
-								<button className="border px-5 py-3 fs-2 rounded-4">Add New Item</button>
-							</Link>
+							<button className="border px-5 py-3 fs-2 rounded-4" data-testid = "addItemButton"
+								onClick={(e) => navigate(`/ItemFormLarge/`)}>
+								Add New Item
+							</button>
 						</div>
 					) : null
 				}</div>
