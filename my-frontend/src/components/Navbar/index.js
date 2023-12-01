@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Nav, NavLink, Bars, NavMenu } from "./NavbarElements";
+import React from "react";
+import { Nav, NavLink, NavMenu } from "./NavbarElements";
 import { useAuth } from '../../contexts/authContext';
 import HamburgerMenu from "../HamburgerMenu";
 

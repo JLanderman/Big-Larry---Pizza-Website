@@ -3,10 +3,11 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router";
 import { useAuth } from '../contexts/authContext';
 import UserService from "../services/UserData";
-
 import { HexColorPicker, HexColorInput } from "react-colorful";
 import { useState } from "react";
 import "./admin.css"
+import pizzacustom from "../images/Pizza Specialties/Customize Pizza.jpg"
+
 
 import PaletteService from "../services/paletteData"
 
@@ -87,13 +88,14 @@ const Admin = () => {
               <div className="preview-menu preview-highlight">Menu Item that's highlighted</div>
               <div className="preview-menu-light preview-lightmenu">
                 Sometimes there's text in front of a lighter menu, and there may even be a 
+                  {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a className="preview-link" href="#">Link to another website</a>
               </div>
             </div>
             <div className="preview-item">
               <div className="preview-menuitem">
                 <div className="preview-menu-light preview-image-container">
-                  <img className="preview-image" src="/static/media/Pizza Combination.3a624f328b5116121f7d.png" alt="Pizza CombinationCustom" />
+                  <img className="preview-image" src={pizzacustom} alt="Pizza CombinationCustom" />
                 </div>
                 <div className="preview-menu-description">
                   This is a sample description for the pizza. 
@@ -101,8 +103,8 @@ const Admin = () => {
                 </div>
                 <button className="preview-menu-dark preview-submit">Add to Order</button>
               </div>
+              </div>
             </div>
-          </div>
           <div className="preview-footer">
             <div className="navlink">Address</div>
             <div className="navlink">Facebook</div>
@@ -241,6 +243,7 @@ const Admin = () => {
       // eslint-disable-next-line
       useEffect(() => {
         updatePreviewColors();
+        //eslint-disable-next-line
       }, [colorBG, colorMenuLight, colorMenu, colorMenuDark, colorText, colorTextLight, colorTextHighlight, colorLink]);
       
       let MetaUpdate = (array, name) => {

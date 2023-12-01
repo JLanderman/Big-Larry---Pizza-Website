@@ -61,6 +61,7 @@ const EditItem = () => {
 
   useEffect(() => {
     retrieveMenuItem();
+  // eslint-disable-next-line
   }, [params.id]);
 
   const retrieveMenuItem = () => {

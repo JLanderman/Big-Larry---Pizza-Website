@@ -18,6 +18,7 @@ const Details = () => {
 // eslint-disable-next-line
   useEffect(() => {
     retrieveMenuItem();
+  // eslint-disable-next-line
   }, []);
 
   const retrieveMenuItem = () => {
