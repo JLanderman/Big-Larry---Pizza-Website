@@ -17,8 +17,6 @@ function TextForm() {
   const [hasMultiplePrices, setHasMultiplePrices] = useState(false);
   const token = Cookies.get('x-auth-token');
 
-  let existingName;
-
   let [menuItem, setMenuItem] = useState();
   let params = useParams();
 
@@ -214,7 +212,7 @@ function TextForm() {
 
         <br></br>
 
-        <button type="submit">{existingName ? "Update Item" : "Submit"}</button>
+        <button type="submit">{menuItem ? "Update Item" : "Submit"}</button>
 
       </form>
     </div>

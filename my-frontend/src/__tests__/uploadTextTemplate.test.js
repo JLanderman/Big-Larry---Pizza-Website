@@ -183,26 +183,31 @@ describe("TextForm", () => {
         DataService.updateItem.mockResolvedValue({});
         const consoleLog = jest.spyOn(console, "log");
 
+        // Initial render
+        await act(async () => {
+            render(
+                <MemoryRouter initialEntries={['/TextForm/1']}>
+                    <Routes>
+                        <Route path="/TextForm/:id" element={<TextForm />} />
+                    </Routes>
+                </MemoryRouter>
+            );
+        });
+
         // Perform test
-        render(<TextForm />);
         const form = screen.getByTestId("form");
         const formName = screen.getByTestId("formName");
-        const formMultiplePrices = screen.getByTestId("formMultiplePrices");
-        await act(async () => { // Toggle multiple prices and wait for rerender
-            fireEvent.change(formName, { target: { value: 'testName' } });
-            fireEvent.click(formMultiplePrices);
-        })
-        
         const formSmallPrice = screen.getByTestId("formSmallPrice");
         const formLargePrice = screen.getByTestId("formLargePrice");
-        await act(async () => { // Set prices
+        await act(async () => { // Set form elements
+            fireEvent.change(formName, { target: { value: 'testName' } });
             fireEvent.change(formSmallPrice, { target: { value: '999' } });
             fireEvent.change(formLargePrice, { target: { value: '1499' } });
             fireEvent.submit(form);
         });
 
         // Check results
-        expect(consoleLog).toHaveBeenCalledWith('Item uploaded successfully');
+        expect(consoleLog).toHaveBeenCalledWith('Item updated successfully');
     });
 
     test("handles error from DataService when uploading an item", async () => {
