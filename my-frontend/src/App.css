@@ -96,7 +96,7 @@
     font-weight: var(--light-weight);
   }
   .homePizzaStyle{
-    display: none;
+    width: 100%;
   }
   .homeTextContainer{
     text-align:center;

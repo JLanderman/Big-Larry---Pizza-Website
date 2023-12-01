@@ -4,6 +4,7 @@ import { NavLink } from "../Navbar/NavbarElements";
 import { useAuth } from '../../contexts/authContext';
 import Cookies from 'js-cookie';
 import { phoneNum, address } from "../../data/global";
+import './Footer.css';
 
 const Footer = () => {
   const {setAuth, loggedIn, setLoggedIn } = useAuth();
@@ -14,19 +15,19 @@ const Footer = () => {
   };
   return (
     <Container data-testid="footer">
-      <Div>
-        <span style={{ color: 'var(--clr-txt-light)' }} data-testid="footerPhoneNumber">{phoneNum}</span>
+      <Div className="address">
+        <span className="text" data-testid="footerPhoneNumber">{phoneNum}</span>
         <br />
-        <span style={{ color: 'var(--clr-txt-light)' }} data-testid="footerAddress">{address}</span>
+        <span className="text" data-testid="footerAddress">{address}</span>
       </Div>
-      <Div style={{ display: 'flex', paddingRight: '1%', marginRight: '-5%' }}>
+      <Div className="fbLink">
         <Div>
           <NavLink to="https://www.facebook.com/bestfoodcountryclub/">
             Facebook
           </NavLink>
 
         </Div>
-        <Div>
+        <Div className="login">
           {loggedIn
             ? <NavLink to="/" onClick={() => { logout() }} data-testid="logout">LOG OUT</NavLink>
             : <NavLink to="/login">SIGN IN</NavLink>
