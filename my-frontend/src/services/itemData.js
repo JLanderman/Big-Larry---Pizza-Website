@@ -50,20 +50,28 @@ class DataService {
       const response = await http.get('/allToppingsPrices');
       return response.data;
     } catch (error) {
-      console.error('Error fetching topping prices:', error);
-      throw error;
+      console.error(error);
     }
   };
 
-  deleteItem(_id, username, token) {
+  async deleteItem(_id, username, token) {
     console.log('payload id:', _id);
-    return http.post('/allItems/deleteItem', { _id, username: username, token: token });
-
+    try{
+      const response = await http.post('/allItems/deleteItem', { _id, username: username, token: token });
+      return response;
+    } catch (error){
+      console.error(error);
+    }
   }
 
-  getAllDrink() {
-    return http.get('/drink');
-  }
+  getAllDrink = async () => {
+    try{
+    const response = await http.get('/drink');
+    return response;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   async updateItem(formData, base64String) {
 
@@ -131,8 +139,7 @@ class DataService {
         return { success: false, message: "Item upload failed" };
       }
     } catch (error) {
-      console.error("Error:", error);
-      throw new Error("An error occurred while making the API request");
+      console.error(error);
     }
 
   }
@@ -199,8 +206,7 @@ class DataService {
         return { success: false, message: "Item upload failed" };
       }
     } catch (error) {
-      console.error("Error:", error);
-      throw new Error("An error occurred while making the API request");
+      console.error(error);
     }
 
   }
