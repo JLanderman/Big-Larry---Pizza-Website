@@ -5,8 +5,10 @@ afterEach(() => {
   cleanup(); // Resets the DOM after each test suite
 })
 
-test('App renders', () => {
-  render(<App />);
-  const app = screen.getByTestId("app")
-  expect(app).toBeInTheDocument();
-});
+describe('App', () => {
+  test('renders application', () => {
+    render(<App />);
+    const app = screen.getByTestId("app")
+    expect(app).toBeInTheDocument();
+  });
+})

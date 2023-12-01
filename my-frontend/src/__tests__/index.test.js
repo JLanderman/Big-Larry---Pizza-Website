@@ -1,31 +1,29 @@
 import { render, screen, cleanup } from '@testing-library/react';
 import { Home } from '../pages';
 import { phoneNum } from '../data/global';
-import { App } from '../App';
-
 import React from "react";
-import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-afterEach(() => {
-    cleanup(); // Resets the DOM after each test suite
+beforeEach(() => {
+    render(<Home />);
 })
 
-test('home header renders', () => {
-    render(<Home />);
-    const homeHeader = screen.getByTestId('homeHeader')
-    expect(homeHeader).toBeInTheDocument();
-});
+afterEach(() => {
+    cleanup();
+})
 
-test('displays phone number', () => {
-    render(<Home />);
-    const phoneNumber = screen.getByTestId('homeSecondLine')
-    expect(phoneNumber.textContent).toEqual(phoneNum);
-});
-
-test('pizza photo displays', () => {
-    render(<Home />);
-    const photo = screen.getByTestId('homePizza')
-    expect(photo).toBeInTheDocument();
-});
-
+describe('Home', () => {
+    test('renders header', () => {
+        const homeHeader = screen.getByTestId('homeHeader')
+        expect(homeHeader).toBeInTheDocument();
+    });
+    
+    test('displays phone number', () => {
+        const phoneNumber = screen.getByTestId('homeSecondLine')
+        expect(phoneNumber.textContent).toEqual(phoneNum);
+    });
+    
+    test('displays pizza photo', () => {
+        const photo = screen.getByTestId('homePizza')
+        expect(photo).toBeInTheDocument();
+    });
+})

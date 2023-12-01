@@ -8,11 +8,11 @@ afterEach(() => {
     cleanup(); // Resets the DOM after each test suite
 })
 
-describe("Lunch menu", () => {
+describe("Pizza Customize", () => {
     render(<Pizza_customize />);
     // Test 1
-    test("Pizza Customization page renders correctly", () => {
-        const pizzaCustom = screen.getByTestId("pizzaCustom");
-        expect(pizzaCustom).toBeInTheDocument();
+    test("renders container", () => {
+        const container = screen.getByTestId("container");
+        expect(container).toBeInTheDocument();
     })
 })

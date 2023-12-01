@@ -1,28 +1,29 @@
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen, cleanup, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { About } from '../pages/about';
 import React from "react";
-import "./App.css";
-import { BrowserRouter } from 'react-router-dom';
+
+beforeEach(() => {
+    render(<About />);
+})
 
 afterEach(() => {
     cleanup(); // Resets the DOM after each test suite
 })
 
-describe("About Page", () => {
-    test("About page renders correctly", () => {
-        render(
-            <About />
-        );
+describe("About", () => {
+    test("renders container", () => {
         const aboutContainer = screen.getByTestId("about");
         expect(aboutContainer).toBeInTheDocument();
     })
     
-    test("About text renders correctly", () => {
-        render(
-            <About />
-        );
+    test("renders about text", () => {
         const aboutText = screen.getByTestId("aboutText");
         expect(aboutText).toBeInTheDocument();
+    })
+
+    test("renders map", () => {
+        const map = screen.getByTestId("map");
+        expect(map).toBeInTheDocument();
     })
 })

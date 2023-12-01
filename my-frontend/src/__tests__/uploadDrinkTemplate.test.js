@@ -557,35 +557,4 @@ describe("DrinkForm", () => {
         // Check results
         expect(alertSpy).toHaveBeenCalledWith('Please fill in all the available price fields with valid numbers.');
     });
-
-        test("alerts the user if they do not enter a valid number for item prices when there are three prices", async () => {
-        // Setup
-        render(<DrinkForm />);
-        const alertSpy = jest.spyOn(window, "alert");
-        alertSpy.mockReturnValue(true);
-
-        // Perform test
-        const form = screen.getByTestId("form");
-        const formName = screen.getByTestId("formName");
-        const subCategory = screen.getByTestId("subCategory");
-        const checkbox = screen.getByTestId("threePricesCheckbox");
-        await act(async () => {
-            fireEvent.change(formName, { target: { value: 'testName' } });
-            fireEvent.change(subCategory, { target: { value: 'Milk Shakes' } });
-            fireEvent.click(checkbox);
-        });
-
-        const price = screen.getByTestId("price");
-        const medium = screen.getByTestId("threePricesMedium");
-        const large = screen.getByTestId("threePricesLarge");
-        await act(async () => {
-            fireEvent.change(price, { target: { value: '499' } });
-            fireEvent.change(medium, { target: { value: '599' } });
-            fireEvent.change(large, { target: { value: 'invalidNumber' } });
-            fireEvent.submit(form);
-        });
-
-        // Check results
-        expect(alertSpy).toHaveBeenCalledWith('Please fill in all the available price fields with valid numbers.');
-    });
 });

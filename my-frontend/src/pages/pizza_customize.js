@@ -166,7 +166,7 @@ const Pizza_customize = () => {
   };
 
   return (
-    <div>
+    <div data-testid="container">
       <div className="titleCustom">
         <div>
           <div>
@@ -184,7 +184,7 @@ const Pizza_customize = () => {
 
       <div className="titleCustom">
         <div>
-          <div data-testid="pizzaCustom">
+          <div>
             <h1 style={{ color: "red" }}>Your Choice of Pizza</h1>
           </div>
         </div>
