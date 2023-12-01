@@ -78,6 +78,7 @@ test('renders admin components correctly', async () => {
     });
 
     expect(screen.getByTestId('drinks')).toBeInTheDocument();
+    expect(screen.queryByTestId('BeveragesHeader')).toBe(null);
     expect(screen.getByTestId('addItemButton')).toBeInTheDocument();
     expect(screen.getByTestId('edit-1')).toBeInTheDocument();
     expect(screen.getByTestId('remove-1')).toBeInTheDocument();

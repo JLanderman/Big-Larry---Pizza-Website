@@ -5,7 +5,6 @@ import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router";
 import { useAuth } from '../contexts/authContext';
-import { Link } from 'react-router-dom';
 import '../App.css';
 import UserService from "../services/UserData";
 import Cookies from 'js-cookie';
@@ -98,7 +97,7 @@ const Drink= (props) => {
                                   <button
                                     className="border px-10 py- fs-5 rounded-4"
                                     onClick={() => handleRemoveItem(currentItem._id)}
-                                    data-testid={`remove-${currentItem._id}`}                                  >
+                                    data-testid={`remove-${currentItem._id}`}>
                                     Remove
                                   </button>
                                       <button className="border px-10 py- fs-5 rounded-4"

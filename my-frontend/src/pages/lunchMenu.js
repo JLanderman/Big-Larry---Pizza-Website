@@ -5,14 +5,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useAuth } from '../contexts/authContext';
 import '../App.css';
 import Cookies from 'js-cookie';
-import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router";
 import UserService from "../services/UserData";
 
 
 
 const Lunch = (props) => {
     const [items, setItems] = useState([]);
-
+    const navigate = useNavigate();
     const { auth} = useAuth(); 
 
     const handleRemoveItem = async (_id) => {
@@ -49,7 +49,7 @@ const Lunch = (props) => {
           setItems(response.data); 
         })
         .catch((e) => {
-          console.log(e);
+          console.error(e);
         });
     };
     return (
@@ -58,7 +58,7 @@ const Lunch = (props) => {
           {
             auth ?
             <h1>MODIFY YOUR LUNCH AND DINNER </h1>
-            : <h1 className="text-center">SAM'S LUNCH & DINNER</h1>
+            : <h1 className="text-center" data-testid="LunchHeader" >SAM'S LUNCH & DINNER</h1>
           }
           </div>
           <div>
@@ -78,13 +78,13 @@ const Lunch = (props) => {
                                     <button
                                     className="border px-3 py- fs-5 rounded-4"
                                     onClick={() => handleRemoveItem(currentItem._id)}
-                                  >
+                                    data-testid={`remove-${currentItem._id}`}>
                                     Remove
                                   </button>
-                                    <Link to={`/TextForm/${currentItem._id}`}>
-                                      <button className="border px-3 py- fs-5 rounded-4">Edit</button>
-                                    </Link> 
-
+                                      <button className="border px-3 py- fs-5 rounded-4" data-testid={`edit-${currentItem._id}`}
+                                        onClick={(e) => navigate(`/TextForm/${currentItem._id}`)}>
+                                        Edit
+                                      </button>
                                   </div>
                               </div>
                              : null
@@ -114,9 +114,10 @@ const Lunch = (props) => {
           {
             auth ? (
               <div>
-                <Link to="/TextForm">
-                  <button className="border px-5 py-3 fs-2 rounded-4">Add New Item</button>
-                </Link>
+                  <button className="border px-5 py-3 fs-2 rounded-4" data-testid="addItemButton" 
+                  onClick={(e) => navigate(`/TextForm/`)}>
+                  Add New Item
+                  </button>
               </div>
             ) : null
           }
