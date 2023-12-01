@@ -55,7 +55,6 @@ class DataService {
   };
 
   async deleteItem(_id, username, token) {
-    console.log('payload id:', _id);
     try{
       const response = await http.post('/allItems/deleteItem', { _id, username: username, token: token });
       return response;

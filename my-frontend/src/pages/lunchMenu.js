@@ -19,7 +19,7 @@ const Lunch = (props) => {
       const token = Cookies.get('x-auth-token');
       const user = await UserService.getUserbyToken(token);
       const confirmation = window.confirm(`Are you sure you want to remove this item from the menu?`);
-      console.log('package id:', _id);
+      // console.log('package id:', _id);
 
       if (confirmation) {
         if (confirmation) {

@@ -20,49 +20,42 @@ function DrinkForm() {
   //const [formattedPrice, setFormattedPrice] = useState('');
   const token = Cookies.get('x-auth-token');
 
-
-  let updatedSubCategory;
-  let existingName;
-
   let [menuItem, setMenuItem] = useState();
   let params = useParams();
-  
+
   // eslint-disable-next-line
   useEffect(() => {
     retrieveMenuItem();
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [params.id]);
-  
+
   const retrieveMenuItem = () => {
     if (params.id) {
-      let url = process.env.REACT_APP_API_BASE_URL+`/items?_id=${params.id}`;
-      fetch(url)
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-        setMenuItem(data[0]);
-        console.log(menuItem);
+      DataService.getItemById(params.id)
+        .then((res) => {
+          setMenuItem(res.data[0]);
 
-        if (data[0].price !== undefined) {
-          const parsedPrices = data[0].price.map(parseFloat);
-          if (parsedPrices.length === 1) {
-            setPrice(parsedPrices[0].toFixed(2));
-          } else if (parsedPrices.length === 2) {
-            setPrice(parsedPrices[0].toFixed(2));
-            setPrice2(parsedPrices[1].toFixed(2));
-            setHasTwoPrices(true);
-          } else if (parsedPrices.length === 3) {
-            setPrice(parsedPrices[0].toFixed(2));
-            setPrice2(parsedPrices[1].toFixed(2));
-            setPrice3(parsedPrices[2].toFixed(2));
-            setHasThreePrices(true);
+          if (res.data[0].price) { // Load prices
+            const parsedPrices = res.data[0].price.map(parseFloat);
+            if (parsedPrices.length === 1) {
+              setPrice(parsedPrices[0].toFixed(2));
+            } else if (parsedPrices.length === 2) {
+              setPrice(parsedPrices[0].toFixed(2));
+              setPrice2(parsedPrices[1].toFixed(2));
+              setHasTwoPrices(true);
+            } else if (parsedPrices.length === 3) {
+              setPrice(parsedPrices[0].toFixed(2));
+              setPrice2(parsedPrices[1].toFixed(2));
+              setPrice3(parsedPrices[2].toFixed(2));
+              setHasThreePrices(true);
+            }
           }
-        }
+          if (res.data[0].drinktype) { // Load subcategory
+            setSubCategory(res.data[0].drinktype);
+          }
         })
-        .catch((e) => 
-        {
-          console.log(e);
+        .catch((e) => {
+          console.error(e);
         });
     }
   };
@@ -84,9 +77,10 @@ function DrinkForm() {
       alert('Please fill in all required fields before submitting.');
       return; // Exit the function without further processing
     }
-    
-    if ((hasTwoPrices && (price2 === '' || !parseFloat(price2))) || 
-        (hasThreePrices && (price2 === '' || price3 === '' || !parseFloat(price2) || !parseFloat(price3)))) {
+
+    if (!parseFloat(price) ||
+      (hasTwoPrices && (price2 === '' || !parseFloat(price2))) ||
+      (hasThreePrices && (price2 === '' || price3 === '' || !parseFloat(price2) || !parseFloat(price3)))) {
       // Alert when two or three prices are enabled but some fields are empty or not numbers
       alert('Please fill in all the available price fields with valid numbers.');
       return; // Exit the function without further processing
@@ -97,7 +91,7 @@ function DrinkForm() {
 
     formData.append('newName', name);
     formData.append('newCat', category);
-    formData.append('subCategory', updatedSubCategory);
+    formData.append('subCategory', subCategory);
     if (hasTwoPrices) {
       const prices = [price, price2];
       formData.append('price', JSON.stringify(prices));
@@ -110,34 +104,34 @@ function DrinkForm() {
     } //turns the prices back into one string array
     formData.append('user', user);
     formData.append('token', token);
-
-  // Send the formData to your server for processing
-  try {
     
-    for (const value of formData.values()) {  //logging for testing
-      console.log(value);
-    }
-    
-    if (menuItem) {
-      // if editing
-      formData.append('currName', menuItem.name);        //only append these if editings
-      formData.append('currCat', menuItem.itemCategory); //api uses them to find item in database
+    // Send the formData to your server for processing
+    try {
 
-      // eslint-disable-next-line
-      const res = await DataService.updateItem(formData);
-      console.log('Item updated successfully'); // Handle success for update
-      
-    } else {
-      // If creating
-      // eslint-disable-next-line
-      const res = await DataService.createItem(formData);
-      console.log('Item uploaded successfully'); // Handle success for upload
-      
+      // for (const value of formData.values()) {  //logging for testing
+      //   console.log(value);
+      // }
+
+      if (menuItem) {
+        // if editing
+        formData.append('currName', menuItem.name);        //only append these if editings
+        formData.append('currCat', menuItem.itemCategory); //api uses them to find item in database
+
+        // eslint-disable-next-line
+        const res = await DataService.updateItem(formData);
+        console.log('Item updated successfully'); // Handle success for update
+
+      } else {
+        // If creating
+        // eslint-disable-next-line
+        const res = await DataService.createItem(formData);
+        console.log('Item uploaded successfully'); // Handle success for upload
+
+      }
+    } catch (error) {
+      // Handle the error (e.g., show an error message to the user)
+      console.error('Error uploading/updating item:', error);
     }
-  } catch (error) {
-    // Handle the error (e.g., show an error message to the user)
-    console.error('Error uploading/updating item:', error);    
-  }
     // Reset form fields and selected file
 
     setName('');
@@ -145,12 +139,12 @@ function DrinkForm() {
     setSubCategory('');
     setPrice('');
     setPrice2('');
-    setPrice3('');	
+    setPrice3('');
   };
 
   return (
     <div data-testid="drinkUpload">
-		  <div> <br /><br /><br /></div>
+      <div> <br /><br /><br /></div>
       <div className="centered-text">
         {menuItem && menuItem.name ? (
           <h1>Currently editing "{menuItem.name}"</h1>
@@ -170,9 +164,9 @@ function DrinkForm() {
       )}
       <div><br /><br /><br /></div>
 
-      <form onSubmit={handleSubmit} className="vertical-center">
-        {menuItem && menuItem.name ? <h3>Current item name: {menuItem.name}</h3> : <h3>Name</h3>}
-        <input
+      <form onSubmit={handleSubmit} className="vertical-center" data-testid="form">
+        {menuItem && menuItem.name ? <h3 data-testid="currentName">Current item name: {menuItem.name}</h3> : <h3>Name</h3>}
+        <input data-testid="formName"
           type="text"
           placeholder={menuItem && menuItem.name ? "Item Name" : "Item Name"}
           value={name}
@@ -180,42 +174,42 @@ function DrinkForm() {
         />
         <br></br>
         {menuItem && (menuItem.drinktype) ? (
-          <h3>
+          <h3 data-testid="currentCategory">
             Current category: {menuItem.drinktype}
           </h3>
         ) : (
           <h3>Category</h3>
         )}
-        <select value={subCategory} onChange={(e) => setSubCategory(e.target.value)}>
+        <select value={subCategory} onChange={(e) => setSubCategory(e.target.value)} data-testid="subCategory">
           <option value="">Select an option</option>
-          <option value= "Cold Drink">Cold Drink</option>
-          <option value= "2-Litter Soda">Liter Bottles</option>
-          <option value= "Shaved Ice">Shaved Ice</option>
-          <option value= "Milk Shakes">Milk Shake</option>
-          <option value= "Smoothies">Smoothie</option>
-          <option value= "Freeze/Float">Freeze/Float</option>
-          <option value= "Ice Cream  &  Other">Ice Cream or Other Drink</option>
+          <option value="Cold Drink">Cold Drink</option>
+          <option value="2-Litter Soda">Liter Bottles</option>
+          <option value="Shaved Ice">Shaved Ice</option>
+          <option value="Milk Shakes">Milk Shake</option>
+          <option value="Smoothies">Smoothie</option>
+          <option value="Freeze/Float">Freeze/Float</option>
+          <option value="Ice Cream  &  Other">Ice Cream or Other Drink</option>
         </select>
         <br></br>
 
 
         <h3>
           {menuItem && menuItem.name
-        ? hasTwoPrices
-          ? `Current Prices: $${menuItem.price[0]}, $${menuItem.price[1]}` // Assuming price[0] and price[1] hold the two prices
-          : hasThreePrices
-          ? `Current Prices: $${menuItem.price.join(', $')}`
-          : `Current Price: $${menuItem.price[0]}` // Displaying the single price
-        : 'Price(s)'}
+            ? hasTwoPrices
+              ? `Current Prices: $${menuItem.price[0]}, $${menuItem.price[1]}` // Assuming price[0] and price[1] hold the two prices
+              : hasThreePrices
+                ? `Current Prices: $${menuItem.price.join(', $')}`
+                : `Current Price: $${menuItem.price[0]}` // Displaying the single price
+            : 'Price(s)'}
         </h3>
-        <input
+        <input data-testid="price"
           type="text"
           placeholder="Small / Only Price"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
         {hasTwoPrices && (
-          <input
+          <input data-testid="twoPricesLarge"
             type="text"
             placeholder="Large Price"
             value={price2}
@@ -224,13 +218,13 @@ function DrinkForm() {
         )}
         {hasThreePrices && (
           <>
-            <input
+            <input data-testid="threePricesMedium"
               type="text"
               placeholder="Medium Price"
               value={price2} // Assuming this should be price2 for medium price
               onChange={(e) => setPrice2(e.target.value)}
             />
-            <input
+            <input data-testid="threePricesLarge"
               type="text"
               placeholder="Large Price"
               value={price3}
@@ -239,7 +233,7 @@ function DrinkForm() {
           </>
         )}
         <div className="checkbox-container">
-          <input
+          <input data-testid="twoPricesCheckbox"
             type="checkbox"
             id="twoPricesCheckbox"
             checked={hasTwoPrices}
@@ -250,7 +244,7 @@ function DrinkForm() {
           />
           <label htmlFor="twoPricesCheckbox">Two prices?</label>
 
-          <input
+          <input data-testid="threePricesCheckbox"
             type="checkbox"
             id="threePricesCheckbox"
             checked={hasThreePrices}
@@ -262,7 +256,7 @@ function DrinkForm() {
           <label htmlFor="threePricesCheckbox">Three prices?</label>
         </div>
         <br></br>
-        <button type="submit">{existingName ? "Update Item" : "Submit"}</button>
+        <button type="submit">{menuItem ? "Update Item" : "Submit"}</button>
       </form>
     </div>
   );
