@@ -6,8 +6,10 @@ import DataService from "../services/itemData";
 import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
 import UserService from "../services/UserData";
+import { useNavigate } from 'react-router-dom';
 
 function DrinkForm() {
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const category = 'drink';
   //const [category, setCategory] = useState('');
@@ -120,14 +122,15 @@ function DrinkForm() {
         // eslint-disable-next-line
         const res = await DataService.updateItem(formData);
         console.log('Item updated successfully'); // Handle success for update
-
       } else {
         // If creating
         // eslint-disable-next-line
         const res = await DataService.createItem(formData);
         console.log('Item uploaded successfully'); // Handle success for upload
-
       }
+      // Navigate back to drink menu on success
+      console.log('Before navigating');
+      navigate('/drink');
     } catch (error) {
       // Handle the error (e.g., show an error message to the user)
       console.error('Error uploading/updating item:', error);
@@ -168,7 +171,7 @@ function DrinkForm() {
         {menuItem && menuItem.name ? <h3 data-testid="currentName">Current item name: {menuItem.name}</h3> : <h3>Name</h3>}
         <input data-testid="formName"
           type="text"
-          placeholder={menuItem && menuItem.name ? "Item Name" : "Item Name"}
+          placeholder={"Item Name"}
           value={name}
           onChange={(e) => setName(e.target.value)}
         />

@@ -73,17 +73,17 @@ class DataService {
   };
 
   async updateItem(formData, base64String) {
-
+    console.log("In itemData updateItem. formData:", formData);
     let res;
-    let newPrice, newSubCat;
+    let newPrice, newSubCat, rawPrice;
     const curName = formData.get('currName');  //needed for finding item in database
     const curItemCat = formData.get('currCat');    //needed for finding item in database
     const newName = formData.get('newName');
     const newItemCat = formData.get('newCat');
     const newPhoto = formData.get('newPhoto');
     const newPhotoData = base64String;
-    const price_large = formData.get('newPriceLarge');
-    const price_small = formData.get('newPriceSmall');
+    const price_large = formData.get('price_large');
+    const price_small = formData.get('price_small');
     const username = formData.get('user');
     const token = formData.get('token');
     const newDescription = formData.get('description') === '' ? null : formData.get('description'); //if description is empty, set to null
@@ -94,14 +94,21 @@ class DataService {
     } else {
       newSubCat = formData.get('subCategory');
     }
-
+    
     if (newItemCat === "drink" && newSubCat !== "Ice Cream  &  Other") {
-      newPrice = formData.get('newPrice').split(',');
+      rawPrice = formData.get('price').split(',');
+      // Clean up each element in the array
+      newPrice = rawPrice.map((price) =>
+        price.replace(/[\[\]"\s]/g, '')
+      );
     } else {
-      newPrice = formData.get('newPrice');
+      rawPrice = formData.get('price');
+        // Clean up
+      newPrice = rawPrice.replace(/[\[\]"\s]/g, '');
     }
-
-    /* logs for testing
+    
+    console.log("After split ");
+    /* logs for testing 
     console.log('Current Name:', curName);  //logs for testing
     console.log('Current itemCategory:', curItemCat);
     console.log('New Name:', newName);
@@ -140,19 +147,18 @@ class DataService {
     } catch (error) {
       console.error(error);
     }
-
   }
 
   async createItem(formData, base64String) {  //still testing
 
     let res;
-    let newPrice, newSubCat;
+    let newPrice, newSubCat, rawPrice;
     const newName = formData.get('newName');
     const newItemCat = formData.get('newCat');
     const newPhoto = formData.get('newPhoto');
     const newPhotoData = base64String;
-    const price_large = formData.get('newPriceLarge');
-    const price_small = formData.get('newPriceSmall');
+    const price_large = formData.get('price_large');
+    const price_small = formData.get('price_small');
     const newDescription = formData.get('description');
     const username = formData.get('user');
     const token = formData.get('token');
@@ -166,9 +172,15 @@ class DataService {
 
     //only drinks need prices as an array, this seperates the user input into an array
     if (newItemCat === "drink" && newSubCat !== "Ice Cream  &  Other") {
-      newPrice = formData.get('newPrice').split(',');
+      rawPrice = formData.get('price').split(',');
+      // Clean up each element in the array
+      newPrice = rawPrice.map((price) =>
+        price.replace(/[\[\]"\s]/g, '')
+      );
     } else {
-      newPrice = formData.get('newPrice');
+      rawPrice = formData.get('price');
+        // Clean up
+      newPrice = rawPrice.replace(/[\[\]"\s]/g, '');
     }
 
     /* logs for testing

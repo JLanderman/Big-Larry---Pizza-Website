@@ -6,9 +6,11 @@ import DataService from "../services/itemData";
 import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
 import UserService from "../services/UserData";
+import { useNavigate } from 'react-router-dom';
 
 
 function TextForm() {
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const category = 'lunch/Dinner';
   const [price, setPrice] = useState('');
@@ -131,6 +133,8 @@ function TextForm() {
         console.log('Item uploaded successfully'); // Handle success for upload
 
       }
+      // Redirect to the lunchMenu page
+      navigate('/lunchMenu');
     } catch (error) {
       // Handle the error (e.g., show an error message to the user)
       console.error('Error uploading/updating item:', error);
@@ -158,7 +162,7 @@ function TextForm() {
         {menuItem && menuItem.name ? <h3 data-testid="editName">Current item name: {menuItem.name}</h3> : <h3>Name</h3>}
         <input data-testid="formName"
           type="text"
-          placeholder={menuItem && menuItem.name ? "New Item Name" : "Item Name"}
+          placeholder={menuItem && menuItem.name ? "Item Name" : "New Item Name"}
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
