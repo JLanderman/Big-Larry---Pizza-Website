@@ -1,0 +1,37 @@
+.text {
+    color: var(--clr-txt-light)
+}
+
+.fbLink {
+    display: flex;
+    padding-right: 1%;
+    margin-right: -5%;
+    
+  }
+
+.address{
+    
+}
+
+.login{
+    
+}
+
+@media (max-width: 1190px){
+        
+    .address{
+        width: 100%;
+        white-space: normal;
+    }
+
+    .fbLink {
+        flex-wrap: wrap;
+      }
+    
+    .login{
+        width: 100%;
+        margin-top: 10px; 
+    }
+  }
+  
+  
