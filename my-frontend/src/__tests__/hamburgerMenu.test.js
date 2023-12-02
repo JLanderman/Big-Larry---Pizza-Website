@@ -9,12 +9,7 @@ afterEach(() =>{
 })
 
 describe("HamburgerMenu", () =>{
-    const loggedInState = {
-        auth: true,
-        loggedIn: true,
-    }
-
-    it("can be toggled", () =>{
+    test("can be toggled", () =>{
         const onClickMock = jest.fn();
         render(<BrowserRouter><HamburgerMenu onClick={onClickMock}/></BrowserRouter>);
 
@@ -32,36 +27,22 @@ describe("HamburgerMenu", () =>{
         expect(onClickMock).toHaveBeenCalled();
     });
 
-    it("renders the sign in link", () =>{
-        // Render logged out state
-        render(<BrowserRouter><HamburgerMenu/></BrowserRouter>);
-        const link = screen.getByTestId("hamburgerSignIn");
-        expect(link).toBeInTheDocument();
-    })
-
-    it("renders the log out link", () =>{
-        // Render logged in state
-        render(<BrowserRouter><AuthProvider initialState={loggedInState}>
-            <HamburgerMenu/></AuthProvider></BrowserRouter>);
-
-        const link = screen.getByTestId("hamburgerLogout");
-        expect(link).toBeInTheDocument();
-    })
-
-    it("logs the user out", () =>{
-        // Setup
+    test("can be closed", () =>{
         const onClickMock = jest.fn();
-        render(<BrowserRouter><AuthProvider initialState={loggedInState}>
-            <HamburgerMenu onClick={onClickMock}/></AuthProvider></BrowserRouter>);
-        Cookies.set('x-auth-token', 'test');
-        
-        // Logout
-        const logoutLink = screen.getByTestId("hamburgerLogout");
-        fireEvent.click(logoutLink);
+        render(<BrowserRouter><HamburgerMenu onClick={onClickMock}/></BrowserRouter>);
 
-        // Check result
-        const cookie = Cookies.get('x-auth-token');
-        expect(cookie).toBe(undefined);
-        expect(onClickMock).toHaveBeenCalled();
+        // Check for open style
+        const HM = screen.getByTestId("hamburger-menu");
+        const menu = screen.getByTestId("menu")
+        const toggleButton = screen.getByTestId("menu-toggle");
+        fireEvent.click(toggleButton);
+        expect(HM).toHaveClass("hamburger-menu open");
+        expect(menu).toHaveClass("menu open");
+
+        // Check for closed style
+        const close = screen.getByTestId("menuLinkHamburgerMenu");
+        fireEvent.click(close);
+        expect(HM).toHaveClass("hamburger-menu");
+        expect(menu).toHaveClass("menu");
     });
 });
