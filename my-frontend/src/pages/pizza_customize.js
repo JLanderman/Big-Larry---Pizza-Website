@@ -15,6 +15,7 @@ const Pizza_customize = () => {
     const fetchToppingPrices = async () => {
       try {
         const response = await DataService.getAllToppingsPrices();
+        console.log(response);
         setToppingPrices(response);
       } catch (error) {
         console.error("Error fetching topping prices:", error);
@@ -176,7 +177,7 @@ const Pizza_customize = () => {
       </div>
       <div className="pageContainer" style={{ maxWidth: "80%", minWidth: "610px", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "10px" }}>
         {toppingList.map((size, index) => (
-          <span key={index} className="pizzaToppingButtonCustom" onClick={() => handleToppingClick(index)} style={{ fontSize: "24px", whiteSpace: "nowrap" }}>
+          <span key={index} className="pizzaToppingButtonCustom" onClick={() => handleToppingClick(index)} style={{ fontSize: "24px", whiteSpace: "nowrap" }} data-testid={`clickTopping${size}`}>
             {size}
           </span>
         ))}
@@ -211,7 +212,7 @@ const Pizza_customize = () => {
           </thead>
           <tbody>
             {toppingPrices.map((topping, index) => (
-              <tr
+              <tr data-testid="row"
                 key={index}
                 style={{
                   borderBottom: index === 4 ? "1px solid" : "0px",

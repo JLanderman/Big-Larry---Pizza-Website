@@ -5,14 +5,7 @@ import Cookies from 'js-cookie';
 import './HamburgerMenu.css';
 
 function HamburgerMenu({ onClick }) {
-    const {setAuth, loggedIn, setLoggedIn } = useAuth();
     const [menuOpen, setMenuOpen] = useState(false);
-
-    const logout = () => {
-        Cookies.remove('x-auth-token');
-        setAuth(false);
-        setLoggedIn(false);
-      };
 
     const toggleMenu = () => {
       setMenuOpen(!menuOpen);
