@@ -14,9 +14,10 @@ function ItemFormLarge() {
   const [uploadedImage, setUploadedImage] = useState(null);
   const fileInputRef = useRef(null);
   const token = Cookies.get('x-auth-token');
-  let base64String;
 
-  // Helper function to wait for reading to finish
+  let base64String;
+  
+   // Helper function to wait for reading to finish
   const readFileAsDataURL = (file) => {
     return new Promise((resolve) => {
       const reader = new FileReader();
