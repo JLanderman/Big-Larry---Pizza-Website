@@ -15,7 +15,7 @@ const Home = () => {
         <div className='homeSubHeader'>
           <div className='homeFirstLine'>BEST PRICE ! REAL TASTE !</div>
           <div className='homeSecondLine' data-testid="homeSecondLine">
-            <img src={contactSign} alt='telephone:' style={{ width: '1.75em', height: '1em', paddingRight: '0.75em' }} />
+            <img src={contactSign} alt='Telephone:' style={{ width: '1.75em', height: '1em', paddingRight: '0.75em' }} />
             {phoneNum}
           </div>
         </div>
