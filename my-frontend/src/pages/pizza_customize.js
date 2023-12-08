@@ -108,6 +108,9 @@ const Pizza_customize = () => {
         setSelectedSize(null);
         setPrice(priceSelect(null, 0));
         setSelectedToppingCategory(null);
+
+        // refresh page to update price
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Error updating topping price:", error);
