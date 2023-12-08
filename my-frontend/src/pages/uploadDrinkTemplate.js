@@ -80,10 +80,11 @@ function DrinkForm() {
       return; // Exit the function without further processing
     }
 
-    if (!parseFloat(price) ||
-      (hasTwoPrices && (price2 === '' || !parseFloat(price2))) ||
-      (hasThreePrices && (price2 === '' || price3 === '' || !parseFloat(price2) || !parseFloat(price3)))) {
+    if (!parseFloat(price) || !isValidPrice(price) ||
+      (hasTwoPrices && (!parseFloat(price2) || !isValidPrice(price2))) ||
+      (hasThreePrices && (!parseFloat(price2) || !parseFloat(price3) || !isValidPrice(price2) || !isValidPrice(price3)))) {
       // Alert when two or three prices are enabled but some fields are empty or not numbers
+      // Also alert if you don't enter in the full price with dollars and cents.
       alert('Please fill in all the available price fields with valid numbers.');
       return; // Exit the function without further processing
     }
@@ -118,7 +119,6 @@ function DrinkForm() {
         // if editing
         formData.append('currName', menuItem.name);        //only append these if editings
         formData.append('currCat', menuItem.itemCategory); //api uses them to find item in database
-
         // eslint-disable-next-line
         const res = await DataService.updateItem(formData);
         console.log('Item updated successfully'); // Handle success for update
@@ -129,7 +129,6 @@ function DrinkForm() {
         console.log('Item uploaded successfully'); // Handle success for upload
       }
       // Navigate back to drink menu on success
-      console.log('Before navigating');
       navigate('/drink');
     } catch (error) {
       // Handle the error (e.g., show an error message to the user)
@@ -143,6 +142,12 @@ function DrinkForm() {
     setPrice('');
     setPrice2('');
     setPrice3('');
+  };
+
+
+  const isValidPrice = (price) => {
+    const regex = /^\d+\.\d{2}$/;
+    return regex.test(price);
   };
 
   return (
