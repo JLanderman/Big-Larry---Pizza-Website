@@ -171,14 +171,14 @@ const Pizza_customize = () => {
 
   return (
     <div data-testid="container">
-      <div className="titleCustom">
+      <div className="titleCustom" style={{ textAlign: 'center' }}>
         <div>
           <div>
             <h1 style={{ color: "red" }}>Topping Options</h1>
           </div>
         </div>
       </div>
-      <div className="pageContainer" style={{ maxWidth: "80%", minWidth: "610px", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "10px" }}>
+      <div className="pageContainer" style={{ maxWidth: "80%", minWidth: "610px", margin: "auto", textAlign: "center", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "10px"}}>
         {toppingList.map((size, index) => (
           <span key={index} className="pizzaToppingButtonCustom" onClick={() => handleToppingClick(index)} style={{ fontSize: "24px", whiteSpace: "nowrap" }} data-testid={`clickTopping${size}`}>
             {size}
@@ -189,7 +189,7 @@ const Pizza_customize = () => {
       <div className="titleCustom">
         <div>
           <div>
-            <h1 style={{ color: "red" }}>Your Choice of Pizza</h1>
+            <h1 style={{ color: "red", textAlign: 'center' }}>Your Choice of Pizza</h1>
           </div>
         </div>
       </div>

@@ -8,7 +8,6 @@
   height: 80vh;
   display:flex;
   margin:2rem;
-
 }
 
 .pictureCustom
@@ -145,5 +144,5 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
+  text-align:center;
 }
