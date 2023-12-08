@@ -5,8 +5,9 @@ import TextForm from "../pages/uploadTextTemplate";
 import UserService from "../services/UserData";
 import DataService from "../services/itemData";
 import { act } from "react-test-renderer";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, BrowserRouter, Routes } from "react-router-dom";
 import Cookies from 'js-cookie';
+import AuthProvider from "../contexts/authContext";
 
 // Mock responses from services
 jest.mock('../services/itemData');
@@ -17,7 +18,7 @@ const mockResponse = {
         {
             _id: '1',
             name: 'textItem',
-            price: 1500,
+            price: 15.00,
         },
     ],
 };
@@ -26,11 +27,24 @@ const mockResponseMultiplePrices = {
         {
             _id: '1',
             name: 'textItem',
-            price_small: 899,
-            price_large: 999,
+            price_small: 8.99,
+            price_large: 9.99,
         },
     ],
 };
+
+const loggedIn = {
+    loggedIn: true,
+    auth: true,
+};
+
+// Navigation mocks
+const mockNavigate = jest.fn();
+jest.mock('react-router', () => ({
+    ...jest.requireActual('react-router'),
+    useNavigate: () => mockNavigate,
+}));
+
 
 beforeEach(() => {
     Cookies.get.mockReturnValue('testToken');
@@ -43,7 +57,7 @@ afterEach(() => {
 
 describe("TextForm", () => {
     test("renders container", async () => {
-        render(<TextForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><TextForm /></BrowserRouter></AuthProvider>);
         const textUpload = screen.getByTestId("textUpload");
         expect(textUpload).toBeInTheDocument();
     })
@@ -55,11 +69,13 @@ describe("TextForm", () => {
         // Render
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={['/TextForm/1']}>
-                    <Routes>
-                        <Route path="/TextForm/:id" element={<TextForm />} />
-                    </Routes>
-                </MemoryRouter>
+                <AuthProvider initialState={loggedIn}>
+                    <MemoryRouter initialEntries={['/TextForm/1']}>
+                        <Routes>
+                            <Route path="/TextForm/:id" element={<TextForm />} />
+                        </Routes>
+                    </MemoryRouter>
+                </AuthProvider>
             );
         });
 
@@ -79,11 +95,13 @@ describe("TextForm", () => {
         // Perform test
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={['/TextForm/1']}>
-                    <Routes>
-                        <Route path="/TextForm/:id" element={<TextForm />} />
-                    </Routes>
-                </MemoryRouter>
+                <AuthProvider initialState={loggedIn}>
+                    <MemoryRouter initialEntries={['/TextForm/1']}>
+                        <Routes>
+                            <Route path="/TextForm/:id" element={<TextForm />} />
+                        </Routes>
+                    </MemoryRouter>
+                </AuthProvider>
             );
         });
 
@@ -97,7 +115,7 @@ describe("TextForm", () => {
         DataService.createItem.mockResolvedValue({});
 
         // Setup
-        render(<TextForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><TextForm /></BrowserRouter></AuthProvider>);
         const form = screen.getByTestId("form");
         const formName = screen.getByTestId("formName");
         const formPrice = screen.getByTestId("formPrice");
@@ -106,7 +124,7 @@ describe("TextForm", () => {
         // Perform test
         await act(async () => {
             fireEvent.change(formName, { target: { value: 'testName' } });
-            fireEvent.change(formPrice, { target: { value: '999' } });
+            fireEvent.change(formPrice, { target: { value: '9.99' } });
             fireEvent.submit(form);
         });
 
@@ -121,7 +139,7 @@ describe("TextForm", () => {
         const consoleLog = jest.spyOn(console, "log");
 
         // Perform test
-        render(<TextForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><TextForm /></BrowserRouter></AuthProvider>);
         const form = screen.getByTestId("form");
         const formName = screen.getByTestId("formName");
         const formMultiplePrices = screen.getByTestId("formMultiplePrices");
@@ -133,8 +151,8 @@ describe("TextForm", () => {
         const formSmallPrice = screen.getByTestId("formSmallPrice");
         const formLargePrice = screen.getByTestId("formLargePrice");
         await act(async () => { // Set prices
-            fireEvent.change(formSmallPrice, { target: { value: '999' } });
-            fireEvent.change(formLargePrice, { target: { value: '1499' } });
+            fireEvent.change(formSmallPrice, { target: { value: '9.99' } });
+            fireEvent.change(formLargePrice, { target: { value: '14.99' } });
             fireEvent.submit(form);
         });
 
@@ -151,11 +169,13 @@ describe("TextForm", () => {
         // Initial render
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={['/TextForm/1']}>
-                    <Routes>
-                        <Route path="/TextForm/:id" element={<TextForm />} />
-                    </Routes>
-                </MemoryRouter>
+                <AuthProvider initialState={loggedIn}>
+                    <MemoryRouter initialEntries={['/TextForm/1']}>
+                        <Routes>
+                            <Route path="/TextForm/:id" element={<TextForm />} />
+                        </Routes>
+                    </MemoryRouter>
+                </AuthProvider>
             );
         });
 
@@ -168,7 +188,7 @@ describe("TextForm", () => {
         // Perform test
         await act(async () => { // Set form fields
             fireEvent.change(formName, { target: { value: 'testName' } });
-            fireEvent.change(formPrice, { target: { value: '999' } });
+            fireEvent.change(formPrice, { target: { value: '9.99' } });
             fireEvent.submit(form);
         });
 
@@ -186,11 +206,13 @@ describe("TextForm", () => {
         // Initial render
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={['/TextForm/1']}>
-                    <Routes>
-                        <Route path="/TextForm/:id" element={<TextForm />} />
-                    </Routes>
-                </MemoryRouter>
+                <AuthProvider initialState={loggedIn}>
+                    <MemoryRouter initialEntries={['/TextForm/1']}>
+                        <Routes>
+                            <Route path="/TextForm/:id" element={<TextForm />} />
+                        </Routes>
+                    </MemoryRouter>
+                </AuthProvider>
             );
         });
 
@@ -201,8 +223,8 @@ describe("TextForm", () => {
         const formLargePrice = screen.getByTestId("formLargePrice");
         await act(async () => { // Set form elements
             fireEvent.change(formName, { target: { value: 'testName' } });
-            fireEvent.change(formSmallPrice, { target: { value: '999' } });
-            fireEvent.change(formLargePrice, { target: { value: '1499' } });
+            fireEvent.change(formSmallPrice, { target: { value: '9.99' } });
+            fireEvent.change(formLargePrice, { target: { value: '14.99' } });
             fireEvent.submit(form);
         });
 
@@ -217,7 +239,7 @@ describe("TextForm", () => {
         DataService.createItem.mockRejectedValue(mockedError);
 
         // Setup
-        render(<TextForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><TextForm /></BrowserRouter></AuthProvider>);
         const form = screen.getByTestId("form");
         const formName = screen.getByTestId("formName");
         const formPrice = screen.getByTestId("formPrice");
@@ -226,7 +248,7 @@ describe("TextForm", () => {
         // Perform test
         await act(async () => { // Set form fields
             fireEvent.change(formName, { target: { value: 'testName' } });
-            fireEvent.change(formPrice, { target: { value: '999' } });
+            fireEvent.change(formPrice, { target: { value: '9.99' } });
             fireEvent.submit(form);
         });
 
@@ -237,7 +259,7 @@ describe("TextForm", () => {
     test("alerts the user if they are not logged in", async () => {
         // Setup
         Cookies.get.mockReturnValue(undefined); // No token
-        render(<TextForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><TextForm /></BrowserRouter></AuthProvider>);
         const alertSpy = jest.spyOn(window, "alert");
         alertSpy.mockReturnValue(true);
 
@@ -253,7 +275,7 @@ describe("TextForm", () => {
 
     test("alerts the user if they do not enter an item name", async () => {
         // Setup
-        render(<TextForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><TextForm /></BrowserRouter></AuthProvider>);
         const alertSpy = jest.spyOn(window, "alert");
         alertSpy.mockReturnValue(true);
 
@@ -269,7 +291,7 @@ describe("TextForm", () => {
 
     test("alerts the user if they do not enter an item price", async () => {
         // Setup
-        render(<TextForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><TextForm /></BrowserRouter></AuthProvider>);
         const alertSpy = jest.spyOn(window, "alert");
         alertSpy.mockReturnValue(true);
 
@@ -287,7 +309,7 @@ describe("TextForm", () => {
 
     test("alerts the user if they do not enter an item price when the item has multiple prices", async () => {
         // Setup
-        render(<TextForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><TextForm /></BrowserRouter></AuthProvider>);
         const alertSpy = jest.spyOn(window, "alert");
         alertSpy.mockReturnValue(true);
 
@@ -307,7 +329,7 @@ describe("TextForm", () => {
 
     test("alerts the user if the price is not a number", async () => {
         // Setup
-        render(<TextForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><TextForm /></BrowserRouter></AuthProvider>);
         const alertSpy = jest.spyOn(window, "alert");
         alertSpy.mockReturnValue(true);
 
@@ -327,7 +349,7 @@ describe("TextForm", () => {
 
     test("alerts the user if one of the prices is not a number when there are multiple prices", async () => {
         // Setup
-        render(<TextForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><TextForm /></BrowserRouter></AuthProvider>);
         const alertSpy = jest.spyOn(window, "alert");
         alertSpy.mockReturnValue(true);
 
@@ -343,7 +365,7 @@ describe("TextForm", () => {
         const formSmallPrice = screen.getByTestId("formSmallPrice");
         const formLargePrice = screen.getByTestId("formLargePrice");
         await act(async () => {
-            fireEvent.change(formSmallPrice, { target: { value: '999' } });
+            fireEvent.change(formSmallPrice, { target: { value: '9.99' } });
             fireEvent.change(formLargePrice, { target: { value: 'testError' } });
             fireEvent.submit(form);
         });
@@ -363,11 +385,13 @@ describe("TextForm", () => {
         // Initial render
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={['/TextForm/1']}>
-                    <Routes>
-                        <Route path="/TextForm/:id" element={<TextForm />} />
-                    </Routes>
-                </MemoryRouter>
+                <AuthProvider initialState={loggedIn}>
+                    <MemoryRouter initialEntries={['/TextForm/1']}>
+                        <Routes>
+                            <Route path="/TextForm/:id" element={<TextForm />} />
+                        </Routes>
+                    </MemoryRouter>
+                </AuthProvider>
             );
         });
 
@@ -383,8 +407,8 @@ describe("TextForm", () => {
         const formSmallPrice = screen.getByTestId("formSmallPrice");
         const formLargePrice = screen.getByTestId("formLargePrice");
         await act(async () => {
-            fireEvent.change(formSmallPrice, { target: { value: '1299' } });
-            fireEvent.change(formLargePrice, { target: { value: '1499' } });
+            fireEvent.change(formSmallPrice, { target: { value: '12.99' } });
+            fireEvent.change(formLargePrice, { target: { value: '14.99' } });
             fireEvent.submit(form);
         });
 

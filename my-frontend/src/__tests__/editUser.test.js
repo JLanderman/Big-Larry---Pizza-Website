@@ -4,6 +4,7 @@ import UserService from "../services/UserData";
 import EditUser from "../pages/editUser";
 import { BrowserRouter } from "react-router-dom";
 import Cookies from 'js-cookie';
+import AuthProvider from '../contexts/authContext';
 
 // Mock services
 jest.mock("../services/UserData.js");
@@ -22,10 +23,17 @@ beforeEach(async () => {
     //     }]
     // });
 
+    const loggedIn = {
+        loggedIn: true,
+        auth: true
+    }
+
     render(
-        <BrowserRouter>
-            <EditUser />
-        </BrowserRouter>
+        <AuthProvider initialState={loggedIn}>
+            <BrowserRouter>
+                <EditUser />
+            </BrowserRouter>
+        </AuthProvider>
     );
 
     // Wait for dynamic renders
@@ -42,7 +50,7 @@ describe("EditUser", () => {
         const editUserWrapper = screen.getByTestId("editUserWrapper");
         expect(editUserWrapper).toBeInTheDocument();
     })
-    
+
     test("renders input fields", () => {
         const newPasswordField = screen.getByTestId("newPasswordField");
         expect(newPasswordField).toBeInTheDocument();
@@ -56,7 +64,7 @@ describe("EditUser", () => {
         fireEvent.change(newPassword, { target: { value: 'testPassword' } });
         fireEvent.change(confirmPassword, { target: { value: 'differentPassword' } });
         fireEvent.submit(form);
-        
+
         await waitFor(async () => { // Wait for error
             expect(screen.getByTestId("editUserError")).toBeInTheDocument();
         })
@@ -65,9 +73,9 @@ describe("EditUser", () => {
     test("sets success when user credentials are updated", async () => {
         // Mocks
         Cookies.get.mockReturnValue('testToken');
-        UserService.getUserbyToken.mockResolvedValue({ });
+        UserService.getUserbyToken.mockResolvedValue({});
         UserService.editUserCred.mockResolvedValue({ username: 'testUser' });
-        
+
         // Setup credentials
         const form = screen.getByTestId("editUserForm");
         const newUsername = screen.getByTestId("newUsername");
@@ -75,11 +83,11 @@ describe("EditUser", () => {
         const confirmPassword = screen.getByTestId("confirmPassword");
 
         // Submit form
-        fireEvent.change(newUsername, { target: {value: 'testUsername' } });
+        fireEvent.change(newUsername, { target: { value: 'testUsername' } });
         fireEvent.change(newPassword, { target: { value: 'testPassword' } });
         fireEvent.change(confirmPassword, { target: { value: 'testPassword' } });
         fireEvent.submit(form);
-        
+
         await waitFor(async () => { // Wait for success
             expect(screen.getByTestId("editUserSuccess")).toBeInTheDocument();
         })
@@ -91,7 +99,7 @@ describe("EditUser", () => {
         const consoleError = jest.spyOn(console, "error").mockImplementation(() => { });
         const mockError = new Error("Mock error");
         UserService.getUserbyToken.mockRejectedValue(mockError);
-        
+
         // Setup credentials
         const form = screen.getByTestId("editUserForm");
         const newUsername = screen.getByTestId("newUsername");
@@ -99,11 +107,11 @@ describe("EditUser", () => {
         const confirmPassword = screen.getByTestId("confirmPassword");
 
         // Submit form
-        fireEvent.change(newUsername, { target: {value: 'testUsername' } });
+        fireEvent.change(newUsername, { target: { value: 'testUsername' } });
         fireEvent.change(newPassword, { target: { value: 'testPassword' } });
         fireEvent.change(confirmPassword, { target: { value: 'testPassword' } });
         fireEvent.submit(form);
-        
+
         await waitFor(async () => { // Wait for error
             expect(screen.getByTestId("editUserSuccess")).toBeInTheDocument();
             expect(consoleError).toHaveBeenCalledWith(`handleSubmit failed in editUser.js, ${mockError}`)

@@ -6,6 +6,8 @@ import UserService from "../services/UserData";
 import DataService from "../services/itemData";
 import { act } from "react-test-renderer";
 import Cookies from 'js-cookie';
+import AuthProvider from "../contexts/authContext";
+import { BrowserRouter } from "react-router-dom";
 
 // Mock services
 jest.mock('../services/itemData');
@@ -15,6 +17,19 @@ jest.mock('js-cookie');
 // Test files
 const testUpload = { files: [new File(['test_file'], 'test_file.png', { type: 'image/png'})]}
 URL.createObjectURL = jest.fn(() => "testURL");
+
+const loggedIn = {
+    loggedIn: true,
+    auth: true,
+};
+
+// Navigation mocks
+const mockNavigate = jest.fn();
+jest.mock('react-router', () => ({
+    ...jest.requireActual('react-router'),
+    useNavigate: () => mockNavigate,
+}));
+
 
 beforeEach(() => {
     UserService.getUserbyToken.mockResolvedValue('testUser');
@@ -29,7 +44,7 @@ afterEach(() => {
 
 describe("ItemFormLarge", () => {
     test("renders container", async () => {
-        render(<ItemFormLarge />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><ItemFormLarge /></BrowserRouter></AuthProvider>);
         const container = screen.getByTestId("uploadContainer");
         expect(container).toBeInTheDocument();
     })
@@ -39,7 +54,7 @@ describe("ItemFormLarge", () => {
         const consoleLog = jest.spyOn(console, "log").mockImplementation(() => { });
 
         // Setup
-        render(<ItemFormLarge />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><ItemFormLarge /></BrowserRouter></AuthProvider>);
         const form = screen.getByTestId("form");
         const name = screen.getByTestId("name");
         const category = screen.getByTestId("category");
@@ -51,7 +66,7 @@ describe("ItemFormLarge", () => {
         await act(async () => {
             fireEvent.change(name, { target: { value: 'testName' } });
             fireEvent.change(category, { target: { value: 'comboSpecial' } }); // Needs to be set to an actual value from dropdown
-            fireEvent.change(price, { target: { value: '499' } });
+            fireEvent.change(price, { target: { value: '4.99' } });
             fireEvent.change(description, { target: {value: 'testDescription' } });
             fireEvent.change(file, { target: testUpload });
             fireEvent.submit(form);
@@ -72,7 +87,7 @@ describe("ItemFormLarge", () => {
         const consoleError = jest.spyOn(console, "error").mockImplementation(() => {});
 
         // Setup
-        render(<ItemFormLarge />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><ItemFormLarge /></BrowserRouter></AuthProvider>);
         const form = screen.getByTestId("form");
         const name = screen.getByTestId("name");
         const category = screen.getByTestId("category");
@@ -84,7 +99,7 @@ describe("ItemFormLarge", () => {
         await act(async () => {
             fireEvent.change(name, { target: { value: 'testName' } });
             fireEvent.change(category, { target: { value: 'comboSpecial' } }); // Needs to be set to an actual value from dropdown
-            fireEvent.change(price, { target: { value: '499' } });
+            fireEvent.change(price, { target: { value: '4.99' } });
             fireEvent.change(description, { target: {value: 'testDescription' } });
             fireEvent.change(file, { target: testUpload });
             fireEvent.submit(form);
@@ -102,7 +117,7 @@ describe("ItemFormLarge", () => {
         const alertSpy = jest.spyOn(window, "alert").mockReturnValue(true);
 
         // Perform test
-        render(<ItemFormLarge />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><ItemFormLarge /></BrowserRouter></AuthProvider>);
         const form = screen.getByTestId("form");
         await act(async () => { // Set form fields
             fireEvent.submit(form);
@@ -117,7 +132,7 @@ describe("ItemFormLarge", () => {
         const alertSpy = jest.spyOn(window, "alert").mockReturnValue(true);
 
         // Setup
-        render(<ItemFormLarge />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><ItemFormLarge /></BrowserRouter></AuthProvider>);
         const form = screen.getByTestId("form");
         const category = screen.getByTestId("category");
         const price = screen.getByTestId("price");
@@ -127,7 +142,7 @@ describe("ItemFormLarge", () => {
         // Perform test
         await act(async () => {
             fireEvent.change(category, { target: { value: 'comboSpecial' } }); // Needs to be set to an actual value from dropdown
-            fireEvent.change(price, { target: { value: '499' } });
+            fireEvent.change(price, { target: { value: '4.99' } });
             fireEvent.change(description, { target: {value: 'testDescription' } });
             fireEvent.change(file, { target: testUpload });
             fireEvent.submit(form);
@@ -142,7 +157,7 @@ describe("ItemFormLarge", () => {
         const alertSpy = jest.spyOn(window, "alert").mockReturnValue(true);
 
         // Setup
-        render(<ItemFormLarge />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><ItemFormLarge /></BrowserRouter></AuthProvider>);
         const form = screen.getByTestId("form");
         const name = screen.getByTestId("name");
         const price = screen.getByTestId("price");
@@ -152,7 +167,7 @@ describe("ItemFormLarge", () => {
         // Perform test
         await act(async () => {
             fireEvent.change(name, { target: { value: 'testName' } });
-            fireEvent.change(price, { target: { value: '499' } });
+            fireEvent.change(price, { target: { value: '4.99' } });
             fireEvent.change(description, { target: {value: 'testDescription' } });
             fireEvent.change(file, { target: testUpload });
             fireEvent.submit(form);
@@ -167,7 +182,7 @@ describe("ItemFormLarge", () => {
         const alertSpy = jest.spyOn(window, "alert").mockReturnValue(true);
 
         // Setup
-        render(<ItemFormLarge />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><ItemFormLarge /></BrowserRouter></AuthProvider>);
         const form = screen.getByTestId("form");
         const name = screen.getByTestId("name");
         const category = screen.getByTestId("category");
@@ -192,7 +207,7 @@ describe("ItemFormLarge", () => {
         const alertSpy = jest.spyOn(window, "alert").mockReturnValue(true);
 
         // Setup
-        render(<ItemFormLarge />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><ItemFormLarge /></BrowserRouter></AuthProvider>);
         const form = screen.getByTestId("form");
         const name = screen.getByTestId("name");
         const category = screen.getByTestId("category");
@@ -203,7 +218,7 @@ describe("ItemFormLarge", () => {
         await act(async () => {
             fireEvent.change(name, { target: { value: 'testName' } });
             fireEvent.change(category, { target: { value: 'comboSpecial' } }); // Needs to be set to an actual value from dropdown
-            fireEvent.change(price, { target: { value: '499' } });
+            fireEvent.change(price, { target: { value: '4.99' } });
             fireEvent.change(file, { target: testUpload });
             fireEvent.submit(form);
         });
@@ -217,7 +232,7 @@ describe("ItemFormLarge", () => {
         const alertSpy = jest.spyOn(window, "alert").mockReturnValue(true);
 
         // Setup
-        render(<ItemFormLarge />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><ItemFormLarge /></BrowserRouter></AuthProvider>);
         const form = screen.getByTestId("form");
         const name = screen.getByTestId("name");
         const category = screen.getByTestId("category");
@@ -228,7 +243,7 @@ describe("ItemFormLarge", () => {
         await act(async () => {
             fireEvent.change(name, { target: { value: 'testName' } });
             fireEvent.change(category, { target: { value: 'comboSpecial' } }); // Needs to be set to an actual value from dropdown
-            fireEvent.change(price, { target: { value: '499' } });
+            fireEvent.change(price, { target: { value: '4.99' } });
             fireEvent.change(description, { target: {value: 'testDescription' } });
             fireEvent.submit(form);
         });
@@ -242,7 +257,7 @@ describe("ItemFormLarge", () => {
         const alertSpy = jest.spyOn(window, "alert").mockReturnValue(true);
 
         // Setup
-        render(<ItemFormLarge />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><ItemFormLarge /></BrowserRouter></AuthProvider>);
         const form = screen.getByTestId("form");
         const name = screen.getByTestId("name");
         const category = screen.getByTestId("category");

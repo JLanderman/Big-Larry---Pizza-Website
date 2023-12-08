@@ -5,6 +5,7 @@ import UserService from "../services/UserData";
 import Admin from "../pages/admin";
 import { BrowserRouter } from "react-router-dom";
 import { HexColorPicker, HexColorInput } from "react-colorful";
+import AuthProvider from '../contexts/authContext';
 
 /** 
  * Palettes for testing.
@@ -35,6 +36,11 @@ jest.mock('react-router', () => ({
     useNavigate: () => mockNavigate,
 }));
 
+const loggedIn = {
+    loggedIn: true,
+    auth: true
+}
+
 beforeEach(async () => {
     PaletteService.getLatestPalette.mockResolvedValue({
         data: {
@@ -60,7 +66,7 @@ beforeEach(async () => {
     UserService.getUserbyToken.mockResolvedValue({ });
     PaletteService.putPaletteFront.mockResolvedValue({ });
 
-    render(<BrowserRouter><Admin /></BrowserRouter>);
+    render(<AuthProvider initialState={loggedIn}><BrowserRouter><Admin /></BrowserRouter></AuthProvider>);
     await waitFor(() => screen.getByTestId("adminContainer"));
 });
 
@@ -78,7 +84,7 @@ describe("Admin", () => {
         
         // Test result
         await act(async () => { // Wait for everything to run
-            render(<BrowserRouter><Admin /></BrowserRouter>);
+            render(<AuthProvider initialState={loggedIn}><BrowserRouter><Admin /></BrowserRouter></AuthProvider>);
         });
         expect(mockNavigate).toHaveBeenCalledWith('/');
     })
@@ -106,7 +112,7 @@ describe("Admin", () => {
 
         // Run test
         await act(async () => { // Wait for everything to run
-            render(<BrowserRouter><Admin /></BrowserRouter>);
+            render(<AuthProvider initialState={loggedIn}><BrowserRouter><Admin /></BrowserRouter></AuthProvider>);
         });
         expect(consoleError).toHaveBeenCalledWith(mockedError);
 
@@ -123,7 +129,7 @@ describe("Admin", () => {
 
         // Run test
         await act(async () => { // Wait for everything to run
-            render(<BrowserRouter><Admin /></BrowserRouter>);
+            render(<AuthProvider initialState={loggedIn}><BrowserRouter><Admin /></BrowserRouter></AuthProvider>);
         });
         expect(consoleError).toHaveBeenCalledWith(mockedError);
 

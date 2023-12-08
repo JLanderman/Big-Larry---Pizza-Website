@@ -5,8 +5,9 @@ import DrinkForm from "../pages/uploadDrinkTemplate";
 import UserService from "../services/UserData";
 import DataService from "../services/itemData";
 import { act } from "react-test-renderer";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, MemoryRouter, Route, Routes } from "react-router-dom";
 import Cookies from 'js-cookie';
+import AuthProvider from "../contexts/authContext";
 
 // Mock responses from services
 jest.mock('../services/itemData');
@@ -19,7 +20,7 @@ const mockResponse = {
             name: 'textItem',
             drinktype: 'Milk Shakes',
             price: [
-                199
+                1.99
             ],
         },
     ],
@@ -31,8 +32,8 @@ const mockResponseTwoPrices = {
             name: 'textItem',
             drinktype: 'testType',
             price: [
-                199,
-                299
+                1.99,
+                2.99
             ],
         },
     ],
@@ -44,13 +45,20 @@ const mockResponseThreePrices = {
             name: 'textItem',
             drinktype: 'testType',
             price: [
-                199,
-                299,
-                399
+                1.99,
+                2.99,
+                3.99
             ],
         },
     ],
 };
+
+// Navigation mocks
+const mockNavigate = jest.fn();
+jest.mock('react-router', () => ({
+    ...jest.requireActual('react-router'),
+    useNavigate: () => mockNavigate,
+}));
 
 beforeEach(() => {
     Cookies.get.mockReturnValue('testToken');
@@ -62,8 +70,13 @@ afterEach(() => {
 });
 
 describe("DrinkForm", () => {
+    const loggedIn = {
+        loggedIn: true,
+        auth: true,
+    }
+
     test("renders container", async () => {
-        render(<DrinkForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><DrinkForm /></BrowserRouter></AuthProvider>);
         const drinkUpload = screen.getByTestId("drinkUpload");
         expect(drinkUpload).toBeInTheDocument();
     })
@@ -75,11 +88,13 @@ describe("DrinkForm", () => {
         // Render
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={['/DrinkForm/1']}>
-                    <Routes>
-                        <Route path="/DrinkForm/:id" element={<DrinkForm />} />
-                    </Routes>
-                </MemoryRouter>
+                <AuthProvider initialState={loggedIn}>
+                    <MemoryRouter initialEntries={['/DrinkForm/1']}>
+                        <Routes>
+                            <Route path="/DrinkForm/:id" element={<DrinkForm />} />
+                        </Routes>
+                    </MemoryRouter>
+                </AuthProvider>
             );
         });
 
@@ -99,11 +114,13 @@ describe("DrinkForm", () => {
         // Perform test
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={['/DrinkForm/1']}>
-                    <Routes>
-                        <Route path="/DrinkForm/:id" element={<DrinkForm />} />
-                    </Routes>
-                </MemoryRouter>
+                <AuthProvider initialState={loggedIn}>
+                    <MemoryRouter initialEntries={['/DrinkForm/1']}>
+                        <Routes>
+                            <Route path="/DrinkForm/:id" element={<DrinkForm />} />
+                        </Routes>
+                    </MemoryRouter>
+                </AuthProvider>
             );
         });
 
@@ -117,7 +134,7 @@ describe("DrinkForm", () => {
         DataService.createItem.mockResolvedValue({});
 
         // Setup
-        render(<DrinkForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><DrinkForm /></BrowserRouter></AuthProvider>);
         const form = screen.getByTestId("form");
         const formName = screen.getByTestId("formName");
         const subCategory = screen.getByTestId("subCategory");
@@ -129,7 +146,7 @@ describe("DrinkForm", () => {
             fireEvent.change(formName, { target: { value: 'testName' } });
             // Needs to be set to an actual value from dropdown
             fireEvent.change(subCategory, { target: { value: 'Cold Drink' } });
-            fireEvent.change(price, { target: { value: '499' } });
+            fireEvent.change(price, { target: { value: '4.99' } });
             fireEvent.submit(form);
         });
 
@@ -144,7 +161,7 @@ describe("DrinkForm", () => {
         const consoleLog = jest.spyOn(console, "log");
 
         // Perform test
-        render(<DrinkForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><DrinkForm /></BrowserRouter></AuthProvider>);
         const form = screen.getByTestId("form");
         const formName = screen.getByTestId("formName");
         const subCategory = screen.getByTestId("subCategory");
@@ -155,13 +172,13 @@ describe("DrinkForm", () => {
             fireEvent.change(formName, { target: { value: 'testName' } });
             // Needs to be set to an actual value from dropdown
             fireEvent.change(subCategory, { target: { value: 'Cold Drink' } });
-            fireEvent.change(price, { target: { value: '499' } });
+            fireEvent.change(price, { target: { value: '4.99' } });
             fireEvent.click(twoPricesCheckbox);
         })
 
         const twoPricesLarge = screen.getByTestId("twoPricesLarge");
         await act(async () => { // Set price
-            fireEvent.change(twoPricesLarge, { target: { value: '699' } });
+            fireEvent.change(twoPricesLarge, { target: { value: '6.99' } });
             fireEvent.submit(form);
         });
 
@@ -176,7 +193,7 @@ describe("DrinkForm", () => {
         const consoleLog = jest.spyOn(console, "log");
 
         // Perform test
-        render(<DrinkForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><DrinkForm /></BrowserRouter></AuthProvider>);
         const form = screen.getByTestId("form");
         const formName = screen.getByTestId("formName");
         const subCategory = screen.getByTestId("subCategory");
@@ -187,15 +204,15 @@ describe("DrinkForm", () => {
             fireEvent.change(formName, { target: { value: 'testName' } });
             // Needs to be set to an actual value from dropdown
             fireEvent.change(subCategory, { target: { value: 'Cold Drink' } });
-            fireEvent.change(price, { target: { value: '499' } });
+            fireEvent.change(price, { target: { value: '4.99' } });
             fireEvent.click(threePricesCheckbox);
         })
 
         const threePricesMedium = screen.getByTestId("threePricesMedium");
         const threePricesLarge = screen.getByTestId("threePricesLarge");
         await act(async () => { // Set price
-            fireEvent.change(threePricesMedium, { target: { value: '599' } });
-            fireEvent.change(threePricesLarge, { target: { value: '699' } });
+            fireEvent.change(threePricesMedium, { target: { value: '5.99' } });
+            fireEvent.change(threePricesLarge, { target: { value: '6.99' } });
             fireEvent.submit(form);
         });
 
@@ -212,11 +229,13 @@ describe("DrinkForm", () => {
         // Initial render
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={['/DrinkForm/1']}>
-                    <Routes>
-                        <Route path="/DrinkForm/:id" element={<DrinkForm />} />
-                    </Routes>
-                </MemoryRouter>
+                <AuthProvider initialState={loggedIn}>
+                    <MemoryRouter initialEntries={['/DrinkForm/1']}>
+                        <Routes>
+                            <Route path="/DrinkForm/:id" element={<DrinkForm />} />
+                        </Routes>
+                    </MemoryRouter>
+                </AuthProvider>
             );
         });
 
@@ -230,7 +249,7 @@ describe("DrinkForm", () => {
         // Perform test
         await act(async () => { // Set form fields
             fireEvent.change(formName, { target: { value: 'testName' } });
-            fireEvent.change(price, { target: { value: '499' } });
+            fireEvent.change(price, { target: { value: '4.99' } });
             fireEvent.change(subCategory, { target: { value: 'Milk Shakes' } });
             fireEvent.submit(form);
         });
@@ -249,11 +268,13 @@ describe("DrinkForm", () => {
         // Initial render
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={['/DrinkForm/1']}>
-                    <Routes>
-                        <Route path="/DrinkForm/:id" element={<DrinkForm />} />
-                    </Routes>
-                </MemoryRouter>
+                <AuthProvider initialState={loggedIn}>
+                    <MemoryRouter initialEntries={['/DrinkForm/1']}>
+                        <Routes>
+                            <Route path="/DrinkForm/:id" element={<DrinkForm />} />
+                        </Routes>
+                    </MemoryRouter>
+                </AuthProvider>
             );
         });
 
@@ -268,8 +289,8 @@ describe("DrinkForm", () => {
         await act(async () => { // Set form fields
             fireEvent.change(formName, { target: { value: 'testName' } });
             fireEvent.change(subCategory, { target: { value: 'Milk Shakes' } });
-            fireEvent.change(price, { target: { value: '499' } });
-            fireEvent.change(twoPricesLarge, { target: { value: '699' } });
+            fireEvent.change(price, { target: { value: '4.99' } });
+            fireEvent.change(twoPricesLarge, { target: { value: '6.99' } });
             fireEvent.submit(form);
         });
 
@@ -287,11 +308,13 @@ describe("DrinkForm", () => {
         // Initial render
         await act(async () => {
             render(
-                <MemoryRouter initialEntries={['/DrinkForm/1']}>
-                    <Routes>
-                        <Route path="/DrinkForm/:id" element={<DrinkForm />} />
-                    </Routes>
-                </MemoryRouter>
+                <AuthProvider initialState={loggedIn}>
+                    <MemoryRouter initialEntries={['/DrinkForm/1']}>
+                        <Routes>
+                            <Route path="/DrinkForm/:id" element={<DrinkForm />} />
+                        </Routes>
+                    </MemoryRouter>
+                </AuthProvider>
             );
         });
 
@@ -306,10 +329,10 @@ describe("DrinkForm", () => {
         // Perform test
         await act(async () => { // Set form fields
             fireEvent.change(formName, { target: { value: 'testName' } });
-            fireEvent.change(price, { target: { value: '499' } });
+            fireEvent.change(price, { target: { value: '4.99' } });
             fireEvent.change(subCategory, { target: { value: 'Milk Shakes' } });
-            fireEvent.change(threePricesMedium, { target: { value: '599' } });
-            fireEvent.change(threePricesLarge, { target: { value: '699' } });
+            fireEvent.change(threePricesMedium, { target: { value: '5.99' } });
+            fireEvent.change(threePricesLarge, { target: { value: '6.99' } });
             fireEvent.submit(form);
         });
 
@@ -324,7 +347,7 @@ describe("DrinkForm", () => {
         DataService.createItem.mockRejectedValue(mockedError);
 
         // Setup
-        render(<DrinkForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><DrinkForm /></BrowserRouter></AuthProvider>);
         const form = screen.getByTestId("form");
         const formName = screen.getByTestId("formName");
         const subCategory = screen.getByTestId("subCategory");
@@ -335,7 +358,7 @@ describe("DrinkForm", () => {
         await act(async () => { // Set form fields
             fireEvent.change(formName, { target: { value: 'testName' } });
             fireEvent.change(subCategory, { target: { value: 'Milk Shakes' } });
-            fireEvent.change(price, { target: { value: '499' } });
+            fireEvent.change(price, { target: { value: '4.99' } });
             fireEvent.submit(form);
         });
 
@@ -346,7 +369,7 @@ describe("DrinkForm", () => {
     test("alerts the user if they are not logged in", async () => {
         // Setup
         Cookies.get.mockReturnValue(undefined); // No token
-        render(<DrinkForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><DrinkForm /></BrowserRouter></AuthProvider>);
         const alertSpy = jest.spyOn(window, "alert");
         alertSpy.mockReturnValue(true);
 
@@ -362,7 +385,7 @@ describe("DrinkForm", () => {
 
     test("alerts the user if they do not enter an item name", async () => {
         // Setup
-        render(<DrinkForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><DrinkForm /></BrowserRouter></AuthProvider>);
         const alertSpy = jest.spyOn(window, "alert");
         alertSpy.mockReturnValue(true);
 
@@ -372,7 +395,7 @@ describe("DrinkForm", () => {
         const price = screen.getByTestId("price");
         await act(async () => { // Set form fields
             fireEvent.change(subCategory, { target: { value: 'Milk Shakes' } });
-            fireEvent.change(price, { target: { value: '499' } });
+            fireEvent.change(price, { target: { value: '4.99' } });
             fireEvent.submit(form);
         });
 
@@ -382,7 +405,7 @@ describe("DrinkForm", () => {
 
     test("alerts the user if they do not enter an item subcategory", async () => {
         // Setup
-        render(<DrinkForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><DrinkForm /></BrowserRouter></AuthProvider>);
         const alertSpy = jest.spyOn(window, "alert");
         alertSpy.mockReturnValue(true);
 
@@ -392,7 +415,7 @@ describe("DrinkForm", () => {
         const price = screen.getByTestId("price");
         await act(async () => { // Set form fields
             fireEvent.change(formName, { target: { value: 'testName' } });
-            fireEvent.change(price, { target: { value: '499' } });
+            fireEvent.change(price, { target: { value: '4.99' } });
             fireEvent.submit(form);
         });
 
@@ -402,7 +425,7 @@ describe("DrinkForm", () => {
 
     test("alerts the user if they do not enter an item price", async () => {
         // Setup
-        render(<DrinkForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><DrinkForm /></BrowserRouter></AuthProvider>);
         const alertSpy = jest.spyOn(window, "alert");
         alertSpy.mockReturnValue(true);
 
@@ -422,7 +445,7 @@ describe("DrinkForm", () => {
 
     test("alerts the user if they do not enter a valid number for the item price", async () => {
         // Setup
-        render(<DrinkForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><DrinkForm /></BrowserRouter></AuthProvider>);
         const alertSpy = jest.spyOn(window, "alert");
         alertSpy.mockReturnValue(true);
 
@@ -444,7 +467,7 @@ describe("DrinkForm", () => {
 
     test("alerts the user if they do not enter an item price when the item has two prices", async () => {
         // Setup
-        render(<DrinkForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><DrinkForm /></BrowserRouter></AuthProvider>);
         const alertSpy = jest.spyOn(window, "alert");
         alertSpy.mockReturnValue(true);
 
@@ -461,7 +484,7 @@ describe("DrinkForm", () => {
 
         const price = screen.getByTestId("price");
         await act(async () => {
-            fireEvent.change(price, { target: { value: '499' } });
+            fireEvent.change(price, { target: { value: '4.99' } });
             fireEvent.submit(form);
         });
 
@@ -471,7 +494,7 @@ describe("DrinkForm", () => {
 
     test("alerts the user if they do not enter a valid number for item prices when there are two prices", async () => {
         // Setup
-        render(<DrinkForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><DrinkForm /></BrowserRouter></AuthProvider>);
         const alertSpy = jest.spyOn(window, "alert");
         alertSpy.mockReturnValue(true);
 
@@ -489,7 +512,7 @@ describe("DrinkForm", () => {
         const price = screen.getByTestId("price");
         const twoPricesLarge = screen.getByTestId("twoPricesLarge");
         await act(async () => {
-            fireEvent.change(price, { target: { value: '499' } });
+            fireEvent.change(price, { target: { value: '4.99' } });
             fireEvent.change(twoPricesLarge, { target: { value: 'invalidPrice' } });
             fireEvent.submit(form);
         });
@@ -500,7 +523,7 @@ describe("DrinkForm", () => {
 
     test("alerts the user if they do not enter an item price when the item has three prices", async () => {
         // Setup
-        render(<DrinkForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><DrinkForm /></BrowserRouter></AuthProvider>);
         const alertSpy = jest.spyOn(window, "alert");
         alertSpy.mockReturnValue(true);
 
@@ -518,8 +541,8 @@ describe("DrinkForm", () => {
         const price = screen.getByTestId("price");
         const medium = screen.getByTestId("threePricesMedium");
         await act(async () => {
-            fireEvent.change(price, { target: { value: '499' } });
-            fireEvent.change(medium, { target: { value: '599' } });
+            fireEvent.change(price, { target: { value: '4.99' } });
+            fireEvent.change(medium, { target: { value: '5.99' } });
             fireEvent.submit(form);
         });
 
@@ -529,7 +552,7 @@ describe("DrinkForm", () => {
 
     test("alerts the user if they do not enter a valid number for item prices when there are three prices", async () => {
         // Setup
-        render(<DrinkForm />);
+        render(<AuthProvider initialState={loggedIn}><BrowserRouter><DrinkForm /></BrowserRouter></AuthProvider>);
         const alertSpy = jest.spyOn(window, "alert");
         alertSpy.mockReturnValue(true);
 
@@ -548,8 +571,8 @@ describe("DrinkForm", () => {
         const medium = screen.getByTestId("threePricesMedium");
         const large = screen.getByTestId("threePricesLarge");
         await act(async () => {
-            fireEvent.change(price, { target: { value: '499' } });
-            fireEvent.change(medium, { target: { value: '599' } });
+            fireEvent.change(price, { target: { value: '4.99' } });
+            fireEvent.change(medium, { target: { value: '5.99' } });
             fireEvent.change(large, { target: { value: 'invalidNumber' } });
             fireEvent.submit(form);
         });
