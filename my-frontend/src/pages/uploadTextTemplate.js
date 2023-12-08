@@ -7,10 +7,11 @@ import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
 import UserService from "../services/UserData";
 import { useNavigate } from 'react-router-dom';
-
+import { useAuth } from '../contexts/authContext';
 
 function TextForm() {
   const navigate = useNavigate();
+  const { auth } = useAuth();
   const [name, setName] = useState('');
   const category = 'lunch/Dinner';
   const [price, setPrice] = useState('');
@@ -24,6 +25,7 @@ function TextForm() {
 
   // eslint-disable-next-line
   useEffect(() => {
+    if (!auth) navigate('/');
     retrieveMenuItem();
     // eslint-disable-next-line
   }, [params.id]);

@@ -5,11 +5,13 @@ import React, { useState, useEffect } from 'react';
 import DataService from "../services/itemData";
 import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
+import { useAuth } from '../contexts/authContext';
 import UserService from "../services/UserData";
 import { useNavigate } from 'react-router-dom';
 
 function DrinkForm() {
   const navigate = useNavigate();
+  const { auth } = useAuth();
   const [name, setName] = useState('');
   const category = 'drink';
   //const [category, setCategory] = useState('');
@@ -27,6 +29,7 @@ function DrinkForm() {
 
   // eslint-disable-next-line
   useEffect(() => {
+    if (!auth) navigate('/');
     retrieveMenuItem();
     // eslint-disable-next-line
   }, [params.id]);

@@ -1,12 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import DataService from "../services/itemData";
 import Cookies from "js-cookie";
 import UserService from "../services/UserData";
 import pizzaGuy from '../images/Other/PizzaGuy_HQ_1.0.png';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/authContext';
 
 function ItemFormLarge() {
   const navigate = useNavigate();
+  const { auth } = useAuth();
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState('');
@@ -18,6 +20,10 @@ function ItemFormLarge() {
   const token = Cookies.get('x-auth-token');
 
   let base64String;
+
+  useEffect(() => {
+    if (!auth) navigate('/');
+  })
   
    // Helper function to wait for reading to finish
   const readFileAsDataURL = (file) => {

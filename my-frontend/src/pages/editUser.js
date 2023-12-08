@@ -1,5 +1,6 @@
-import  {React, useState} from "react";
+import  { React, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
+import { useAuth } from '../contexts/authContext';
 import UserService from "../services/UserData";
 import Cookies from "js-cookie";
 
@@ -62,6 +63,12 @@ const styles = {
       const [error, setError] = useState(null);
       const [success, setSuccess] = useState(false);
       const navigate = useNavigate();
+      const { auth } = useAuth();
+
+      // Redirect if not logged in
+      useEffect(() => {
+        if (!auth) navigate('/');
+      });
 
       const handleSubmit = async event => {
           event.preventDefault();

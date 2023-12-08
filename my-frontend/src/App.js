@@ -89,6 +89,7 @@ function App() {
               <Route path="/DrinkForm" element={<UploadDrinkTemplate />} />
               <Route path="/DrinkForm/:id" element={<UploadDrinkTemplate />} />
               <Route path="/editItem/:id" element={<EditItem />} />
+              <Route path="*" element={<Home />/*This must always be last*/} />
             </Routes>
             <Footer />
           </Router>

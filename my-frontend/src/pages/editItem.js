@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
-import { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useAuth } from '../contexts/authContext';
 import DataService from "../services/itemData";
 import Cookies from 'js-cookie';
 import UserService from "../services/UserData";
@@ -19,8 +19,13 @@ const EditItem = () => {
   const [newPhoto, setNewPhoto] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
-
+  const { auth } = useAuth();
   let base64String;
+
+  // Redirect if not logged in
+  useEffect(() => {
+    if (!auth) navigate('/');
+  });
 
   // Helper function to wait for reading to finish
   const readFileAsDataURL = (file) => {
