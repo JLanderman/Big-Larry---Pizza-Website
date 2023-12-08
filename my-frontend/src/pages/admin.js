@@ -1,21 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router";
 import { useAuth } from '../contexts/authContext';
 import UserService from "../services/UserData";
 import { HexColorPicker, HexColorInput } from "react-colorful";
-import { useState } from "react";
 import "./admin.css"
 import pizzacustom from "../images/Pizza Specialties/Customize Pizza.jpg"
-
-
 import PaletteService from "../services/paletteData"
 
 const Admin = () => {
     const { auth } = useAuth();
     const navigate = useNavigate();
 
-    React.useEffect(() => {
+    // Redirect if not logged in
+    useEffect(() => {
       if (!auth) navigate('/');
     });
     
