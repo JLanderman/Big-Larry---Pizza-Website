@@ -3,8 +3,10 @@ import DataService from "../services/itemData";
 import Cookies from "js-cookie";
 import UserService from "../services/UserData";
 import pizzaGuy from '../images/Other/PizzaGuy_HQ_1.0.png';
+import { useNavigate } from 'react-router-dom';
 
 function ItemFormLarge() {
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState('');
@@ -61,6 +63,7 @@ function ItemFormLarge() {
       alert('Please enter a valid numeric value for the price.');
       return;
     }
+    
 
     // Create a FormData object to append form fields and file
     const formData = new FormData();
@@ -77,8 +80,31 @@ function ItemFormLarge() {
     formData.append('token', token)
 
     try { // Send the formData to server for processing
+      // console.log("Upload Template:");
+      // formData.forEach((value, key) => {
+      //   console.log(`${key}: ${value}`);
+      // });
       await DataService.createItem(formData, base64String);
       console.log('Item uploaded successfully');
+
+      // Determine the destination page based on the selected category
+      let destinationPage;
+      switch (category) {
+        case 'pizzaSpecial':
+          destinationPage = '/pizzaSpecial';
+          break;
+        case 'comboSpecial':
+          destinationPage = '/comboSpecial';
+          break;
+        case 'specialDeal':
+          destinationPage = '/specialDeals';
+          break;
+        default:
+          destinationPage = '/mainmenu';
+      }
+
+      // Navigate to the destination page
+      navigate(destinationPage);
     } catch (error) {
       console.error('Error uploading item:', error)
     }

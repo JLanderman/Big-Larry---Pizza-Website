@@ -99,15 +99,16 @@ class DataService {
       rawPrice = formData.get('price').split(',');
       // Clean up each element in the array
       newPrice = rawPrice.map((price) =>
-        price.replace(/[\[\]"\s]/g, '')
+        price.replace(/[[\]"\s]/g, '')
       );
-    } else {
+    } else if (newSubCat === "Ice Cream  &  Other") {
       rawPrice = formData.get('price');
         // Clean up
-      newPrice = rawPrice.replace(/[\[\]"\s]/g, '');
+      newPrice = rawPrice.replace(/[[\]"\s]/g, '');
+    } else {
+      newPrice = formData.get('newPrice') * 100;
     }
-    
-    console.log("After split ");
+    console.log("Price: " + newPrice);
     /* logs for testing 
     console.log('Current Name:', curName);  //logs for testing
     console.log('Current itemCategory:', curItemCat);
@@ -162,6 +163,11 @@ class DataService {
     const newDescription = formData.get('description');
     const username = formData.get('user');
     const token = formData.get('token');
+    console.log("Create Item / Item Data:");
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+
 
     //formdata  converts all entries to strings, so here we are reassigning a propper null value if necessary
     if (formData.get('subCategory') === 'null') {
@@ -175,12 +181,14 @@ class DataService {
       rawPrice = formData.get('price').split(',');
       // Clean up each element in the array
       newPrice = rawPrice.map((price) =>
-        price.replace(/[\[\]"\s]/g, '')
+        price.replace(/[[\]"\s]/g, '')
       );
-    } else {
+    } else if (newSubCat === "Ice Cream  &  Other") {
       rawPrice = formData.get('price');
         // Clean up
-      newPrice = rawPrice.replace(/[\[\]"\s]/g, '');
+      newPrice = rawPrice.replace(/[[\]"\s]/g, '');
+    } else {
+      newPrice = formData.get('newPrice');
     }
 
     /* logs for testing

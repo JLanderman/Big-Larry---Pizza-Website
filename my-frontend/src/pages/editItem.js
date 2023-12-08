@@ -4,11 +4,13 @@ import { useParams } from "react-router-dom";
 import DataService from "../services/itemData";
 import Cookies from 'js-cookie';
 import UserService from "../services/UserData";
+import { useNavigate } from 'react-router-dom';
 
 
 const picUrl = process.env.REACT_APP_IMAGE_BASE_URL;
 
 const EditItem = () => {
+  const navigate = useNavigate();
   const [menuItem, setMenuItem] = useState();
   const [category, setCategory] = useState("");
   const [newName, setNewName] = useState("");
@@ -70,6 +72,24 @@ const EditItem = () => {
       formData.append('newPhoto', photoName || menuItem.photo);
       await DataService.updateItem(formData, base64String); //call to the api
       console.log('Item updated successfully');
+      // Determine the destination page based on the selected category
+      let destinationPage;
+      switch (category) {
+        case 'pizzaSpecial':
+          destinationPage = '/pizzaSpecial';
+          break;
+        case 'comboSpecial':
+          destinationPage = '/comboSpecial';
+          break;
+        case 'specialDeal':
+          destinationPage = '/specialDeals';
+          break;
+        default:
+          destinationPage = '/mainmenu';
+      }
+
+      // Navigate to the destination page
+      navigate(destinationPage);
     } catch (error) {
       console.error('Error updating item:', error)
     }
