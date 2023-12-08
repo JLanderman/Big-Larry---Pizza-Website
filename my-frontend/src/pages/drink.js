@@ -116,7 +116,7 @@ const Drink= (props) => {
                   }
                   </div>
                   <div>
-                      {drinkByType[type][0].price.length === 1 ? (<p className="drinkPrice"> ${drinkByType[type][0].price[0]}</p>): ('')}
+                      {drinkByType[type][0].price.length === 1 && drinkByType[type][0].drinktype !== 'Ice Cream  &  Other' ? (<p className="drinkPrice"> ${drinkByType[type][0].price[0]}</p>): ('')}
                       {drinkByType[type][0].price.length === 2 ? (<p className="drinkPrice">Small: ${drinkByType[type][0].price[0]} &nbsp;&nbsp;&nbsp; Large: ${drinkByType[type][0].price[1]}</p>): ('')}
                       {drinkByType[type][0].price.length === 3 ? (<p className="drinkPrice"> Small: ${drinkByType[type][0].price[0]}   &nbsp;&nbsp;&nbsp; Medium: ${drinkByType[type][0].price[1]} &nbsp;&nbsp;&nbsp; Large: ${drinkByType[type][0].price[2]}</p>): ('')}
                 

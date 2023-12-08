@@ -95,16 +95,12 @@ class DataService {
       newSubCat = formData.get('subCategory');
     }
     
-    if (newItemCat === "drink" && newSubCat !== "Ice Cream  &  Other") {
+    if (newItemCat === "drink") {
       rawPrice = formData.get('price').split(',');
       // Clean up each element in the array
       newPrice = rawPrice.map((price) =>
         price.replace(/[[\]"\s]/g, '')
       );
-    } else if (newSubCat === "Ice Cream  &  Other") {
-      rawPrice = formData.get('price');
-        // Clean up
-      newPrice = rawPrice.replace(/[[\]"\s]/g, '');
     } else {
       newPrice = formData.get('newPrice');
     }
@@ -177,16 +173,12 @@ class DataService {
     }
 
     //only drinks need prices as an array, this seperates the user input into an array
-    if (newItemCat === "drink" && newSubCat !== "Ice Cream  &  Other") {
+    if (newItemCat === "drink") {
       rawPrice = formData.get('price').split(',');
       // Clean up each element in the array
       newPrice = rawPrice.map((price) =>
         price.replace(/[[\]"\s]/g, '')
       );
-    } else if (newSubCat === "Ice Cream  &  Other") {
-      rawPrice = formData.get('price');
-        // Clean up
-      newPrice = rawPrice.replace(/[[\]"\s]/g, '');
     } else {
       newPrice = formData.get('newPrice');
     }

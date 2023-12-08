@@ -65,6 +65,9 @@ function DrinkForm() {
     }
   };
 
+  function formatPrice(price) {
+    return parseFloat(price).toFixed(2);
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -83,9 +86,9 @@ function DrinkForm() {
       return; // Exit the function without further processing
     }
 
-    if (!parseFloat(price) || !isValidPrice(price) ||
-      (hasTwoPrices && (!parseFloat(price2) || !isValidPrice(price2))) ||
-      (hasThreePrices && (!parseFloat(price2) || !parseFloat(price3) || !isValidPrice(price2) || !isValidPrice(price3)))) {
+    if (!parseFloat(price) ||
+      (hasTwoPrices && (price2 === '' || !parseFloat(price2))) ||
+      (hasThreePrices && (price2 === '' || price3 === '' || !parseFloat(price2) || !parseFloat(price3)))) {
       // Alert when two or three prices are enabled but some fields are empty or not numbers
       // Also alert if you don't enter in the full price with dollars and cents.
       alert('Please fill in all the available price fields with valid numbers.');
@@ -98,16 +101,25 @@ function DrinkForm() {
     formData.append('newName', name);
     formData.append('newCat', category);
     formData.append('subCategory', subCategory);
+    
+    let prices = [];
     if (hasTwoPrices) {
-      const prices = [price, price2];
-      formData.append('price', JSON.stringify(prices));
+      prices = [
+        formatPrice(price),
+        formatPrice(price2)
+      ];
     } else if (hasThreePrices) {
-      const prices = [price, price2, price3];
-      formData.append('price', JSON.stringify(prices));
+      prices = [
+        formatPrice(price),
+        formatPrice(price2),
+        formatPrice(price3)
+      ];
     } else {
-      const prices = [price];
-      formData.append('price', JSON.stringify(prices));
-    } //turns the prices back into one string array
+      prices = [
+        formatPrice(price)
+      ];
+    }//turns the prices back into one string array
+    formData.append('price', JSON.stringify(prices));
     formData.append('user', user);
     formData.append('token', token);
     
@@ -147,11 +159,6 @@ function DrinkForm() {
     setPrice3('');
   };
 
-
-  const isValidPrice = (price) => {
-    const regex = /^\d+\.\d{2}$/;
-    return regex.test(price);
-  };
 
   return (
     <div data-testid="drinkUpload">
