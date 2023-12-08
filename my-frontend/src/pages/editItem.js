@@ -67,7 +67,7 @@ const EditItem = () => {
     formData.append('currCat', menuItem.itemCategory);
     formData.append('newName', newName || menuItem.name);
     formData.append('newCat', category || menuItem.itemCategory);
-    formData.append('newPrice', newPrice || menuItem.price);
+    formData.append('newPrice', newPrice * 100 || menuItem.price);
     formData.append('description', newDescription === "" ? menuItem.info : newDescription)
     formData.append('user', user);
     formData.append('token', token);
