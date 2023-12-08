@@ -3,6 +3,7 @@ import DataService from "../services/itemData";
 import Cookies from "js-cookie";
 import UserService from "../services/UserData";
 import { useAuth } from '../contexts/authContext';
+import './pizza_customize.css';
 
 const Pizza_customize = () => {
   const token = Cookies.get('x-auth-token');
@@ -171,16 +172,12 @@ const Pizza_customize = () => {
 
   return (
     <div data-testid="container">
-      <div className="titleCustom" style={{ textAlign: 'center' }}>
-        <div>
-          <div>
-            <h1 style={{ color: "red" }}>Topping Options</h1>
-          </div>
-        </div>
+      <div className="titleCustom">
+        <h1>Topping Options</h1>
       </div>
-      <div className="pageContainer" style={{ maxWidth: "80%", minWidth: "610px", margin: "auto", textAlign: "center", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "10px"}}>
+      <div className="pageContainer" >
         {toppingList.map((size, index) => (
-          <span key={index} className="pizzaToppingButtonCustom" onClick={() => handleToppingClick(index)} style={{ fontSize: "24px", whiteSpace: "nowrap" }} data-testid={`clickTopping${size}`}>
+          <span key={index} className="pizzaToppingButtonCustom" onClick={() => handleToppingClick(index)} data-testid={`clickTopping${size}`}>
             {size}
           </span>
         ))}
@@ -189,21 +186,55 @@ const Pizza_customize = () => {
       <div className="titleCustom">
         <div>
           <div>
-            <h1 style={{ color: "red", textAlign: 'center' }}>Your Choice of Pizza</h1>
+            <h1>Your Choice of Pizza</h1>
           </div>
         </div>
       </div>
-      <div style={{ border: "0px solid", paddingLeft: "20%" }}>
-        <table style={{ border: "0px solid", width: "85%", maxWidth: "950px" }}>
+      <div className="tableContainer">
+        <table>
           <thead>
-            <tr style={{ borderBottom: "1px solid", padding: "5px", fontSize: "120%" }}>
-              <th style={{ borderRight: "1px solid", minWidth: "100px" }}>
+            <tr>
+              <th>
                 <div
                   className="diagonalHeader"
-                  style={{ display: "grid", gridTemplateAreas: "'. a' 'b .'" }}
+                  style={{
+                    display: "grid",
+                    gridTemplateAreas: "'. a' 'b .'",
+                    position: "relative",
+                  }}
                 >
                   <span style={{ gridArea: "a", color: "red", fontSize: "90%" }}>Size</span>
                   <span style={{ gridArea: "b", color: "red", fontSize: "90%" }}>Topping</span>
+                  <div
+                    className="diagonalLine"
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      zIndex: 1,
+                    }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      version="1.1"
+                      viewBox="0 0 100 100"
+                      preserveAspectRatio="none"
+                      style={{ width: "100%", height: "100%" }}
+                    >
+                        <line
+                          x1="0"
+                          y1="0"
+                          x2="100"
+                          y2="100"
+                          style={{
+                            stroke: "var(--clr-txt)",
+                            strokeWidth: 1,
+                          }}
+                        />
+                    </svg>
+                  </div>
                 </div>
               </th>
               {displaySizeLabels.map((label, sizeIndex) => (
