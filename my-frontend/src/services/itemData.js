@@ -106,7 +106,7 @@ class DataService {
         // Clean up
       newPrice = rawPrice.replace(/[[\]"\s]/g, '');
     } else {
-      newPrice = formData.get('newPrice') * 100;
+      newPrice = formData.get('newPrice');
     }
     console.log("Price: " + newPrice);
     /* logs for testing 
