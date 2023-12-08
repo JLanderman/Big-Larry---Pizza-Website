@@ -45,7 +45,7 @@ const EditItem = () => {
     }
 
     const user = await UserService.getUserbyToken(token);
-    if (newName === '' || category === '' || newPrice === '' || newDescription === '' || selectedFile === null) {
+    if (newName === '' || category === '' || newPrice === '' || newDescription === '') {
       alert('Please fill in all required fields before submitting.');
       return;
     }
@@ -55,7 +55,7 @@ const EditItem = () => {
       return;
     }
 
-    await readFileAsDataURL(selectedFile);
+    if (selectedFile) await readFileAsDataURL(selectedFile);
 
     const formData = new FormData();
     formData.append('currName', menuItem.name);
@@ -68,7 +68,7 @@ const EditItem = () => {
     formData.append('token', token);
 
     try { // Send the formData to server for processing
-      const photoName = selectedFile.name;
+      const photoName = (selectedFile&&selectedFile.name)? selectedFile.name : null;
       formData.append('newPhoto', photoName || menuItem.photo);
       await DataService.updateItem(formData, base64String); //call to the api
       console.log('Item updated successfully');
